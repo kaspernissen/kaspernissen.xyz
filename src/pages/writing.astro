@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WritingRow from '../components/WritingRow.astro';
+
+const items = (await getCollection('writing')).sort((a, b) => +b.data.date - +a.data.date);
+---
+<BaseLayout title="Writing — Kasper Nissen" current="/writing">
+  <section class="pt-6">
+    <h1 class="text-4xl font-extrabold tracking-tight">Writing & podcasts</h1>
+    <p class="text-stone-600 mt-2">Blog posts, podcast guest spots, newsletters, interviews. {items.length} total.</p>
+  </section>
+  <div class="mt-8">
+    {items.map((w) => <WritingRow entry={w} />)}
+  </div>
+</BaseLayout>

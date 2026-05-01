@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BadgeCard from '../components/BadgeCard.astro';
+
+const badges = (await getCollection('badges')).sort((a, b) => +b.data.issued - +a.data.issued);
+---
+<BaseLayout title="Badges — Kasper Nissen" current="/badges">
+  <section class="pt-6">
+    <h1 class="text-4xl font-extrabold tracking-tight">Badges</h1>
+    <p class="text-stone-600 mt-2">
+      Verified credentials from <a href="https://www.credly.com/users/kasper-nissen" class="underline decoration-orange-400 underline-offset-2">Credly</a>.
+    </p>
+  </section>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-8">
+    {badges.map((b) => <BadgeCard entry={b} />)}
+  </div>
+</BaseLayout>

@@ -1,17 +1,71 @@
 ---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import GitHubHeatmap from '../components/GitHubHeatmap.astro';
+import TalkCard from '../components/TalkCard.astro';
+import WritingRow from '../components/WritingRow.astro';
+import ConferenceRow from '../components/ConferenceRow.astro';
 
+const today = new Date();
+
+const talks = (await getCollection('talks'))
+  .sort((a, b) => +b.data.date - +a.data.date)
+  .slice(0, 3);
+
+const writing = (await getCollection('writing'))
+  .sort((a, b) => +b.data.date - +a.data.date)
+  .slice(0, 5);
+
+const upcoming = (await getCollection('conferences'))
+  .filter((c) => c.data.date >= today)
+  .sort((a, b) => +a.data.date - +b.data.date)
+  .slice(0, 3);
 ---
+<BaseLayout
+  title="Kasper Nissen — kaspernissen.xyz"
+  description="Cloud native, observability, and the people who run it. Talks, writing, and conferences from Kasper Nissen."
+  current="/"
+>
+  <Hero />
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+  <GitHubHeatmap />
+
+  <section class="mt-14">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-extrabold tracking-tight">Latest talks</h2>
+      <a href="/talks" class="text-sm text-stone-600 hover:text-stone-950">All talks →</a>
+    </div>
+    {talks.length === 0 ? (
+      <p class="text-stone-500 text-sm py-4">Nothing yet — fetcher hasn't run.</p>
+    ) : (
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {talks.map((t) => <TalkCard entry={t} />)}
+      </div>
+    )}
+  </section>
+
+  <section class="mt-14">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-extrabold tracking-tight">Recent writing</h2>
+      <a href="/writing" class="text-sm text-stone-600 hover:text-stone-950">All writing →</a>
+    </div>
+    {writing.length === 0 ? (
+      <p class="text-stone-500 text-sm py-4">Nothing yet.</p>
+    ) : (
+      <div>{writing.map((w) => <WritingRow entry={w} />)}</div>
+    )}
+  </section>
+
+  <section class="mt-14">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-extrabold tracking-tight">Where I'll be next</h2>
+      <a href="/conferences" class="text-sm text-stone-600 hover:text-stone-950">All conferences →</a>
+    </div>
+    {upcoming.length === 0 ? (
+      <p class="text-stone-500 text-sm py-4">Nothing announced yet — check back soon.</p>
+    ) : (
+      <div>{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
+    )}
+  </section>
+</BaseLayout>

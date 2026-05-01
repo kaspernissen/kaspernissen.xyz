@@ -1,0 +1,38 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ConferenceRow from '../components/ConferenceRow.astro';
+
+const today = new Date();
+const all = await getCollection('conferences');
+const upcoming = all
+  .filter((c) => c.data.date >= today)
+  .sort((a, b) => +a.data.date - +b.data.date);
+const past = all
+  .filter((c) => c.data.date < today)
+  .sort((a, b) => +b.data.date - +a.data.date);
+---
+<BaseLayout title="Conferences — Kasper Nissen" current="/conferences">
+  <section class="pt-6">
+    <h1 class="text-4xl font-extrabold tracking-tight">Conferences</h1>
+    <p class="text-stone-600 mt-2">Where I'll be next, and where I've been.</p>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-xl font-bold mb-3">Upcoming</h2>
+    {upcoming.length === 0 ? (
+      <p class="text-stone-500 text-sm">No upcoming announced yet.</p>
+    ) : (
+      upcoming.map((c) => <ConferenceRow entry={c} />)
+    )}
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-xl font-bold mb-3">Past</h2>
+    {past.length === 0 ? (
+      <p class="text-stone-500 text-sm">No past entries yet.</p>
+    ) : (
+      past.map((c) => <ConferenceRow entry={c} />)
+    )}
+  </section>
+</BaseLayout>

@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DeckCard from '../components/DeckCard.astro';
+
+const decks = (await getCollection('decks')).sort((a, b) => +b.data.date - +a.data.date);
+---
+<BaseLayout title="Decks — Kasper Nissen" current="/decks">
+  <section class="pt-6">
+    <h1 class="text-4xl font-extrabold tracking-tight">Slide decks</h1>
+    <p class="text-stone-600 mt-2">PDF downloads from past talks. Free to reuse with attribution.</p>
+  </section>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+    {decks.map((d) => <DeckCard entry={d} />)}
+  </div>
+</BaseLayout>
