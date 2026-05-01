@@ -1,0 +1,32 @@
+---
+import { Image } from 'astro:assets';
+import cartoon from '../assets/hero/cartoon.png';
+---
+<section class="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-8 items-end pt-6 pb-14">
+  <div class="max-w-2xl">
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight leading-[1.05] text-stone-950">
+      Hi, I'm Kasper.
+      <span class="inline-block bg-orange-400 text-white px-2 py-0.5 rounded -rotate-1">I talk cloud.</span>
+    </h1>
+    <p class="mt-5 text-stone-700 text-lg max-w-xl">
+      Observability nerd. CNCF Ambassador. Cloud Native Aarhus organiser.
+      Recovering Kubernetes operator.
+    </p>
+    <div class="mt-6 flex flex-wrap gap-2 text-sm font-semibold">
+      <a href="https://www.linkedin.com/in/kaspernissen/" class="bg-stone-950 text-white rounded-full px-4 py-1.5 hover:bg-stone-800">linkedin</a>
+      <a href="https://bsky.app/profile/kaspernissen.xyz" class="bg-stone-950 text-white rounded-full px-4 py-1.5 hover:bg-stone-800">bluesky</a>
+      <a href="https://x.com/phennex" class="bg-stone-950 text-white rounded-full px-4 py-1.5 hover:bg-stone-800">x</a>
+      <a href="https://github.com/kaspernissen" class="bg-stone-950 text-white rounded-full px-4 py-1.5 hover:bg-stone-800">github</a>
+      <a href="mailto:kasper.nissen@dash0.com" class="bg-stone-950 text-white rounded-full px-4 py-1.5 hover:bg-stone-800">email</a>
+    </div>
+  </div>
+  <div class="rotate-2 self-center md:self-end">
+    <Image
+      src={cartoon}
+      alt="Cartoon portrait of Kasper Nissen"
+      widths={[280, 420, 560]}
+      sizes="(min-width: 768px) 280px, 60vw"
+      class="rounded-2xl border-[3px] border-stone-950 bg-orange-100 max-w-[280px] md:max-w-none"
+    />
+  </div>
+</section>

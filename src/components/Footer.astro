@@ -1,0 +1,14 @@
+---
+const buildTime = new Date().toISOString();
+---
+<footer class="max-w-5xl mx-auto px-6 py-10 text-xs text-stone-500 border-t border-stone-200 mt-20 flex flex-wrap gap-3 justify-between">
+  <div>© {new Date().getUTCFullYear()} Kasper Nissen.</div>
+  <div class="flex gap-3">
+    <a href="https://www.linkedin.com/in/kaspernissen/" class="hover:text-stone-800">linkedin</a>
+    <a href="https://bsky.app/profile/kaspernissen.xyz" class="hover:text-stone-800">bluesky</a>
+    <a href="https://x.com/phennex" class="hover:text-stone-800">x</a>
+    <a href="https://github.com/kaspernissen" class="hover:text-stone-800">github</a>
+    <a href="mailto:kasper.nissen@dash0.com" class="hover:text-stone-800">email</a>
+  </div>
+  <div title={buildTime}>last built: {buildTime.slice(0, 10)}</div>
+</footer>
