@@ -1,0 +1,27 @@
+# Brainstorming companion artifacts
+.superpowers/
+
+# OS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+build/
+.turbo/
+.cache/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
