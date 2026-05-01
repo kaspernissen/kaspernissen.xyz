@@ -1,0 +1,35 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+
+const { entry } = Astro.props as { entry: CollectionEntry<'speakers'> };
+const d = entry.data;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+  '../assets/speakers/*.{jpg,jpeg,png,webp}',
+  { eager: true },
+);
+const filename = d.src.replace(/^\.\//, '').replace(/^src\/assets\/speakers\//, '');
+const key = Object.keys(images).find((k) => k.endsWith('/' + filename));
+const img = key ? images[key].default : null;
+---
+<figure class="bg-white rounded-xl border-2 border-stone-950 shadow-[3px_3px_0_0_#1c1917] overflow-hidden">
+  {img ? (
+    <Image
+      src={img}
+      alt={d.caption}
+      widths={[400, 800]}
+      sizes="(min-width: 768px) 50vw, 100vw"
+      class="w-full aspect-[4/3] object-cover"
+    />
+  ) : (
+    <div class="w-full aspect-[4/3] bg-orange-100 flex items-center justify-center text-stone-500 text-xs">
+      photo missing
+    </div>
+  )}
+  <figcaption class="p-3 text-xs text-stone-700 flex flex-col gap-2">
+    <div class="font-semibold text-stone-950">{d.caption}</div>
+    <div>Photo: {d.photographer} · {d.license}</div>
+    <a href={d.download} class="self-start bg-stone-950 text-white rounded-full px-3 py-1 font-semibold">Download original</a>
+  </figcaption>
+</figure>

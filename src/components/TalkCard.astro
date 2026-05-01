@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { talkSlug } from '../lib/slug';
+const { entry } = Astro.props as { entry: CollectionEntry<'talks'> };
+const slug = entry.data.slug ?? talkSlug(entry.data.title, entry.data.date);
+const thumb = entry.data.youtube_id
+  ? `https://i.ytimg.com/vi/${entry.data.youtube_id}/hqdefault.jpg`
+  : null;
+const dateStr = entry.data.date.toISOString().slice(0, 10);
+---
+<a
+  href={`/talks/${slug}`}
+  class="block bg-white rounded-xl border-2 border-stone-950 shadow-[3px_3px_0_0_#1c1917] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#1c1917] transition group overflow-hidden"
+>
+  {thumb ? (
+    <img src={thumb} alt="" loading="lazy" class="w-full aspect-video object-cover" />
+  ) : (
+    <div class="w-full aspect-video bg-orange-100 flex items-center justify-center text-stone-500 text-xs">
+      no recording
+    </div>
+  )}
+  <div class="p-4">
+    <div class="text-[11px] uppercase tracking-wider text-stone-500">{entry.data.event} · {dateStr}</div>
+    <div class="font-bold mt-1 leading-snug">{entry.data.title}</div>
+  </div>
+</a>

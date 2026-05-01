@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+const { entry } = Astro.props as { entry: CollectionEntry<'conferences'> };
+const d = entry.data;
+const dateStr = d.end_date
+  ? `${d.date.toISOString().slice(0, 10)} → ${d.end_date.toISOString().slice(0, 10)}`
+  : d.date.toISOString().slice(0, 10);
+const roleColors: Record<string, string> = {
+  speaker: 'bg-orange-400 text-white',
+  'co-chair': 'bg-amber-300 text-stone-950',
+  organiser: 'bg-emerald-200 text-stone-950',
+  mc: 'bg-sky-200 text-stone-950',
+  attendee: 'bg-stone-200 text-stone-700',
+};
+---
+<a
+  href={d.url}
+  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-200 hover:bg-stone-50 -mx-2 px-2 rounded"
+>
+  <span class={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${roleColors[d.role]}`}>{d.role}</span>
+  <span class="font-semibold text-stone-950">{d.name}</span>
+  {d.session_title && <span class="text-stone-700 italic">— {d.session_title}</span>}
+  <span class="text-stone-500 text-sm ml-auto">{dateStr} · {d.location}</span>
+</a>
