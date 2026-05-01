@@ -6,11 +6,6 @@ const KEY = process.env.YOUTUBE_API_KEY;
 const OUT_DIR = 'src/content/talks/youtube';
 const MANUAL_DIR = 'src/content/talks';
 
-if (!KEY) {
-  console.warn('[youtube] YOUTUBE_API_KEY not set — skipping (existing files preserved).');
-  process.exit(0);
-}
-
 function slugify(s) {
   return s
     .normalize('NFKD')
@@ -28,16 +23,30 @@ function splitTitle(title) {
   return { title, event: 'Unknown event' };
 }
 
+// Recursively scan all talks/*.yaml (except the youtube/ subfolder we own) for
+// already-claimed video IDs — manual entries AND other auto-sources (github/).
 async function readManualClaimedIds() {
   const claimed = new Set();
-  try {
-    for (const f of await fs.readdir(MANUAL_DIR)) {
-      if (!f.endsWith('.yaml')) continue;
-      const txt = await fs.readFile(path.join(MANUAL_DIR, f), 'utf8');
-      const m = txt.match(/^youtube_id:\s*([A-Za-z0-9_-]+)\s*$/m);
-      if (m && m[1] !== 'null') claimed.add(m[1]);
+  async function walk(dir) {
+    let entries;
+    try {
+      entries = await fs.readdir(dir, { withFileTypes: true });
+    } catch {
+      return;
     }
-  } catch {}
+    for (const e of entries) {
+      const full = path.join(dir, e.name);
+      if (e.isDirectory()) {
+        if (full === OUT_DIR) continue;
+        await walk(full);
+      } else if (e.name.endsWith('.yaml')) {
+        const txt = await fs.readFile(full, 'utf8');
+        const m = txt.match(/^youtube_id:\s*([A-Za-z0-9_-]+)\s*$/m);
+        if (m && m[1] !== 'null') claimed.add(m[1]);
+      }
+    }
+  }
+  await walk(MANUAL_DIR);
   return claimed;
 }
 
@@ -53,16 +62,50 @@ async function fetchPage(token) {
   return r.json();
 }
 
+// RSS fallback (15 most recent items, no auth required).
+async function fetchRss() {
+  const r = await fetch(`https://www.youtube.com/feeds/videos.xml?playlist_id=${PLAYLIST_ID}`);
+  if (!r.ok) throw new Error(`RSS ${r.status}`);
+  const xml = await r.text();
+  const entries = [];
+  for (const block of xml.split('<entry>').slice(1)) {
+    const get = (re) => block.match(re)?.[1];
+    const videoId = get(/<yt:videoId>([^<]+)<\/yt:videoId>/);
+    const title = get(/<title>([^<]+)<\/title>/);
+    const published = get(/<published>([^<]+)<\/published>/);
+    const author = get(/<author>\s*<name>([^<]+)<\/name>/);
+    const description = get(/<media:description>([\s\S]*?)<\/media:description>/);
+    if (!videoId || !title) continue;
+    entries.push({
+      contentDetails: { videoId },
+      snippet: {
+        title: title.replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"'),
+        publishedAt: published,
+        channelTitle: author,
+        description,
+      },
+    });
+  }
+  return entries;
+}
+
 let items = [];
+let source = 'api';
 try {
-  let token;
-  do {
-    const page = await fetchPage(token);
-    items = items.concat(page.items ?? []);
-    token = page.nextPageToken;
-  } while (token);
+  if (KEY) {
+    let token;
+    do {
+      const page = await fetchPage(token);
+      items = items.concat(page.items ?? []);
+      token = page.nextPageToken;
+    } while (token);
+  } else {
+    source = 'rss';
+    items = await fetchRss();
+    console.log(`[youtube] YOUTUBE_API_KEY not set — using RSS fallback (15-item cap)`);
+  }
 } catch (e) {
-  console.warn(`[youtube] fetch failed: ${e.message} — keeping existing files`);
+  console.warn(`[youtube] fetch failed (${source}): ${e.message} — keeping existing files`);
   process.exit(0);
 }
 
@@ -84,7 +127,8 @@ for (const it of items) {
     skipped++;
     continue;
   }
-  const { title, event } = splitTitle(s.title ?? 'Untitled');
+  let { title, event } = splitTitle(s.title ?? 'Untitled');
+  if (event === 'Unknown event' && s.channelTitle) event = s.channelTitle;
   const date = new Date(s.publishedAt ?? Date.now()).toISOString().slice(0, 10);
   const slug = `${slugify(title)}-${date.slice(0, 7)}`;
   const lines = [

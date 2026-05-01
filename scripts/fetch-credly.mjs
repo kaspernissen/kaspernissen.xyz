@@ -58,7 +58,13 @@ for (const b of badges) {
     'Unknown';
   const issuedRaw = b.issued_at ?? b.issued_at_date ?? b.created_at;
   const issued = (issuedRaw ?? '').slice(0, 10);
-  const url = b.public_url ?? b.url ?? `https://www.credly.com/users/${USERNAME}`;
+  // Per-earned-badge verification URL (pattern: /badges/<earned-id>/public_url).
+  // Falls back to the badge-template page, then the user profile.
+  const url =
+    (b.id ? `https://www.credly.com/badges/${b.id}/public_url` : null) ??
+    b.public_url ??
+    tpl.url ??
+    `https://www.credly.com/users/${USERNAME}`;
   const imgUrl = tpl.image_url ?? tpl.image?.url ?? b.image_url;
   if (!name || !issued) continue;
 
