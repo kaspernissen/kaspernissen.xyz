@@ -29,10 +29,9 @@ pnpm-debug.log*
 # Fetcher caches — regenerated on every build, not worth versioning.
 #
 # NOTE: this must be `data/*`, not `data/`. Excluding the directory itself
-# stops git from ever descending into it, which silently makes the negations
-# below do nothing — which is exactly what happened to data/sessionize.json.
+# stops git from ever descending into it, which silently makes every negation
+# below do nothing.
 data/*
-!data/sessionize.json
 # The override and exclusion files that used to live here are gone. They were
 # a patch log replayed after each build because the fetchers wiped the content
 # directory; corrections now live in src/content/talks/*.yaml, which nothing
