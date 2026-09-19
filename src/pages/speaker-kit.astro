@@ -101,15 +101,13 @@ const topics = [
   </section>
 
   <section class="mt-12">
-    <h2 class="text-xl font-bold mb-3">Photos</h2>
-    <p class="text-stone-400 text-sm mb-4">
-      Click a photo to download the original. Credit the photographer and use under the listed license.
-    </p>
+    <h2 class="text-xl font-bold mb-1">Photos</h2>
+    <p class="text-stone-400 text-sm mb-4">Click any photo to download the original.</p>
     {photos.length === 0 ? (
       <p class="text-stone-500 text-sm">No photos uploaded yet.</p>
     ) : (
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {photos.map((p) => <PhotoCard entry={p} />)}
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {photos.map((p, i) => <PhotoCard entry={p} index={i} />)}
       </div>
     )}
   </section>

@@ -3,10 +3,33 @@ import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { photoUrl, photoDisplayUrl } from '../lib/photoHost';
 
-const { entry } = Astro.props as { entry: CollectionEntry<'speakers'> };
+const { entry, index = 0 } = Astro.props as {
+  entry: CollectionEntry<'speakers'>;
+  index?: number;
+};
 const d = entry.data;
+
+// The hero's accents, cycled so the grid reads as a set rather than a wall of
+// grey. The photograph supplies the colour inside the tile; this is only the
+// offset shadow it lifts onto.
+const ACCENTS = ['#22d3ee', '#ec4899', '#facc15', '#fb923c', '#7c3aed'];
+const accent = ACCENTS[index % ACCENTS.length];
+
+// Nearly every photo is "Unknown", which is not a credit worth printing.
+const credit = d.photographer && d.photographer !== 'Unknown' ? d.photographer : null;
 ---
-<figure class="bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] overflow-hidden">
+{/* The whole tile is the download. Caption, credit and licence are a
+    licensing obligation rather than chrome, so they surface on hover and on
+    keyboard focus instead of sitting under every photo. */}
+<a
+  href={photoUrl(d.download)}
+  style={`--accent: ${accent}`}
+  title={`${d.caption} — download the original`}
+  class="group relative block rounded-xl overflow-hidden bg-stone-900 transition
+         hover:-translate-y-1 hover:shadow-[5px_5px_0_0_var(--accent)]
+         focus-visible:outline-none focus-visible:-translate-y-1
+         focus-visible:shadow-[5px_5px_0_0_var(--accent)]"
+>
   {/* The display master is remote (see src/lib/photoHost.ts); inferSize lets
       Astro read its dimensions at build time and emit responsive WebP. */}
   <Image
@@ -15,15 +38,35 @@ const d = entry.data;
     inferSize
     widths={[400, 800]}
     sizes="(min-width: 768px) 50vw, 100vw"
-    class="w-full aspect-[4/3] object-cover"
+    class="w-full aspect-[4/3] object-cover transition duration-300 group-hover:scale-[1.04]"
   />
-  <figcaption class="p-3 text-xs text-stone-300 flex flex-col gap-2">
-    <div class="font-semibold text-stone-50">{d.caption}</div>
-    {/* Credit line only where there is a real credit to give — nearly every
-        photo is "Unknown / All rights reserved", which said nothing useful. */}
-    {d.photographer && d.photographer !== 'Unknown' && (
-      <div>Photo: {d.photographer}</div>
-    )}
-    <a href={photoUrl(d.download)} class="self-start bg-stone-50 text-stone-950 rounded-full px-3 py-1 font-semibold">Download original</a>
-  </figcaption>
-</figure>
+
+  <span
+    class="pointer-events-none absolute inset-0 bg-gradient-to-t from-stone-950 via-stone-950/50
+           to-transparent opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100"
+  ></span>
+
+  <span
+    class="pointer-events-none absolute inset-x-0 bottom-0 p-3 translate-y-1 opacity-0 transition
+           group-hover:translate-y-0 group-hover:opacity-100
+           group-focus-visible:translate-y-0 group-focus-visible:opacity-100"
+  >
+    <span class="block text-xs font-semibold leading-snug text-stone-50">{d.caption}</span>
+    <span class="mt-0.5 block text-[10px] text-stone-400">
+      {credit ? `Photo: ${credit} · ${d.license}` : d.license}
+    </span>
+  </span>
+
+  <span
+    class="pointer-events-none absolute top-2 right-2 flex items-center gap-1 rounded-full
+           bg-stone-950/80 px-2 py-1 text-[10px] font-semibold text-stone-100 opacity-0
+           transition group-hover:opacity-100 group-focus-visible:opacity-100"
+  >
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="7 10 12 15 17 10" />
+      <line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+    original
+  </span>
+</a>
