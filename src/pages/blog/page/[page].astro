@@ -1,0 +1,46 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from "../../../components/PageHeader.astro";
+import BlogListing from '../../../components/BlogListing.astro';
+import { published, tagCounts, PAGE_SIZE } from '../../../lib/blog';
+
+// Page 1 is /blog itself; this route covers 2..n so the first page keeps the
+// clean URL and does not exist at two addresses.
+export async function getStaticPaths() {
+  const all = published(await getCollection('blog'));
+  const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+  return Array.from({ length: Math.max(0, totalPages - 1) }, (_, i) => {
+    const page = i + 2;
+    return {
+      params: { page: String(page) },
+      props: {
+        posts: all.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+        allTags: tagCounts(all),
+        page,
+        totalPages,
+      },
+    };
+  });
+}
+
+const { posts, allTags, page, totalPages } = Astro.props;
+---
+<BaseLayout
+  title={`Blog — page ${page} — Kasper Nissen`}
+  description={`Page ${page} of posts on Kubernetes, observability, and platform engineering.`}
+  current="/blog"
+>
+  <PageHeader chip="Blog">
+    Page {page} of {totalPages}.
+    {' '}<a href="/blog" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">Back to the newest</a>.
+  </PageHeader>
+
+  <BlogListing
+    posts={posts}
+    allTags={allTags}
+    page={page}
+    totalPages={totalPages}
+    baseHref="/blog"
+  />
+</BaseLayout>

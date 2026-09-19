@@ -1,0 +1,181 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { blogImageUrl } from '../../lib/blogHost';
+import { published, blogSlug, readingMinutes, tagColour, tagSlug } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = published(await getCollection('blog'));
+  return posts.map((entry, i) => ({
+    params: { slug: blogSlug(entry) },
+    // Sorted newest-first, so the next entry is the older post.
+    props: { entry, newer: posts[i - 1] ?? null, older: posts[i + 1] ?? null },
+  }));
+}
+
+const { entry, newer, older } = Astro.props;
+const { title, date, summary, tags, hero, canonical, source } = entry.data;
+const { Content } = await render(entry);
+const mins = readingMinutes(entry.body ?? '');
+const site = Astro.site ?? new URL('https://kaspernissen.xyz');
+const url = new URL(`/blog/${blogSlug(entry)}`, site).href;
+// A purpose-built 1200x627 card rather than the post's hero: the imported
+// heroes are whatever shape Medium stored, and a share card cropped from one
+// lands somewhere unhelpful. See assets/ and the social-cover skill.
+const share = `/og/${blogSlug(entry)}.png`;
+const accent = tagColour(tags[0] ?? title);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: summary ?? undefined,
+  image: new URL(share, site).href,
+  datePublished: date.toISOString(),
+  dateModified: date.toISOString(),
+  keywords: tags.join(', '),
+  wordCount: (entry.body ?? '').split(/\s+/).filter(Boolean).length,
+  timeRequired: `PT${mins}M`,
+  inLanguage: 'en',
+  author: {
+    '@type': 'Person',
+    name: 'Kasper Nissen',
+    url: site.href,
+    jobTitle: 'Director of Developer Relations',
+    sameAs: [
+      'https://www.linkedin.com/in/kaspernissen/',
+      'https://github.com/kaspernissen',
+      'https://bsky.app/profile/kaspernissen.xyz',
+      'https://x.com/phennex',
+      'https://www.instagram.com/kasper.borg.nissen/',
+    ],
+  },
+  publisher: { '@type': 'Person', name: 'Kasper Nissen', url: site.href },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  // Points at the original when this is an import, so an assistant citing the
+  // piece can attribute it where it first ran.
+  ...(canonical ? { isBasedOn: canonical } : {}),
+};
+---
+<BaseLayout
+  title={`${title} — Kasper Nissen`}
+  description={summary ?? undefined}
+  current="/blog"
+  canonical={canonical}
+  image={share}
+  imageAlt={title}
+  type="article"
+  publishedTime={date}
+  tags={tags}
+  jsonLd={jsonLd}
+>
+  <article class="pt-6 pb-16 max-w-3xl">
+    <nav class="text-xs text-stone-500 mb-6" aria-label="Breadcrumb">
+      <a href="/blog" class="hover:text-stone-300">Blog</a>
+      <span class="text-orange-400 px-1">/</span>
+      <span class="text-stone-400">{title}</span>
+    </nav>
+
+    <div class="text-[11px] uppercase tracking-wider text-stone-500">
+      <time datetime={date.toISOString()}>{date.toISOString().slice(0, 10)}</time>
+      <span class="text-orange-400"> · </span>{mins} min read
+    </div>
+    <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.1] mt-2 text-stone-50">{title}</h1>
+    <div class={`mt-4 h-1 w-24 rounded-full ${accent.split(' ')[0]}`}></div>
+
+    {tags.length > 0 && (
+      <div class="mt-5 flex flex-wrap gap-1.5">
+        {tags.map((t) => (
+          <a
+            href={`/blog/tag/${tagSlug(t)}`}
+            class={`text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 ${tagColour(t)} hover:-translate-y-0.5 transition inline-block`}
+          >{t}</a>
+        ))}
+      </div>
+    )}
+
+    {hero && (
+      <img src={blogImageUrl(hero)} alt="" class="w-full rounded-xl mt-8 bg-stone-900" />
+    )}
+
+    {/* Markdown ships as bare HTML, so the whole body is styled from here
+        rather than by classes on elements that do not exist yet. */}
+    <div class="post mt-8 text-stone-300 leading-relaxed">
+      <Content />
+    </div>
+
+    {canonical && (
+      <p class="mt-14 rounded-xl border border-stone-800 bg-stone-900/60 px-5 py-4 text-sm text-stone-400">
+        <span class="text-orange-400 font-bold">↗</span>
+        {' '}{source === 'medium' ? 'Originally published on Medium' : 'Originally published'} —
+        <a href={canonical} rel="noopener" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-100">read it there</a>.
+      </p>
+    )}
+
+    <nav class="mt-10 grid gap-3 sm:grid-cols-2 border-t border-stone-800 pt-6">
+      {newer ? (
+        <a href={`/blog/${blogSlug(newer)}`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition">
+          <div class="text-[10px] uppercase tracking-wider text-stone-500">← Newer</div>
+          <div class="text-sm font-bold text-stone-300 group-hover:text-stone-50 mt-1">{newer.data.title}</div>
+        </a>
+      ) : <span></span>}
+      {older && (
+        <a href={`/blog/${blogSlug(older)}`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition sm:text-right">
+          <div class="text-[10px] uppercase tracking-wider text-stone-500">Older →</div>
+          <div class="text-sm font-bold text-stone-300 group-hover:text-stone-50 mt-1">{older.data.title}</div>
+        </a>
+      )}
+    </nav>
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .post > * + * { margin-top: 1.15rem; }
+  .post h2 {
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em;
+    color: #fafaf9; margin-top: 2.75rem; padding-left: 0.75rem;
+    border-left: 4px solid #fb923c;
+  }
+  .post h3 {
+    font-size: 1.15rem; font-weight: 700; color: #fafaf9; margin-top: 2rem;
+  }
+  .post a {
+    color: #fafaf9;
+    text-decoration: underline; text-decoration-color: #22d3ee;
+    text-decoration-thickness: 2px; text-underline-offset: 3px;
+  }
+  .post a:hover { text-decoration-color: #fb923c; }
+  .post strong { color: #fafaf9; }
+  .post ul, .post ol { padding-left: 1.4rem; }
+  .post ul { list-style: disc; }
+  .post ol { list-style: decimal; }
+  .post li + li { margin-top: 0.4rem; }
+  .post li::marker { color: #fb923c; }
+  .post img { border-radius: 0.6rem; background: #1c1917; }
+  .post figure { margin-top: 1.15rem; }
+  /* Captions are real figcaptions, not a styled italic line — an ordinary
+     italic paragraph in the prose must not come out looking like one. */
+  .post figcaption {
+    margin-top: 0.5rem; font-size: 0.8rem; color: #78716c; text-align: center;
+  }
+  .post blockquote {
+    border-left: 3px solid #ec4899; padding-left: 1rem; color: #d6d3d1;
+    font-style: italic;
+  }
+  .post hr {
+    border: none; height: 3px; margin: 2.75rem 0; border-radius: 999px;
+    background: linear-gradient(90deg, #fb923c, #ec4899, #22d3ee, #facc15);
+    opacity: 0.55;
+  }
+  .post code {
+    background: #1c1917; padding: 0.12em 0.35em; border-radius: 0.3rem;
+    font-size: 0.875em; color: #facc15;
+  }
+  /* Long shell lines are frequent here; scroll the block rather than the page. */
+  .post pre {
+    background: #1c1917; border: 1px solid #292524; border-left: 3px solid #22d3ee;
+    border-radius: 0.6rem; padding: 1rem; overflow-x: auto;
+    font-size: 0.82rem; line-height: 1.6;
+  }
+  .post pre code { background: none; padding: 0; font-size: inherit; color: inherit; }
+</style>

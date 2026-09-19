@@ -2,7 +2,42 @@
 import '../styles/global.css';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
-const { title, description, current } = Astro.props as { title: string; description?: string; current?: string };
+const {
+  title,
+  description,
+  current,
+  canonical,
+  image,
+  imageAlt,
+  type = 'website',
+  publishedTime,
+  tags = [],
+  noindex = false,
+  jsonLd,
+} = Astro.props as {
+  title: string;
+  description?: string;
+  current?: string;
+  /** Overrides the self-referencing canonical — imported posts point at where
+   *  they first ran, so this copy does not compete with the original. */
+  canonical?: string | null;
+  image?: string | null;
+  imageAlt?: string | null;
+  type?: 'website' | 'article' | 'profile';
+  publishedTime?: Date | null;
+  tags?: string[];
+  noindex?: boolean;
+  jsonLd?: unknown;
+};
+
+const SITE = Astro.site ?? new URL('https://kaspernissen.xyz');
+const url = new URL(Astro.url.pathname, SITE).href;
+// Every page states its own address. Without one, the same page reachable with
+// and without a trailing slash, or with tracking parameters on the end, is
+// three pages as far as a crawler is concerned.
+const canonicalUrl = canonical ?? url;
+const ogImage = image ? new URL(image, SITE).href : new URL('/og-default.png', SITE).href;
+const desc = description ?? 'Cloud native, observability, and platform engineering — talks, writing, and conferences from Kasper Nissen.';
 ---
 <!doctype html>
 <html lang="en">
@@ -10,7 +45,42 @@ const { title, description, current } = Astro.props as { title: string; descript
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="author" content="Kasper Nissen" />
+    <meta name="theme-color" content="#0c0a09" />
+
+    {/* Open Graph — what LinkedIn, Slack and Facebook read for a share card. */}
+    <meta property="og:site_name" content="Kasper Nissen" />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="627" />
+    <meta property="og:image:alt" content={imageAlt ?? title} />
+    <meta property="og:locale" content="en_US" />
+    {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+    {type === 'article' && <meta property="article:author" content="Kasper Nissen" />}
+    {tags.map((t) => <meta property="article:tag" content={t} />)}
+
+    {/* X/Twitter reads its own namespace and ignores og: for the card type. */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@phennex" />
+    <meta name="twitter:creator" content="@phennex" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={imageAlt ?? title} />
+
+    {/* Structured data. Assistants and search engines lift author, date and
+        section from this rather than guessing at the markup. */}
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+
+    <link rel="alternate" type="application/rss+xml" title="Kasper Nissen — Blog" href={new URL('/rss.xml', SITE).href} />
+    <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />

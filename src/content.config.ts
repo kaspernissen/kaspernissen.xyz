@@ -81,6 +81,27 @@ const writing = defineCollection({
   }),
 });
 
+// Posts written here, body and all — as opposed to `writing`, which is a list
+// of links to pieces published elsewhere. Markdown rather than YAML: the body
+// is the point, and it should be editable without escaping anything.
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    summary: z.string().nullable().default(null),
+    tags: z.array(z.string()).default([]),
+    // Bare file name under the blog image prefix; see src/lib/blogHost.ts.
+    hero: z.string().nullable().default(null),
+    // Set on backfilled posts to point search engines at the original, so
+    // importing them here does not compete with where they first ran.
+    canonical: z.string().url().nullable().default(null),
+    // Where it was imported from, or null for something written here first.
+    source: z.enum(['medium', 'devto']).nullable().default(null),
+    draft: z.boolean().default(false),
+  }),
+});
+
 const speakers = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/speakers' }),
   schema: z.object({
@@ -108,4 +129,4 @@ const badges = defineCollection({
   }),
 });
 
-export const collections = { talks, writing, speakers, badges };
+export const collections = { talks, writing, blog, speakers, badges };

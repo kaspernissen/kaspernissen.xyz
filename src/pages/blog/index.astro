@@ -1,0 +1,49 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from "../../components/PageHeader.astro";
+import BlogListing from '../../components/BlogListing.astro';
+import { published, tagCounts, PAGE_SIZE, blogSlug } from '../../lib/blog';
+
+const all = published(await getCollection('blog'));
+const posts = all.slice(0, PAGE_SIZE);
+const totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+const years = all.map((p) => p.data.date.getUTCFullYear());
+const site = Astro.site ?? new URL('https://kaspernissen.xyz');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Kasper Nissen — Blog',
+  description: 'Posts on Kubernetes, observability, and platform engineering.',
+  url: new URL('/blog', site).href,
+  inLanguage: 'en',
+  author: { '@type': 'Person', name: 'Kasper Nissen', url: site.href },
+  blogPost: all.map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    datePublished: p.data.date.toISOString(),
+    keywords: p.data.tags.join(', '),
+    url: new URL(`/blog/${blogSlug(p)}`, site).href,
+  })),
+};
+---
+<BaseLayout
+  title="Blog — Kasper Nissen"
+  description={`${all.length} posts on Kubernetes, observability, and platform engineering, written by Kasper Nissen between ${Math.min(...years)} and ${Math.max(...years)}.`}
+  current="/blog"
+  jsonLd={jsonLd}
+>
+  <PageHeader chip="Blog">
+    Pieces published on other people's sites are on
+    {' '}<a href="/writing" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the writing page</a>.
+  </PageHeader>
+
+  <BlogListing
+    posts={posts}
+    allTags={tagCounts(all)}
+    page={1}
+    totalPages={totalPages}
+    baseHref="/blog"
+  />
+</BaseLayout>

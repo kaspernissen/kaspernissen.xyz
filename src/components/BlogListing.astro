@@ -1,0 +1,66 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BlogRow from './BlogRow.astro';
+import { blogSlug, tagColour, tagSlug } from '../lib/blog';
+
+// Shared by /blog, /blog/page/N and /blog/tag/X so the three cannot drift.
+const { posts, allTags, activeTag = null, page, totalPages, baseHref } = Astro.props as {
+  posts: CollectionEntry<'blog'>[];
+  allTags: { tag: string; count: number }[];
+  activeTag?: string | null;
+  page: number;
+  totalPages: number;
+  /** Where page 2..n live for this listing. */
+  baseHref: string;
+};
+
+const pageHref = (n: number) => (n === 1 ? baseHref : `${baseHref.replace(/\/$/, '')}/page/${n}`);
+---
+{allTags.length > 0 && (
+  <nav class="mt-8 flex flex-wrap items-center gap-2" aria-label="Filter posts by tag">
+    <a
+      href="/blog"
+      class={`text-[11px] font-bold uppercase tracking-wider rounded-full px-3 py-1 transition ${
+        activeTag ? 'bg-stone-900 text-stone-400 hover:text-stone-100' : 'bg-stone-50 text-stone-950'
+      }`}
+    >All</a>
+    {allTags.map(({ tag, count }) => (
+      <a
+        href={`/blog/tag/${tagSlug(tag)}`}
+        class={`text-[11px] font-bold uppercase tracking-wider rounded-full px-3 py-1 transition hover:-translate-y-0.5 inline-block ${
+          activeTag === tag ? tagColour(tag) : 'bg-stone-900 text-stone-400 hover:text-stone-100'
+        }`}
+      >{tag}<span class="ml-1.5 opacity-60">{count}</span></a>
+    ))}
+  </nav>
+)}
+
+{posts.length === 0 ? (
+  <p class="text-stone-500 text-sm py-12">Nothing here yet.</p>
+) : (
+  <div class="mt-8 grid gap-4">
+    {posts.map((p) => <BlogRow entry={p} slug={blogSlug(p)} />)}
+  </div>
+)}
+
+{totalPages > 1 && (
+  <nav class="mt-12 flex items-center justify-between" aria-label="Pagination">
+    {page > 1 ? (
+      <a href={pageHref(page - 1)} class="text-sm text-stone-400 hover:text-stone-50">← Newer</a>
+    ) : <span></span>}
+    <div class="flex gap-1.5">
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
+        <a
+          href={pageHref(n)}
+          aria-current={n === page ? 'page' : undefined}
+          class={`w-8 h-8 inline-flex items-center justify-center rounded-lg text-sm font-bold transition ${
+            n === page ? 'bg-orange-400 text-stone-950' : 'bg-stone-900 text-stone-400 hover:text-stone-50'
+          }`}
+        >{n}</a>
+      ))}
+    </div>
+    {page < totalPages ? (
+      <a href={pageHref(page + 1)} class="text-sm text-stone-400 hover:text-stone-50">Older →</a>
+    ) : <span></span>}
+  </nav>
+)}

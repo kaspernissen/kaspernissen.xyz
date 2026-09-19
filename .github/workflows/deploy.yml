@@ -45,6 +45,7 @@ jobs:
           # so every "Download original" would 404 on the deployed site.
           PUBLIC_PHOTO_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos
           PUBLIC_BADGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/badges
+          PUBLIC_BLOG_IMAGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/blog
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

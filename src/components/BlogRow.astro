@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { blogImageUrl } from '../lib/blogHost';
+import { readingMinutes, tagColour, tagSlug } from '../lib/blog';
+import GeneratedThumb from './GeneratedThumb.astro';
+
+const { entry, slug } = Astro.props as { entry: CollectionEntry<'blog'>; slug: string };
+const { title, date, summary, tags, hero } = entry.data;
+const mins = readingMinutes(entry.body ?? '');
+---
+{/* The card is not itself a link. The title carries a stretched ::after that
+    covers the card, which makes the whole box clickable while leaving the tag
+    pills as real links inside it — an <a> cannot nest inside another <a>, and
+    hanging the tags below the card left them floating loose. */}
+<article
+  class="group relative rounded-xl bg-stone-900/60 border border-stone-800 p-4 sm:p-5
+         hover:-translate-y-0.5 hover:border-stone-700 hover:shadow-[5px_5px_0_0_#44403c] transition"
+>
+  <div class="flex gap-5">
+    {hero ? (
+      <img
+        src={blogImageUrl(hero)}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        class="hidden sm:block w-44 h-28 flex-none rounded-lg object-cover bg-stone-950"
+      />
+    ) : (
+      /* Same generated cover art a talk without a recording gets, seeded from
+         the title so a post keeps the same artwork on every listing. */
+      <GeneratedThumb
+        seed={title}
+        label={null}
+        class="hidden sm:block w-44 h-28 flex-none rounded-lg"
+      />
+    )}
+    <div class="min-w-0 flex-1">
+      <div class="text-[11px] uppercase tracking-wider text-stone-500">
+        <time datetime={date.toISOString()}>{date.toISOString().slice(0, 10)}</time>
+        <span class="text-orange-400"> · </span>{mins} min read
+      </div>
+      <h2 class="font-bold text-lg mt-1 leading-snug text-stone-100">
+        <a href={`/blog/${slug}`} class="after:absolute after:inset-0 group-hover:text-white">{title}</a>
+      </h2>
+      {summary && <p class="text-sm text-stone-400 mt-1.5 line-clamp-2">{summary}</p>}
+      {tags.length > 0 && (
+        <div class="relative z-10 mt-3 flex flex-wrap gap-1.5">
+          {tags.map((t) => (
+            <a
+              href={`/blog/tag/${tagSlug(t)}`}
+              class={`text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 ${tagColour(t)} hover:-translate-y-0.5 transition inline-block`}
+            >{t}</a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</article>

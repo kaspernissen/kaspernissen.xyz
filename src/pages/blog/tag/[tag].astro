@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHeader from "../../../components/PageHeader.astro";
+import BlogListing from '../../../components/BlogListing.astro';
+import { published, tagCounts, tagSlug, tagColour, blogSlug } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const all = published(await getCollection('blog'));
+  return tagCounts(all).map(({ tag }) => ({
+    params: { tag: tagSlug(tag) },
+    props: {
+      tag,
+      posts: all.filter((p) => p.data.tags.includes(tag)),
+      allTags: tagCounts(all),
+    },
+  }));
+}
+
+const { tag, posts, allTags } = Astro.props;
+const site = Astro.site ?? new URL('https://kaspernissen.xyz');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Posts tagged ${tag}`,
+  url: new URL(`/blog/tag/${tagSlug(tag)}`, site).href,
+  isPartOf: { '@type': 'Blog', name: 'Kasper Nissen — Blog', url: new URL('/blog', site).href },
+  about: { '@type': 'Thing', name: tag },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: posts.length,
+    itemListElement: posts.map((p, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: new URL(`/blog/${blogSlug(p)}`, site).href,
+      name: p.data.title,
+    })),
+  },
+};
+---
+<BaseLayout
+  title={`${tag} — Blog — Kasper Nissen`}
+  description={`${posts.length} post${posts.length === 1 ? '' : 's'} tagged ${tag}, by Kasper Nissen.`}
+  current="/blog"
+  jsonLd={jsonLd}
+>
+  <PageHeader chip={tag} chipClass={tagColour(tag)}>
+    {posts.length} post{posts.length === 1 ? '' : 's'} tagged <strong class="text-stone-200">{tag}</strong>.
+    {' '}<a href="/blog" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">All posts</a>.
+  </PageHeader>
+
+  {/* One page per tag: the archive is small enough that paging inside a tag
+      would only ever produce a single page. */}
+  <BlogListing
+    posts={posts}
+    allTags={allTags}
+    activeTag={tag}
+    page={1}
+    totalPages={1}
+    baseHref={`/blog/tag/${tagSlug(tag)}`}
+  />
+</BaseLayout>
