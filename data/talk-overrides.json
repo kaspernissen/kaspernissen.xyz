@@ -55,5 +55,18 @@
       "Amine Hilaly",
       "Shane Lawrence"
     ]
+  },
+  "Iti5glzYOG8": {
+    "_why": "README entry had event \"Unknown\". BackstageCon, a co-located event at KubeCon + CloudNativeCon NA 2023 in Chicago; co-panellists from the video description.",
+    "event": "BackstageCon",
+    "event_url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america-2023/",
+    "date": "2023-11-06",
+    "location": "Chicago, Illinois, United States",
+    "role": "panelist",
+    "co_speakers": [
+      "Poonam Garg",
+      "Guillermo Manzo",
+      "Alec Jacobs"
+    ]
   }
 }
