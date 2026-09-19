@@ -8,19 +8,77 @@ const links = [
   { href: '/speaker-kit', label: 'Speaker kit' },
   { href: '/badges', label: 'Badges' },
 ];
+
+const linkClass = (href: string) =>
+  `hover:text-stone-50 ${
+    current === href
+      ? 'text-stone-50 underline decoration-2 decoration-orange-400 underline-offset-4'
+      : ''
+  }`;
 ---
-<nav class="flex items-center justify-between max-w-5xl mx-auto px-6 py-5 text-sm">
-  <a href="/" class="font-extrabold tracking-tight text-lg">kasper.</a>
-  <ul class="hidden sm:flex gap-5 text-stone-300">
+{/* The links were `hidden sm:flex` with nothing behind them, so below 640px
+    the site had no navigation at all beyond the wordmark. */}
+<nav class="max-w-5xl mx-auto px-6 py-5 text-sm">
+  <div class="flex items-center justify-between">
+    <a href="/" class="font-extrabold tracking-tight text-lg">kasper.</a>
+
+    <ul class="hidden sm:flex gap-5 text-stone-300">
+      {links.map((l) => (
+        <li><a href={l.href} class={linkClass(l.href)}>{l.label}</a></li>
+      ))}
+    </ul>
+
+    {/* 44px square: the minimum comfortable touch target, and it stops the
+        icon sitting flush against the screen edge. */}
+    <button
+      type="button"
+      id="nav-toggle"
+      class="sm:hidden -mr-2 flex h-11 w-11 items-center justify-center rounded-lg text-stone-300 hover:text-stone-50"
+      aria-label="Menu"
+      aria-controls="nav-panel"
+      aria-expanded="false"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  {/* Rendered on every page and simply hidden, so the links are in the HTML
+      for a crawler whether or not the script runs. */}
+  <ul id="nav-panel" hidden class="sm:hidden mt-3 flex flex-col gap-1 border-t border-stone-800 pt-3 text-stone-300">
     {links.map((l) => (
-      <li>
-        <a
-          href={l.href}
-          class={`hover:text-stone-50 ${current === l.href ? 'text-stone-50 underline decoration-2 decoration-orange-400 underline-offset-4' : ''}`}
-        >
-          {l.label}
-        </a>
-      </li>
+      <li><a href={l.href} class={`block py-2 ${linkClass(l.href)}`}>{l.label}</a></li>
     ))}
   </ul>
 </nav>
+
+<script>
+  const toggle = document.getElementById('nav-toggle');
+  const panel = document.getElementById('nav-panel');
+
+  if (toggle && panel) {
+    const setOpen = (open: boolean) => {
+      panel.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+    };
+
+    toggle.addEventListener('click', () => setOpen(panel.hidden));
+
+    // Escape closes it, and so does resizing up into the desktop layout —
+    // otherwise the panel stays open, invisible behind `sm:hidden`, and the
+    // button reports itself as expanded to a screen reader.
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !panel.hidden) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.matchMedia('(min-width: 640px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+</script>
