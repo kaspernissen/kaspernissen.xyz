@@ -1,15 +1,37 @@
-// Runs all five fetchers in parallel. Each fetcher is fault-tolerant:
+// Runs the fetchers, then the post-passes. Each fetcher is fault-tolerant:
 // failure logs a warning but does NOT fail the build.
 import { spawn } from 'node:child_process';
 
-const fetchers = [
-  ['youtube',         'scripts/fetch-youtube.mjs'],
+// Every fetcher here deletes and rewrites one directory under
+// src/content/talks/, and none of them reads another's output, so they are
+// safe to run together.
+const talkWriters = [
   ['sessionize',      'scripts/fetch-sessionize.mjs'],
-  ['credly',          'scripts/fetch-credly.mjs'],
   ['github-readme',   'scripts/fetch-github-readme.mjs'],
+  ['notist',          'scripts/fetch-notist.mjs'],
+];
+
+// Nothing to do with talks; safe to run alongside anything.
+const independent = [
+  ['credly',          'scripts/fetch-credly.mjs'],
   ['github-contrib',  'scripts/fetch-github-contributions.mjs'],
   ['dash0',           'scripts/fetch-dash0.mjs'],
-  ['notist',          'scripts/fetch-notist.mjs'],
+];
+
+// MUST run after talkWriters, never beside them. fetch-youtube scans the whole
+// of src/content/talks/ for video IDs some other entry already claims, so it
+// can skip writing a duplicate. Run in parallel with the fetchers that own
+// those directories, it reads a mixture of last build's files and this one's:
+// it saw a committed Sessionize engagement claiming q_Ffw2P_31Q, skipped the
+// video, and then fetch-sessionize deleted that engagement and rewrote it from
+// upstream without the ID. The recording existed nowhere, link-recordings had
+// nothing to fold in, and every override keyed on it logged "override unused".
+//
+// The failure was a race, so it did not reproduce: a second build in the same
+// working tree reads the directories the first one rewrote and comes out
+// right, which is why this was invisible locally and wrong on every deploy.
+const talkReaders = [
+  ['youtube',         'scripts/fetch-youtube.mjs'],
 ];
 
 function run(label, file) {
@@ -20,7 +42,12 @@ function run(label, file) {
   });
 }
 
-const results = await Promise.all(fetchers.map(([l, f]) => run(l, f)));
+const results = await Promise.all(
+  [...talkWriters, ...independent].map(([l, f]) => run(l, f)),
+);
+for (const [label, file] of talkReaders) {
+  results.push(await run(label, file));
+}
 
 // Post-passes run AFTER every fetcher, never in parallel with them: the same
 // talk can arrive from both the GitHub README and the YouTube playlist, so the
