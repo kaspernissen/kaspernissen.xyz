@@ -45,6 +45,11 @@ data/*
 # recordings' worth of conferences as bare event names with no video, no slides
 # and no session title, while the local build looked right.
 !data/youtube-cache.json
+# Same reason, different file: the contribution heatmap reads this at build
+# time. It used to be generated during the CI build, because the fetchers ran
+# there; the build no longer fetches anything, so an uncommitted copy means CI
+# renders "GitHub activity unavailable". The nightly refresh updates it.
+!data/github.json
 
 # Deck PDFs are mirrored from noti.st at ~8MB each and grow with every talk;
 # they are hosted rather than versioned. See src/lib/deckHost.ts.
