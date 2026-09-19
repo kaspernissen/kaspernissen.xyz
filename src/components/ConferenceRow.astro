@@ -1,10 +1,15 @@
 ---
-// One line in a schedule listing. Reads an engagement from the unified `talks`
+// One engagement in a schedule listing. Reads from the unified `talks`
 // collection — the same entry that, once delivered, carries the deck and the
 // recording.
+//
+// A card rather than a table row, matching BlogRow: twelve conference names
+// stacked as lines of text is a wall, and the event's own mark is the fastest
+// way to find one in the list.
 import type { CollectionEntry } from 'astro:content';
 import { talkSlug } from '../lib/slug';
 import { isDelivered } from '../lib/engagement';
+import EventLogo from './EventLogo.astro';
 
 const { entry } = Astro.props as { entry: CollectionEntry<'talks'> };
 const d = entry.data;
@@ -33,17 +38,27 @@ const href = delivered
 ---
 <a
   href={href}
-  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-800 hover:bg-stone-800 -mx-2 px-2 rounded"
+  class="group flex items-start gap-4 rounded-xl bg-stone-900/60 border border-stone-800 p-3 sm:p-4
+         hover:-translate-y-0.5 hover:border-stone-700 hover:shadow-[5px_5px_0_0_#44403c] transition"
 >
-  <span class={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${roleColors[d.role] ?? roleColors.speaker}`}>{d.role}</span>
-  <span class="font-semibold text-stone-50">{d.event}</span>
-  {d.title && <span class="text-stone-300 italic">— {d.title}</span>}
-  {d.co_speakers.length > 0 && (
-    <span class="text-stone-400 text-sm">with {d.co_speakers.join(', ')}</span>
-  )}
-  <span class="flex items-center gap-2 text-stone-500 text-sm ml-auto">
-    {d.youtube_id && <span class="text-stone-400" title="Recording available">▶</span>}
-    {d.deck_file && <span class="text-stone-400" title="Slides available">▤</span>}
-    {dateStr}{d.location ? ` · ${d.location}` : ''}
-  </span>
+  <EventLogo event={d.event} />
+  <div class="min-w-0 flex-1">
+    {/* Event name leads; the role sits out on the right so the left edge of
+        every card is the thing you scan for. */}
+    <div class="flex items-start gap-3">
+      <span class="font-semibold text-stone-50 group-hover:text-white">
+        {d.event}
+        {d.youtube_id && <span class="text-stone-500 ml-1.5" title="Recording available">▶</span>}
+        {d.deck_file && <span class="text-stone-500 ml-1.5" title="Slides available">▤</span>}
+      </span>
+      <span
+        class={`ml-auto shrink-0 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${roleColors[d.role] ?? roleColors.speaker}`}
+      >{d.role}</span>
+    </div>
+    {d.title && <div class="text-stone-300 italic text-sm mt-1 leading-snug">{d.title}</div>}
+    <div class="text-stone-500 text-xs mt-1.5">
+      {d.co_speakers.length > 0 && <span>with {d.co_speakers.join(', ')} · </span>}
+      {dateStr}{d.location ? ` · ${d.location}` : ''}
+    </div>
+  </div>
 </a>

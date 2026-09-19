@@ -39,14 +39,14 @@ const past = all
     {upcoming.length === 0 ? (
       <p class="text-stone-500 text-sm py-4">Nothing announced yet — check back soon.</p>
     ) : (
-      <div>{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
+      <div class="grid gap-3">{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
     )}
   </section>
 
   {past.length > 0 && (
     <section class="mt-12">
       <h2 class="text-xl font-bold mb-2">Been there</h2>
-      <div>{past.map((c) => <ConferenceRow entry={c} />)}</div>
+      <div class="grid gap-3">{past.map((c) => <ConferenceRow entry={c} />)}</div>
     </section>
   )}
 </BaseLayout>

@@ -91,7 +91,7 @@ const galleries = assignPhotos(talks, photos);
     ) : (
       <>
         <UpcomingMap entries={allUpcoming} past={allPast} />
-        <div class="mt-6">{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
+        <div class="mt-6 grid gap-3">{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
       </>
     )}
   </section>

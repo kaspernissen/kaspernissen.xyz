@@ -1,0 +1,48 @@
+---
+// The event's own mark, beside its name in a schedule listing.
+//
+// Logos are fetched by scripts/fetch-event-logos.mjs. Globbing the directory
+// rather than reading a field off the entry means an event with no mark is
+// known at build time and gets a monogram instead of a broken image.
+import { eventSlug, eventInitials } from '../lib/eventSlug.mjs';
+
+const { event } = Astro.props as { event: string };
+
+// Eager + ?url: these are already icon-sized, so they want a URL, not a trip
+// through the image pipeline (which cannot read .ico anyway).
+const logos = import.meta.glob('../assets/event-logos/*', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+}) as Record<string, string>;
+
+const slug = eventSlug(event);
+const src = Object.entries(logos).find(
+  ([p]) => p.split('/').pop()?.replace(/\.[^.]+$/, '') === slug,
+)?.[1];
+
+// A stable colour per event, so the monograms are a set rather than a muddle.
+const ACCENTS = [
+  'bg-cyan-400 text-stone-950',
+  'bg-pink-500 text-stone-50',
+  'bg-yellow-400 text-stone-950',
+  'bg-orange-400 text-stone-950',
+  'bg-violet-500 text-stone-50',
+];
+let hash = 0;
+for (const ch of slug) hash = (hash * 31 + ch.charCodeAt(0)) >>> 0;
+const accent = ACCENTS[hash % ACCENTS.length];
+---
+{src ? (
+  /* White plate: most conference marks are drawn for a light background and
+     disappear against the page otherwise. contain, because not every favicon
+     is truly square. */
+  <span class="shrink-0 w-12 h-12 rounded-lg bg-stone-50 p-1.5 grid place-items-center overflow-hidden">
+    <img src={src} alt="" aria-hidden="true" loading="lazy" decoding="async" class="max-w-full max-h-full object-contain" />
+  </span>
+) : (
+  <span
+    class={`shrink-0 w-12 h-12 rounded-lg grid place-items-center text-base font-extrabold tracking-tight ${accent}`}
+    aria-hidden="true"
+  >{eventInitials(event)}</span>
+)}

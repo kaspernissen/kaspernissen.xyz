@@ -13,6 +13,7 @@
     "test": "vitest run",
     "refresh": "node scripts/refresh.mjs",
     "decks:fetch": "node scripts/fetch-notist.mjs",
+    "logos:fetch": "node scripts/fetch-event-logos.mjs",
     "decks:sync": "DECKS_PREFIX=decks node scripts/sync-decks.mjs",
     "photos:import": "node scripts/import-photos.mjs",
     "photos:sync": "DECKS_SRC=public/speakers DECKS_PREFIX=photos node scripts/sync-decks.mjs",
