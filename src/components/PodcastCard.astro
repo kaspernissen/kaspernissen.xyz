@@ -8,7 +8,7 @@
 // no recording gets — most of these episodes are on podcast hosts with no
 // predictable image, and several are on domains that no longer resolve at all.
 import type { CollectionEntry } from 'astro:content';
-import TalkThumb from './TalkThumb.astro';
+import GeneratedThumb from './GeneratedThumb.astro';
 
 const { entry } = Astro.props as { entry: CollectionEntry<'writing'> };
 const d = entry.data;
@@ -41,7 +41,7 @@ const dateStr = d.date.toISOString().slice(0, 10);
   {cover ? (
     <img src={cover} alt="" loading="lazy" class="w-full aspect-video object-cover" />
   ) : (
-    <TalkThumb seed={d.title} label={d.kind} />
+    <GeneratedThumb seed={d.title} label={d.kind} />
   )}
   <div class="p-4">
     <div class="text-[11px] uppercase tracking-wider text-stone-500">

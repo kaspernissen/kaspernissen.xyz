@@ -40,7 +40,7 @@ export function paletteFor(seed: string): Palette {
   return PALETTES[hashString(seed) % PALETTES.length];
 }
 
-/** Which of the layout variants in TalkThumb.astro to draw. */
+/** Which of the layout variants in GeneratedThumb.astro to draw. */
 export const LAYOUT_COUNT = 4;
 
 export function layoutFor(seed: string): number {

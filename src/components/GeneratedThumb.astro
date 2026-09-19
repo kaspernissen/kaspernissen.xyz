@@ -1,19 +1,23 @@
 ---
-// Generated cover art for a talk with no video thumbnail. See src/lib/thumb.ts
-// for why this exists and how the seed works.
+// Generated cover art for anything with no image of its own — a talk without a
+// recording, a podcast, a blog post with no hero. See src/lib/thumb.ts for why
+// this exists and how the seed works.
 import { paletteFor, layoutFor } from '../lib/thumb';
 
 interface Props {
   seed: string;
-  label?: string;
+  /** Badge over the art. Empty or null draws no badge. */
+  label?: string | null;
+  /** Shape of the frame; defaults to a full-width 16:9 card cover. */
+  class?: string;
 }
-const { seed, label = 'no recording' } = Astro.props;
+const { seed, label = 'no recording', class: className = 'w-full aspect-video' } = Astro.props;
 
 const { bg, shapes } = paletteFor(seed);
 const layout = layoutFor(seed);
 const [a, b, c] = shapes;
 ---
-<div class="relative w-full aspect-video overflow-hidden" style={`background:${bg}`}>
+<div class={`relative overflow-hidden ${className}`} style={`background:${bg}`}>
   <svg viewBox="0 0 320 180" class="absolute inset-0 w-full h-full" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
     {layout === 0 && (
       <g>
@@ -59,7 +63,9 @@ const [a, b, c] = shapes;
     )}
   </svg>
 
-  <div class="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-stone-950/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-stone-200 backdrop-blur-sm">
-    {label}
-  </div>
+  {label && (
+    <div class="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-stone-950/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-stone-200 backdrop-blur-sm">
+      {label}
+    </div>
+  )}
 </div>

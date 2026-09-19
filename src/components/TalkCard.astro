@@ -4,7 +4,7 @@ import { Image } from 'astro:assets';
 import { talkSlug } from '../lib/slug';
 import { displayTitle } from '../lib/engagement';
 import { photoDisplayUrl } from '../lib/photoHost';
-import TalkThumb from './TalkThumb.astro';
+import GeneratedThumb from './GeneratedThumb.astro';
 
 // `photo` is optional: a caller that has not done the photo join just omits it
 // and the card behaves as it always did.
@@ -48,7 +48,7 @@ const missing = entry.data.deck_file ? 'slides only' : 'no recording';
       </span>
     </div>
   ) : (
-    <TalkThumb seed={displayTitle(entry.data)} label={missing} />
+    <GeneratedThumb seed={displayTitle(entry.data)} label={missing} />
   )}
   <div class="p-4">
     <div class="text-[11px] uppercase tracking-wider text-stone-500">{entry.data.event} · {dateStr}</div>

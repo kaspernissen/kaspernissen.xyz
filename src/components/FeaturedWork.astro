@@ -9,7 +9,7 @@
 // `object-contain`, not `object-cover` — a course promo is landscape where a
 // book cover is portrait, and cropping both to one box cuts the titles off.
 import type { CollectionEntry } from 'astro:content';
-import TalkThumb from './TalkThumb.astro';
+import GeneratedThumb from './GeneratedThumb.astro';
 
 const { entries } = Astro.props as { entries: CollectionEntry<'writing'>[] };
 ---
@@ -32,7 +32,7 @@ const { entries } = Astro.props as { entries: CollectionEntry<'writing'>[] };
             />
           ) : (
             <div class="rounded overflow-hidden">
-              <TalkThumb seed={w.data.title} label="" />
+              <GeneratedThumb seed={w.data.title} label="" />
             </div>
           )}
         </div>
