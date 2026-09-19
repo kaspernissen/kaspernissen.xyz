@@ -14,7 +14,6 @@
     "Overrides whose video id matches nothing are reported by the script, so a",
     "typo or a delisted video does not fail silently."
   ],
-
   "r1gpPpNhT_4": {
     "_why": "Scrape read the video title as the channel name, so title and event were swapped.",
     "title": "Breaking Free with Open Standards: OpenTelemetry and Perses for Observability",
@@ -23,5 +22,38 @@
     "date": "2025-05-27",
     "location": "Helsinki, Finland",
     "role": "keynote"
+  },
+  "XVEPKb0aCx8": {
+    "_why": "CNCF's channel publishes from every KubeCon, so no matcher can claim this one safely. Confirmed by Kasper as KubeCon EU 2026.",
+    "engagement": "KubeCon + CloudNativeCon Europe 2026",
+    "title": "Taming Complexity: Building Observable Workflows With Dapr and OpenTelemetry",
+    "co_speakers": [
+      "Mauricio Salatino"
+    ]
+  },
+  "Nlx8jSfe8UQ": {
+    "_why": "Same as above. Given at Observability Day, the CNCF-hosted co-located event at KubeCon EU 2026, which is also what the photos from those days belong to.",
+    "engagement": "CNCF-Hosted Co-located Events Europe 2026",
+    "title": "Observability at the Edge: State of OpenTelemetry in Kubernetes Ingress Controllers",
+    "event": "Observability Day"
+  },
+  "tSBfDzStoYE": {
+    "_why": "CNCF's channel can't identify an event, so this keynote sat apart from the KubeCon EU 2025 engagement it belongs to. Confirmed by Kasper.",
+    "engagement": "KubeCon + CloudNativeCon Europe 2025",
+    "title": "Keynote: The Observability Platform Engineering Advantage: From Zero-Code to Monitoring as Code",
+    "role": "keynote"
+  },
+  "QhTlZs4m59w": {
+    "_why": "Also KubeCon EU 2025, but the engagement can only hold one recording, so this panel keeps its own entry and just takes the event's name, place and days. Date is the conference's first day, not the session's: Kasper has not given the exact day.",
+    "event": "KubeCon + CloudNativeCon Europe 2025",
+    "event_url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/",
+    "date": "2025-04-01",
+    "location": "London, United Kingdom",
+    "co_speakers": [
+      "Rajas Kakodkar",
+      "Nikhita Raghunath",
+      "Amine Hilaly",
+      "Shane Lawrence"
+    ]
   }
 }

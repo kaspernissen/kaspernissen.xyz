@@ -61,23 +61,98 @@ const overrides = Object.fromEntries(
   Object.entries(raw).filter(([k]) => !k.startsWith('_')),
 );
 
+// Every entry, not just the ones with a video: `engagement` below needs to find
+// the engagement to absorb a recording into, and an engagement is precisely an
+// entry that has no recording yet.
+const entries = [];
 const byVideo = new Map();
 for (const file of await walk(ROOT)) {
   const text = await fs.readFile(file, 'utf8');
+  const entry = { file, text };
+  entries.push(entry);
   const id = readField(text, 'youtube_id');
-  if (id) byVideo.set(id, { file, text });
+  if (id) byVideo.set(id, entry);
+}
+
+// The automatic matchers claim a recording from its description or its channel
+// name. Neither works for a video published by an umbrella channel like CNCF,
+// which puts out talks from hundreds of events and links only to youtube.com —
+// so those recordings are correctly left alone and sit as their own entry.
+// `engagement` is the manual answer: name the event and the recording is folded
+// into it, the same way link-recordings would have.
+const eventKey = (s) => (s ?? '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
+/**
+ * Move a recording's video, abstract and playlist position onto the engagement
+ * named by `eventName`, then delete the recording's own file.
+ *
+ * Refuses on anything ambiguous — no match, several matches, or a target that
+ * already has a recording — because a wrong absorb deletes a real entry.
+ */
+async function absorb(videoId, eventName, source, entries) {
+  const wanted = eventKey(eventName);
+  const targets = entries.filter(
+    (e) => e.file !== source.file && eventKey(readField(e.text, 'event')) === wanted,
+  );
+  if (targets.length !== 1) {
+    console.warn(
+      `[talk-overrides] ${videoId}: ${targets.length} engagements named ${JSON.stringify(eventName)} — not absorbed`,
+    );
+    return null;
+  }
+  const target = targets[0];
+  const occupied = readField(target.text, 'youtube_id');
+  if (occupied && occupied !== videoId) {
+    console.warn(
+      `[talk-overrides] ${videoId}: ${path.basename(target.file)} already has recording ${occupied} — not absorbed`,
+    );
+    return null;
+  }
+
+  let text = target.text;
+  text = upsert(text, 'youtube_id', videoId);
+  for (const key of ['abstract', 'playlist_position']) {
+    const value = readField(source.text, key);
+    if (value !== null) text = upsert(text, key, value);
+  }
+  // The engagement usually has no session title — that is why it needed one.
+  if (!readField(text, 'title')) {
+    const title = readField(source.text, 'title');
+    if (title) text = upsert(text, 'title', title);
+  }
+
+  await fs.writeFile(target.file, text);
+  await fs.unlink(source.file);
+  console.log(
+    `[talk-overrides] ${videoId} absorbed into ${path.basename(target.file)} ` +
+      `(was ${path.basename(source.file)})`,
+  );
+  return { file: target.file, text };
 }
 
 let applied = 0;
 const missing = [];
 
 for (const [videoId, fields] of Object.entries(overrides)) {
-  const target = byVideo.get(videoId);
+  let target = byVideo.get(videoId);
   if (!target) { missing.push(videoId); continue; }
+
+  if (fields.engagement) {
+    const moved = await absorb(videoId, fields.engagement, target, entries);
+    if (moved) {
+      // Everything else in this override applies to the merged entry; the
+      // recording's own file is gone.
+      const gone = entries.indexOf(target);
+      if (gone !== -1) entries.splice(gone, 1);
+      Object.assign(entries.find((e) => e.file === moved.file) ?? {}, moved);
+      byVideo.set(videoId, moved);
+      target = moved;
+    }
+  }
 
   let text = target.text;
   for (const [key, value] of Object.entries(fields)) {
-    if (key.startsWith('_')) continue;
+    if (key.startsWith('_') || key === 'engagement') continue;
     if (Array.isArray(value)) {
       // Rewrite the whole block: drop the old key and its indented items.
       text = text.replace(new RegExp(`^${key}:(?:.*)$(?:\\n[ \\t]+-.*$)*\\n?`, 'm'), '');
@@ -90,7 +165,7 @@ for (const [videoId, fields] of Object.entries(overrides)) {
   }
   await fs.writeFile(target.file, text);
   applied++;
-  console.log(`[talk-overrides] ${videoId} → ${path.basename(target.file)} (${Object.keys(fields).filter((k) => !k.startsWith('_')).join(', ')})`);
+  console.log(`[talk-overrides] ${videoId} → ${path.basename(target.file)} (${Object.keys(fields).filter((k) => !k.startsWith('_') && k !== 'engagement').join(', ')})`);
 }
 
 // Report rather than fail: a video can legitimately disappear from the playlist,

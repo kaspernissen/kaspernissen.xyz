@@ -118,13 +118,21 @@ export function scoreRecordingPair(recording, engagement) {
   if (!Number.isFinite(start) || !Number.isFinite(uploaded)) return null;
   const end = Number.isFinite(toTime(engagement.end_date)) ? toTime(engagement.end_date) : start;
 
-  // Direction of time: the upload follows the delivery. A day of slack covers
-  // timezone skew and Sessionize's month-end date guesses.
+  // Direction of time: the recording cannot predate the event. Anchoring the
+  // lower bound to the FIRST day rather than the last matters once a pass has
+  // already corrected a recording's date to the day the talk was given — a
+  // ContainerDays talk given on 9 September at a conference running 9-11 is two
+  // days "before the end" and was rejected as impossible, leaving the
+  // conference and its own recording as two entries. A day of slack either side
+  // covers timezone skew and Sessionize's month-end date guesses.
+  if (Math.round((uploaded - start) / DAY) < -1) return null;
   const lagDays = Math.round((uploaded - end) / DAY);
-  if (lagDays < -1 || lagDays > MAX_RECORDING_LAG_DAYS) return null;
+  if (lagDays > MAX_RECORDING_LAG_DAYS) return null;
 
   return {
-    lagDays,
+    // Within the event's own days the lag is zero, not negative: a talk and its
+    // recording on the same days are as close as a pair can be.
+    lagDays: Math.max(lagDays, 0),
     domain: byDomain ? target : null,
     matchedBy: byDomain ? 'domain' : 'event name',
     // Closeness in time decides; a domain match breaks ties in its favour.

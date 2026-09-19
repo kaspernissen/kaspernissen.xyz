@@ -46,14 +46,23 @@ async function walk(dir, acc = []) {
   return acc;
 }
 
-function readTitle(text) {
-  const m = text.match(/^title:\s*(.*)$/m);
+function readField(text, key) {
+  const m = text.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'));
   if (!m) return null;
   const raw = m[1].trim();
+  if (raw === '' || raw === 'null') return null;
   if (raw.startsWith('"')) {
     try { return JSON.parse(raw); } catch { return raw.replace(/^"|"$/g, ''); }
   }
   return raw;
+}
+
+// An engagement scraped from Sessionize has no session title — the site shows
+// its event name instead (see displayTitle in src/lib/engagement.ts). Excluding
+// one by the name you can actually see means matching that fallback too;
+// otherwise "Devopsdays Aarhus 2025" is unexcludable.
+function readNames(text) {
+  return [readField(text, 'title'), readField(text, 'event')].filter(Boolean);
 }
 
 const titles = await loadExclusions();
@@ -67,14 +76,13 @@ const hits = new Set();
 let removed = 0;
 
 for (const file of await walk(ROOT)) {
-  const title = readTitle(await fs.readFile(file, 'utf8'));
-  if (!title) continue;
-  const key = normalise(title);
-  if (!wanted.has(key)) continue;
+  const names = readNames(await fs.readFile(file, 'utf8'));
+  const name = names.find((n) => wanted.has(normalise(n)));
+  if (!name) continue;
   await fs.unlink(file);
-  hits.add(key);
+  hits.add(normalise(name));
   removed++;
-  console.log(`[prune-talks] removed ${JSON.stringify(title)} (${file})`);
+  console.log(`[prune-talks] removed ${JSON.stringify(name)} (${file})`);
 }
 
 for (const [key, original] of wanted) {

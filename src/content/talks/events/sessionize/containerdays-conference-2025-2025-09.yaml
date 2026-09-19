@@ -1,8 +1,12 @@
-title: null
+title: "Breaking Free with Open Standards: OpenTelemetry and Perses for Observability"
 event: "ContainerDays Conference 2025"
 event_url: "https://www.containerdays.io/"
-date: 2025-09-30
+date: 2025-09-09
+end_date: 2025-09-11
 location: "Hamburg, Germany"
 role: "speaker"
 tags: []
 featured: false
+youtube_id: ngchdFcxmxo
+abstract: "Observability is the backbone of modern cloud-native applications, but many organizations find themselves locked into proprietary tools with rising costs, rigid ecosystems, and limited flexibility. In this talk, we’ll explore how open observability standards like OpenTelemetry for instrumentation and Perses for monitoring-as-code are transforming the landscape by enabling vendor-neutral, scalable, and future-proof observability stacks.\n\nWe’ll start with an introduction to OpenTelemetry, covering how to get started, instrument applications, and provide developer-friendly abstractions for seamless auto-instrumentation. From there, we’ll dive into Perses, a CNCF Sandbox project that brings open, declarative, and portable dashboards to observability. By building on these open standards, organizations gain the freedom to mix and match storage, visualization, and analytics tools without being tied to a single vendor.\n"
+playlist_position: 14

@@ -139,5 +139,11 @@
     "end_date": "2026-02-12",
     "location": "London, United Kingdom",
     "url": "https://www.containerdays.io/containerdays-london-2026/"
+  },
+  "containerdays-conference-2025": {
+    "date": "2025-09-09",
+    "end_date": "2025-09-11",
+    "location": "Hamburg, Germany",
+    "url": "https://www.containerdays.io/"
   }
 }

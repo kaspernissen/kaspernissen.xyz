@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PhotoGallery from '../../components/PhotoGallery.astro';
 import { talkSlug } from '../../lib/slug';
+import { assignPhotos } from '../../lib/photoJoin';
 import { deckUrl } from '../../lib/deckHost';
 import { displayTitle, isDelivered } from '../../lib/engagement';
 
@@ -10,19 +11,13 @@ export async function getStaticPaths() {
   const talks = await getCollection('talks');
   const photos = await getCollection('speakers');
 
+  // A photo names its event where it can and falls back to its date where it
+  // can't — see src/lib/photoJoin.ts for why the date alone isn't enough.
+  const galleries = assignPhotos(talks, photos);
+
   return talks.map((entry) => {
     const slug = entry.data.slug ?? talkSlug(displayTitle(entry.data), entry.data.date);
-
-    // Photos join the engagement on date: anything shot between the first and
-    // last day of the event belongs to it. Photos with no date can't be placed
-    // and are left in the general gallery.
-    const from = +entry.data.date;
-    const to = +(entry.data.end_date ?? entry.data.date) + 86_400_000;
-    const gallery = photos.filter(
-      (p) => p.data.date && +p.data.date >= from && +p.data.date < to,
-    );
-
-    return { params: { slug }, props: { entry, gallery } };
+    return { params: { slug }, props: { entry, gallery: galleries.get(entry) ?? [] } };
   });
 }
 
