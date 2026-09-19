@@ -56,4 +56,9 @@ public/speakers/*
 # prefix and fetched by Astro at build time; see src/lib/photoHost.ts.
 src/assets/speakers/*
 !src/assets/speakers/.gitkeep
+
+# Credly badge art. Mirrored to the bucket's badges/ prefix; see
+# src/lib/badgeHost.ts.
+src/assets/badges/*
+!src/assets/badges/.gitkeep
 photos-fullres/

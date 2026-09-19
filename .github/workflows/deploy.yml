@@ -37,6 +37,7 @@ jobs:
           # Without this the build falls back to /speakers, which is gitignored,
           # so every "Download original" would 404 on the deployed site.
           PUBLIC_PHOTO_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos
+          PUBLIC_BADGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/badges
           # METADATA_ONLY keeps the build from pulling ~87MB it would never serve.
           DECKS_METADATA_ONLY: '1'
       - uses: actions/configure-pages@v5
