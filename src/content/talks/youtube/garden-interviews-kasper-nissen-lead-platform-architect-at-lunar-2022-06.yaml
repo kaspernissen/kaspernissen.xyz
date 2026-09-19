@@ -4,5 +4,5 @@ date: 2022-06-08
 youtube_id: fVEazWYPP_s
 tags: []
 featured: false
-playlist_position: 42
+playlist_position: 43
 abstract: "Lunar is a neobank leading the charge in the Nordics to create a new kind of banking platform offering checking accounts, stock and cryptocurrency investments. We discuss Lunar's \"accidental\" transition into multi-cloud, how they solve for those architectural challenges, adventures in service mesh multi-clusters with Linkerd, engineering production cluster failovers, and Lunar's own Shuttle tool for handling shared build and deploy tools between projects.\n\nhttps://github.com/lunarway/shuttle"

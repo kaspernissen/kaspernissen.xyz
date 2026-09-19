@@ -9,4 +9,4 @@ tags: []
 featured: false
 youtube_id: B29H8cx6UyM
 abstract: "Many organizations still treat observability as a tooling decision: select a vendor, deploy agents, and expect insight to follow. Yet teams continue to struggle with fragmented signals, rising complexity, and slow incident response. The real issue is rarely the tool itself - it’s the absence of a shared foundation and a coherent product experience.\n\nThis talk reframes observability as an internal platform product, designed with clear users, sane defaults, and long-term evolution in mind. Drawing parallels to Kubernetes and platform engineering, we’ll explore why powerful primitives are not enough - and why standardization, correlation, and paved paths matter more than features.\n"
-playlist_position: 4
+playlist_position: 5

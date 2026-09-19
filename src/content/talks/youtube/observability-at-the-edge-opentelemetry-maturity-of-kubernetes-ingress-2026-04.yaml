@@ -4,5 +4,5 @@ date: 2026-04-10
 youtube_id: -SXg48o_SJw
 tags: []
 featured: false
-playlist_position: 10
+playlist_position: 11
 abstract: "Ingress controllers are the front door to Kubernetes, yet observability at the edge is often overlooked. As ingress-nginx approaches deprecation, platform teams must reassess ingress choices and their OpenTelemetry support. This session introduces a draft OpenTelemetry maturity framework and applies it to popular ingress controllers to reveal strengths, gaps, and trade-offs.\n\nThis webinar will explore:\n"

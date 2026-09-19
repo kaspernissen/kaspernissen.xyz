@@ -1,0 +1,7 @@
+kind: podcast
+title: "#039 - Banking on Kubernetes: From Fintech Frontier to Regulatory Reality"
+publication: "Kubernetes for Humans Podcast (Komodor)"
+date: 2025-03-27
+url: "https://www.youtube.com/watch?v=t7PmU49OdIE"
+duration_min: 28
+summary: "Building platforms on Kubernetes at Lunar, a Nordic challenger bank: running cutting-edge cloud native technology inside a regulated industry, Lunar's approach to leaning on open source, the CNCF ambassador and KubeCon co-chair work alongside it, and the move to Dash0 and OpenTelemetry. Hosted by Itiel Shwartz."
