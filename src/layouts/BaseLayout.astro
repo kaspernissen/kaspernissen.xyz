@@ -14,6 +14,24 @@ const { title, description, current } = Astro.props as { title: string; descript
     <link rel="preconnect" href="https://rsms.me/" />
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {/* Google Analytics (GA4).
+        `is:inline` on both tags is required: without it Astro treats a script
+        as a module to bundle, which rewrites the loader's URL and strips the
+        globals gtag.js expects to find already defined.
+        Production only — otherwise every `npm run dev` page view lands in the
+        same property as real traffic. */}
+    {import.meta.env.PROD && (
+      <>
+        <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-84E4LK1S0E"></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-84E4LK1S0E');
+        </script>
+      </>
+    )}
   </head>
   <body class="min-h-screen">
     <NavBar current={current} />
