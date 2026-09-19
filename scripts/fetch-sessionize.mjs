@@ -177,6 +177,10 @@ for (const m of eventsHtml.matchAll(blockRe)) {
     // Sessionize publishes no abstract, so it comes from the override when the
     // talk page should carry a description.
     ov.abstract ? `abstract: ${JSON.stringify(ov.abstract)}` : null,
+    // A deck that never went to Notist — link-decks can only pair what the
+    // Notist fetcher wrote, so a hand-added PDF is declared here instead.
+    ov.deck_file ? `deck_file: ${JSON.stringify(ov.deck_file)}` : null,
+    ov.deck_size_mb ? `deck_size_mb: ${ov.deck_size_mb}` : null,
     ov.co_speakers?.length
       ? `co_speakers:\n${ov.co_speakers.map((s) => `  - ${JSON.stringify(s)}`).join('\n')}`
       : null,

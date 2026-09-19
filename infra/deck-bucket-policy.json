@@ -1,13 +1,16 @@
 {
   "Version": "2012-10-17",
-  "Id": "PublicReadDecks",
+  "Id": "PublicReadPublishedAssets",
   "Statement": [
     {
-      "Sid": "AllowPublicReadOfDeckPdfs",
+      "Sid": "AllowPublicReadOfDecksAndPhotos",
       "Effect": "Allow",
       "Principal": "*",
       "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::kasper-nissen-presentations/*"
+      "Resource": [
+        "arn:aws:s3:::kasper-nissen-presentations/decks/*",
+        "arn:aws:s3:::kasper-nissen-presentations/photos/*"
+      ]
     }
   ]
 }
