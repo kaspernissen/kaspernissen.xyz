@@ -4,6 +4,7 @@
 // what has been delivered and what it produced.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
 import { isScheduled, isDelivered, visible } from '../lib/engagement';
@@ -25,10 +26,9 @@ const past = all
   .sort((a, b) => +b.data.date - +a.data.date);
 ---
 <BaseLayout title="Conferences — Kasper Nissen" current="/conferences">
-  <section class="pt-6">
-    <h1 class="text-4xl font-extrabold tracking-tight">Conferences</h1>
-    <p class="text-stone-400 mt-2">Where I'll be next, and where I've been.</p>
-  </section>
+  <PageHeader chip="Conferences" chipClass="bg-yellow-400 text-stone-950">
+      Where I'll be next, and where I've been.
+    </PageHeader>
 
   <section class="mt-8">
     <UpcomingMap entries={upcoming} past={past} />

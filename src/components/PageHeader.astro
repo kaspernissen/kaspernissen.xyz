@@ -1,0 +1,30 @@
+---
+// The hero's decoration vocabulary, scaled down for a section heading: a
+// highlighted rotated chip, confetti and the violet squiggle. Shared by every
+// top-level page so they open the way the home page does rather than as a line
+// of grey text.
+//
+// `chipClass` varies per section so the pages are told apart at a glance; the
+// colours are the hero's own (see src/styles/global.css).
+const { chip, chipClass = 'bg-cyan-400 text-stone-950', lead } = Astro.props as {
+  chip: string;
+  chipClass?: string;
+  lead?: string;
+};
+---
+<section class="relative pt-6">
+  <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+    <span class="absolute top-3 left-[38%] w-3 h-3 rounded-full bg-cyan-400"></span>
+    <span class="absolute top-12 right-[8%] w-4 h-4 rounded-full bg-pink-500"></span>
+    <span class="absolute top-1 right-[26%] w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
+    <svg class="absolute top-7 left-[56%] hidden md:block" width="58" height="20" viewBox="0 0 58 20">
+      <path d="M2 10 Q10 2 18 10 T34 10 T50 10 L56 10" stroke="#7c3aed" stroke-width="3.5" fill="none" stroke-linecap="round" />
+    </svg>
+  </div>
+  <h1 class="text-4xl font-extrabold tracking-tight">
+    <span class={`inline-block rounded px-2 py-0.5 -rotate-1 ${chipClass}`}>{chip}</span>
+  </h1>
+  {lead
+    ? <p class="text-stone-400 mt-4 max-w-2xl">{lead}</p>
+    : <div class="text-stone-400 mt-4 max-w-2xl"><slot /></div>}
+</section>

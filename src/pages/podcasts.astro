@@ -4,6 +4,7 @@
 // `writing` collection — one fetcher shape, filtered by kind at render.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import PodcastCard from '../components/PodcastCard.astro';
 import { PODCAST_KINDS } from '../lib/writingKinds';
 
@@ -16,12 +17,9 @@ const items = (await getCollection('writing'))
   description="Podcast guest spots and interviews with Kasper Nissen on cloud native, observability, and platform engineering."
   current="/podcasts"
 >
-  <section class="pt-6">
-    <h1 class="text-4xl font-extrabold tracking-tight">Podcasts</h1>
-    <p class="text-stone-400 mt-2">
+  <PageHeader chip="Podcasts" chipClass="bg-violet-600 text-white">
       Guest spots and interviews. {items.length} total.
-    </p>
-  </section>
+    </PageHeader>
   {items.length === 0 ? (
     <p class="text-stone-500 text-sm py-6">Nothing yet.</p>
   ) : (

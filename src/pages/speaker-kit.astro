@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
 import PhotoCard from '../components/PhotoCard.astro';
 import FeaturedWork from '../components/FeaturedWork.astro';
 import { sortPhotos } from '../lib/sortPhotos';
@@ -50,13 +51,10 @@ const topics = [
 ];
 ---
 <BaseLayout title="Speaker kit — Kasper Nissen" current="/speaker-kit">
-  <section class="pt-6">
-    <h1 class="text-4xl font-extrabold tracking-tight">Speaker kit</h1>
-    <p class="text-stone-400 mt-2">
+  <PageHeader chip="Speaker kit" chipClass="bg-cyan-400 text-stone-950">
       Everything you need to invite me to your event. Reach me on
       <a href="https://www.linkedin.com/in/kaspernissen/" class="underline decoration-orange-400 underline-offset-2">LinkedIn</a>.
-    </p>
-  </section>
+    </PageHeader>
 
   <section class="mt-10">
     <div class="bg-stone-900 rounded-xl p-5">
