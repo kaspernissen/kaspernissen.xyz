@@ -1,0 +1,120 @@
+<!doctype html>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://rsms.me/" />
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<style>
+  /* Every colour here is copied from src/styles/global.css (@theme) and
+     src/components/Hero.astro. Keep them in step with the site. */
+  :root {
+    --bg: #0c0a09;
+    --ink: #fafaf9;
+    --muted: #a8a29e;
+    --pink: #ec4899;
+    --orange: #fb923c;
+    --cyan: #22d3ee;
+    --yellow: #facc15;
+    --violet: #7c3aed;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: __W__px; height: __H__px; overflow: hidden; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+  }
+
+  /* Confetti and squiggle sit behind everything, as in the hero. */
+  #decor { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+  #decor .dot { position: absolute; border-radius: 9999px; }
+
+  #stage {
+    position: relative; z-index: 1;
+    width: 100%; height: 100%;
+    display: flex; align-items: center; gap: __GAP__px;
+    padding: __PAD__px;
+    /* banner keeps a wide left gutter: LinkedIn lays the profile photo over
+       the bottom-left of a profile cover, so anything put there is hidden. */
+    padding-left: __PADL__px;
+  }
+  #stage.flip { flex-direction: row-reverse; }
+  #stage.stack { flex-direction: column; align-items: stretch; justify-content: space-between; }
+
+  /* The inner box is what gets measured when the type is auto-fitted, so it
+     must be free to be taller than the frame before shrinking starts. */
+  #copy {
+    flex: 1 1 auto; min-width: 0; min-height: 0;
+    display: flex; align-items: center; overflow: hidden;
+  }
+  #stage:not(.stack) #copy { align-self: stretch; }
+  /* Stacked, the headline sits under the top edge rather than floating in the
+     middle of the gap between it and the mascot below. */
+  #stage.stack #copy { align-items: flex-start; flex: 0 1 auto; }
+  #copyinner { width: 100%; }
+
+  #kicker {
+    font-size: __KICKER__px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: __KICKGAP__px;
+  }
+
+  h1 {
+    font-size: __FONT__px;
+    font-weight: 800;
+    letter-spacing: -0.025em;   /* tracking-tight */
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  /* The hero's highlight: an inline-block rounded chip, slightly rotated.
+     nowrap matters — a chip allowed to break across lines stops reading as a
+     highlight on a word and becomes a big coloured box. The type auto-fits
+     instead, so a long chip shrinks the headline rather than wrapping. */
+  .chip {
+    display: inline-block;
+    white-space: nowrap;
+    border-radius: __RADIUS__px;
+    padding: __CHIPY__px __CHIPX__px;
+  }
+  .chip.pink   { background: var(--pink);   color: #fff; }
+  .chip.orange { background: var(--orange); color: var(--bg); }
+  .chip.cyan   { background: var(--cyan);   color: var(--bg); }
+  .chip.yellow { background: var(--yellow); color: var(--bg); }
+  .chip.violet { background: var(--violet); color: #fff; }
+  .chip.a { transform: rotate(-1deg); }
+  .chip.b { transform: rotate(1.5deg); }
+
+  /* Anchored to the bottom of the frame and allowed to run off it, the way
+     HeroCartoon is anchored to the hero's bottom edge. The mascots are cut off
+     square at the chest, and that flat edge — plus the bar of yellow shadow
+     under it — is obvious when the figure floats clear of the frame. */
+  #mascot {
+    flex: 0 0 auto;
+    display: flex; justify-content: center;
+    align-self: flex-end;
+    margin-bottom: -__MASCOTDROP__px;
+  }
+  #mascot img {
+    display: block;
+    width: __MASCOTW__px;
+    height: auto;
+    transform: rotate(1deg);
+    /* .cartoon-shadow from global.css */
+    filter: drop-shadow(__SHX__px __SHY__px 0 rgba(252, 204, 21, 0.85));
+  }
+</style>
+<body>
+  <div id="decor">__DECOR__</div>
+  <div id="stage" class="__STAGECLASS__">
+    <div id="copy"><div id="copyinner">
+      __KICKERHTML__
+      <h1>__HEADLINE__</h1>
+    </div></div>
+    __MASCOTHTML__
+  </div>
+</body>
