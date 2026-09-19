@@ -1,0 +1,6 @@
+kind: book
+title: "OpenTelemetry For Dummies, Dash0 Special Edition"
+publication: "Dash0"
+date: 2025-11-07
+url: "https://www.dash0.com/lp/opentelemetry-for-dummies"
+summary: "Observability fundamentals and OpenTelemetry in practice: what separates observability from traditional monitoring, how to correlate logs, metrics and traces, how to instrument an application, and how to tell an OpenTelemetry-native platform from one that merely supports it."

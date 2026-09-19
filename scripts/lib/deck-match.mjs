@@ -104,17 +104,24 @@ export function scorePair(deck, talk) {
   const similarity = titleSimilarity(deck.title, talk.title);
   if (similarity < MIN_TITLE_SIMILARITY) return null;
 
-  const lagDays = Math.round((toTime(talk.date) - toTime(deck.date)) / DAY);
+  const start = toTime(talk.date);
+  const end = Number.isFinite(toTime(talk.end_date)) ? toTime(talk.end_date) : start;
+  const lagDays = Math.round((start - toTime(deck.date)) / DAY);
   if (!Number.isFinite(lagDays)) return null;
-  // Negative lag = the recording predates the event, so it is a different
-  // delivery of the same talk.
-  if (lagDays < 0 || lagDays > MAX_LAG_DAYS) return null;
+  // Negative lag = the deck went up after the talk's date, which normally means
+  // a different delivery of the same talk. The exception is a multi-day event:
+  // once an entry carries the conference's real start date, a deck posted on
+  // day two is "after" it by a day and was being thrown away. KCD Suisse
+  // Romande ran 4-5 December and the deck went up on the 5th, which left the
+  // slides stranded in their own entry next to the conference.
+  const span = Math.max(0, Math.round((end - start) / DAY));
+  if (lagDays < -span - 1 || lagDays > MAX_LAG_DAYS) return null;
 
   const sameEvent = eventAgrees(deck.event, talk.event);
 
   // Closeness in time dominates; title and a matching event nudge ties.
   const score =
-    (1 - lagDays / (MAX_LAG_DAYS + 1)) * 0.6 +
+    (1 - Math.max(lagDays, 0) / (MAX_LAG_DAYS + 1)) * 0.6 +
     similarity * 0.3 +
     (sameEvent ? 0.1 : 0);
 

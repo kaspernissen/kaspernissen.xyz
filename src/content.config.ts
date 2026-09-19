@@ -52,7 +52,7 @@ const talks = defineCollection({
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/writing' }),
   schema: z.object({
-    kind: z.enum(['blog', 'guide', 'knowledge', 'podcast', 'newsletter', 'interview']),
+    kind: z.enum(['blog', 'guide', 'knowledge', 'podcast', 'newsletter', 'interview', 'book', 'course']),
     title: z.string(),
     publication: z.string(),
     date: z.coerce.date(),

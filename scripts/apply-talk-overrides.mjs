@@ -101,6 +101,18 @@ async function absorb(videoId, eventName, source, entries) {
     return null;
   }
   const target = targets[0];
+  // A deck is an artefact of a delivery, never the engagement itself. Without
+  // this, an override written before the event's real dates were known keeps
+  // firing afterwards and drags the recording back OUT of the engagement that
+  // link-recordings had correctly folded it into, into the Notist deck beside
+  // it — undoing the fix and looking like it worked.
+  if (target.file.includes(`${path.sep}decks${path.sep}`)) {
+    console.warn(
+      `[talk-overrides] ${videoId}: ${path.basename(target.file)} is a deck, not an engagement — ` +
+        `not absorbed (the override is probably no longer needed)`,
+    );
+    return null;
+  }
   const occupied = readField(target.text, 'youtube_id');
   if (occupied && occupied !== videoId) {
     console.warn(
@@ -109,11 +121,15 @@ async function absorb(videoId, eventName, source, entries) {
     return null;
   }
 
+  // Everything the source entry carries that the engagement is missing. The
+  // deck fields matter as much as the video: the source is often a Notist deck
+  // that picked up the recording on an earlier pass, and absorbing only the
+  // video would delete the slides along with the file.
   let text = target.text;
   text = upsert(text, 'youtube_id', videoId);
-  for (const key of ['abstract', 'playlist_position']) {
+  for (const key of ['abstract', 'playlist_position', 'deck_file', 'deck_size_mb', 'notist_url']) {
     const value = readField(source.text, key);
-    if (value !== null) text = upsert(text, key, value);
+    if (value !== null && readField(text, key) === null) text = upsert(text, key, value);
   }
   // The engagement usually has no session title — that is why it needed one.
   if (!readField(text, 'title')) {

@@ -1,7 +1,13 @@
 title: "Keynote: Unity in Diversity: A Decade of Inclusive Growth in the Cloud Native Community"
-event: "CloudNativeCon+KubeCon, Europe 2024"
+event: "KubeCon + CloudNativeCon Europe 2024"
 date: 2024-03-22
-location: "Paris"
+location: "Paris, France"
 youtube_id: vwZANXuYdRI
 tags: []
 featured: false
+event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe-2024/"
+co_speakers:
+  - "Jinhong Brejnholt"
+  - "Andrea Giardini"
+  - "Anastasiia Gubska"
+  - "Stéphane Este-Gracias"

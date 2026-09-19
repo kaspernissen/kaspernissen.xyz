@@ -1,4 +1,4 @@
-title: null
+title: "Debugging OpenTelemetry: Ensuring Your Observability Signals Are Spot On"
 event: "KubeCon + CloudNativeCon Japan 2025"
 event_url: "https://sessionize.com/kaspernissen"
 date: 2025-06-16
@@ -7,3 +7,6 @@ location: "Tokyo, Japan"
 role: "speaker"
 tags: []
 featured: false
+deck_file: "debugging-opentelemetry-ensuring-your-observability-signals-are-spot-on-2025-06.pdf"
+deck_size_mb: 3.1
+notist_url: "https://noti.st/kasperborgnissen/bzOJ9o/debugging-opentelemetry-ensuring-your-observability-signals-are-spot-on"

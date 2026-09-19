@@ -145,5 +145,15 @@
     "end_date": "2025-09-11",
     "location": "Hamburg, Germany",
     "url": "https://www.containerdays.io/"
+  },
+  "kcd-suisse-romande-2025": {
+    "date": "2025-12-04",
+    "end_date": "2025-12-05",
+    "location": "Geneva, Switzerland",
+    "url": "https://cloud-native-romandy.ch/"
+  },
+  "cncf-hosted-co-located-events-north-america-2025": {
+    "date": "2025-11-10",
+    "location": "Atlanta, Georgia, United States"
   }
 }

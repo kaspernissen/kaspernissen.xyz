@@ -1,0 +1,8 @@
+kind: course
+title: "Observability for Platform Engineering"
+publication: "Platform Engineering University"
+date: 2025-09-04
+duration_min: 120
+url: "https://university.platformengineering.org/observability-for-platform-engineering"
+summary: "A five-module course on making observability a core platform capability, taught with Michele Mancioppi: observability foundations for platform engineers, the platform engineer's dual role, the open source tooling landscape, OpenTelemetry demystified, and simplifying observability through automation and standards."
+image: "https://cc.sj-cdn.net/instructor/30jvbvxz8acue-platform-engineering/courses/3ha261npbaxx0/promo-image.1783031130.png"

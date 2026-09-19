@@ -1,8 +1,12 @@
-title: null
+title: "Golden Paths for Async Workflows: Dapr Meets OpenTelemetry"
 event: "KCD Suisse Romande 2025"
-event_url: "https://kcd.cloud-native-romandy.ch/"
-date: 2025-12-31
-location: "Genève, Switzerland"
+event_url: "https://cloud-native-romandy.ch/"
+date: 2025-12-04
+end_date: 2025-12-05
+location: "Geneva, Switzerland"
 role: "speaker"
 tags: []
 featured: false
+deck_file: "golden-paths-for-async-workflows-dapr-meets-opentelemetry-2025-12.pdf"
+deck_size_mb: 10.7
+notist_url: "https://noti.st/kasperborgnissen/Okk1sP/golden-paths-for-async-workflows-dapr-meets-opentelemetry"
