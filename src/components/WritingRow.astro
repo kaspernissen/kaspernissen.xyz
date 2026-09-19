@@ -3,19 +3,21 @@ import type { CollectionEntry } from 'astro:content';
 const { entry } = Astro.props as { entry: CollectionEntry<'writing'> };
 const d = entry.data;
 const kindColors: Record<string, string> = {
-  blog: 'bg-orange-200 text-stone-950',
-  podcast: 'bg-sky-200 text-stone-950',
-  newsletter: 'bg-amber-200 text-stone-950',
-  interview: 'bg-emerald-200 text-stone-950',
+  blog: 'bg-orange-500 text-stone-950',
+  guide: 'bg-violet-500 text-stone-50',
+  knowledge: 'bg-teal-500 text-stone-950',
+  podcast: 'bg-sky-500 text-stone-950',
+  newsletter: 'bg-amber-400 text-stone-950',
+  interview: 'bg-emerald-500 text-stone-950',
 };
 ---
 <a
   href={d.url}
-  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-200 hover:bg-stone-50 -mx-2 px-2 rounded"
+  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-800 hover:bg-stone-800 -mx-2 px-2 rounded"
 >
   <span class={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${kindColors[d.kind]}`}>{d.kind}</span>
-  <span class="font-semibold text-stone-950">{d.title}</span>
-  <span class="text-stone-700">— {d.publication}</span>
+  <span class="font-semibold text-stone-50">{d.title}</span>
+  <span class="text-stone-300">— {d.publication}</span>
   <span class="text-stone-500 text-sm ml-auto">
     {d.date.toISOString().slice(0, 10)}{d.duration_min ? ` · ${d.duration_min} min` : ''}
   </span>

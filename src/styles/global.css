@@ -1,11 +1,16 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #fffaf0;
-  --color-ink: #1c1917;
-  --color-accent: #fb923c;
-  --color-accent-soft: #fde68a;
-  --color-muted: #78716c;
+  /* Dark Memphis pop palette */
+  --color-bg: #0c0a09;             /* near-black, slightly warm */
+  --color-surface: #1c1917;        /* card backgrounds */
+  --color-ink: #fafaf9;            /* primary text */
+  --color-accent: #fb923c;         /* orange */
+  --color-pop-pink: #ec4899;
+  --color-pop-cyan: #22d3ee;
+  --color-pop-yellow: #facc15;
+  --color-pop-violet: #7c3aed;
+  --color-muted: #a8a29e;
   --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
@@ -17,4 +22,14 @@ html {
 
 body {
   -webkit-font-smoothing: antialiased;
+}
+
+/* Chunky offset shadow for the hero cartoon — bright color so it pops on dark bg */
+.cartoon-shadow {
+  filter: drop-shadow(6px 8px 0 rgba(252, 204, 21, 0.85));
+}
+@media (min-width: 768px) {
+  .cartoon-shadow {
+    filter: drop-shadow(10px 12px 0 rgba(252, 204, 21, 0.85));
+  }
 }

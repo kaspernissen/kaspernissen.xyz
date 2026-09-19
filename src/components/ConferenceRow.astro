@@ -1,24 +1,49 @@
 ---
+// One line in a schedule listing. Reads an engagement from the unified `talks`
+// collection — the same entry that, once delivered, carries the deck and the
+// recording.
 import type { CollectionEntry } from 'astro:content';
-const { entry } = Astro.props as { entry: CollectionEntry<'conferences'> };
+import { talkSlug } from '../lib/slug';
+import { isDelivered } from '../lib/engagement';
+
+const { entry } = Astro.props as { entry: CollectionEntry<'talks'> };
 const d = entry.data;
+
 const dateStr = d.end_date
   ? `${d.date.toISOString().slice(0, 10)} → ${d.end_date.toISOString().slice(0, 10)}`
   : d.date.toISOString().slice(0, 10);
+
 const roleColors: Record<string, string> = {
-  speaker: 'bg-orange-400 text-white',
-  'co-chair': 'bg-amber-300 text-stone-950',
-  organiser: 'bg-emerald-200 text-stone-950',
-  mc: 'bg-sky-200 text-stone-950',
-  attendee: 'bg-stone-200 text-stone-700',
+  speaker: 'bg-orange-400 text-stone-950',
+  keynote: 'bg-pink-500 text-stone-50',
+  'co-chair': 'bg-amber-400 text-stone-950',
+  organiser: 'bg-emerald-500 text-stone-950',
+  moderator: 'bg-violet-500 text-stone-50',
+  panelist: 'bg-cyan-400 text-stone-950',
+  mc: 'bg-sky-500 text-stone-950',
+  attendee: 'bg-stone-700 text-stone-200',
 };
+
+// A delivered engagement links to its own page (video, slides, photos); an
+// upcoming one links out to the session or the event site.
+const delivered = isDelivered(entry);
+const href = delivered
+  ? `/talks/${d.slug ?? talkSlug(d.title ?? d.event, d.date)}`
+  : d.session_url ?? d.event_url ?? '#';
 ---
 <a
-  href={d.url}
-  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-200 hover:bg-stone-50 -mx-2 px-2 rounded"
+  href={href}
+  class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-800 hover:bg-stone-800 -mx-2 px-2 rounded"
 >
-  <span class={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${roleColors[d.role]}`}>{d.role}</span>
-  <span class="font-semibold text-stone-950">{d.name}</span>
-  {d.session_title && <span class="text-stone-700 italic">— {d.session_title}</span>}
-  <span class="text-stone-500 text-sm ml-auto">{dateStr} · {d.location}</span>
+  <span class={`text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold ${roleColors[d.role] ?? roleColors.speaker}`}>{d.role}</span>
+  <span class="font-semibold text-stone-50">{d.event}</span>
+  {d.title && <span class="text-stone-300 italic">— {d.title}</span>}
+  {d.co_speakers.length > 0 && (
+    <span class="text-stone-400 text-sm">with {d.co_speakers.join(', ')}</span>
+  )}
+  <span class="flex items-center gap-2 text-stone-500 text-sm ml-auto">
+    {d.youtube_id && <span class="text-stone-400" title="Recording available">▶</span>}
+    {d.deck_file && <span class="text-stone-400" title="Slides available">▤</span>}
+    {dateStr}{d.location ? ` · ${d.location}` : ''}
+  </span>
 </a>

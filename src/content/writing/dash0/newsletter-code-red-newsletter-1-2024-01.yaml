@@ -1,0 +1,6 @@
+kind: newsletter
+title: "Code Red Newsletter #1"
+publication: "Code RED Newsletter"
+date: 2024-01-01
+url: "https://www.dash0.com/newsletter/code-red-newsletter-1"
+summary: "Hi there, Welcome to the very first installment of the Code RED Newsletter! This brand-new newsletter covers observability with one eye on OpenTelemetry, Prometheus, Perses and cloud-native open-source topics; and the ot"

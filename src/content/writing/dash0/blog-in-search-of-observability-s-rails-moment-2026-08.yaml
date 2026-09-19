@@ -1,0 +1,6 @@
+kind: blog
+title: "In Search of Observability's Rails Moment"
+publication: "Dash0 Blog"
+date: 2026-08-14
+url: "https://www.dash0.com/blog/in-search-of-observability-s-rails-moment"
+summary: "Kubernetes got platform engineering. Observability hasn&#x27;t had its Rails moment yet. Why platform teams are shifting observability down with OpenTelemetry."

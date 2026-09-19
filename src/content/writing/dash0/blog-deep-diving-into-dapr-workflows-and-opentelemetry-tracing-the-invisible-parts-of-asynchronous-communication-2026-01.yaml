@@ -1,0 +1,6 @@
+kind: blog
+title: "Deep Diving into Dapr Workflows and OpenTelemetry – Tracing the Invisible Parts of Asynchronous Communication"
+publication: "Dash0 Blog"
+date: 2026-01-20
+url: "https://www.dash0.com/blog/deep-diving-into-dapr-workflows-and-opentelemetry-tracing-the-invisible-parts-of-asynchronous"
+summary: "Tracing asynchronous workflows is one of the hardest observability problems to solve. In this post, we dive deep into how Dapr Workflows actually execute, why distributed tracing breaks across long-lived gRPC streams, an"

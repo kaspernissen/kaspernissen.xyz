@@ -1,0 +1,252 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { WORLD_LAND_PATH } from '../lib/worldLand';
+
+const { entries, past = [] } = Astro.props as {
+  entries: CollectionEntry<'talks'>[];
+  /** Places already spoken at, drawn as faint dots behind the upcoming pins. */
+  past?: CollectionEntry<'talks'>[];
+};
+
+// Coordinates for the cities Kasper speaks in. Kept as a static table rather
+// than geocoding at build time: the set is small, it changes a few times a
+// year, and a build-time geocode would add a network dependency (and an API
+// key) to something that never needs to be dynamic.
+//
+// Matching is on a lowercased substring of the conference `location`, so
+// "Canary Wharf, London, United Kingdom" resolves via "london".
+const CITIES: { match: string; label: string; lat: number; lon: number }[] = [
+  { match: 'london', label: 'London', lat: 51.5072, lon: -0.1276 },
+  { match: 'copenhagen', label: 'Copenhagen', lat: 55.6761, lon: 12.5683 },
+  { match: 'prague', label: 'Prague', lat: 50.0755, lon: 14.4378 },
+  { match: 'edinburgh', label: 'Edinburgh', lat: 55.9533, lon: -3.1883 },
+  { match: 'warsaw', label: 'Warsaw', lat: 52.2297, lon: 21.0122 },
+  { match: 'malmö', label: 'Malmö', lat: 55.605, lon: 13.0038 },
+  { match: 'salt lake city', label: 'Salt Lake City', lat: 40.7608, lon: -111.891 },
+  { match: 'melbourne', label: 'Melbourne', lat: -37.8136, lon: 144.9631 },
+  { match: 'brisbane', label: 'Brisbane', lat: -27.4698, lon: 153.0251 },
+  { match: 'aix-en-provence', label: 'Aix-en-Provence', lat: 43.5297, lon: 5.4474 },
+  { match: 'dublin', label: 'Dublin', lat: 53.3498, lon: -6.2603 },
+  { match: 'hamburg', label: 'Hamburg', lat: 53.5511, lon: 9.9937 },
+  { match: 'amsterdam', label: 'Amsterdam', lat: 52.3676, lon: 4.9041 },
+  { match: 'aarhus', label: 'Aarhus', lat: 56.1629, lon: 10.2039 },
+  { match: 'århus', label: 'Aarhus', lat: 56.1629, lon: 10.2039 },
+  // Places already spoken at, for the faint dots.
+  { match: 'atlanta', label: 'Atlanta', lat: 33.749, lon: -84.388 },
+  { match: 'bucharest', label: 'Bucharest', lat: 44.4268, lon: 26.1025 },
+  { match: 'budapest', label: 'Budapest', lat: 47.4979, lon: 19.0402 },
+  { match: 'genève', label: 'Geneva', lat: 46.2044, lon: 6.1432 },
+  { match: 'geneva', label: 'Geneva', lat: 46.2044, lon: 6.1432 },
+  { match: 'helsinki', label: 'Helsinki', lat: 60.1699, lon: 24.9384 },
+  { match: 'munich', label: 'Munich', lat: 48.1351, lon: 11.582 },
+  { match: 'tokyo', label: 'Tokyo', lat: 35.6762, lon: 139.6503 },
+  { match: 'paris', label: 'Paris', lat: 48.8566, lon: 2.3522 },
+  { match: 'bergen', label: 'Bergen', lat: 60.3913, lon: 5.3221 },
+  { match: 'barcelona', label: 'Barcelona', lat: 41.3874, lon: 2.1686 },
+  { match: 'detroit', label: 'Detroit', lat: 42.3314, lon: -83.0458 },
+  { match: 'valencia', label: 'Valencia', lat: 39.4699, lon: -0.3763 },
+  { match: 'chicago', label: 'Chicago', lat: 41.8781, lon: -87.6298 },
+  { match: 'lisbon', label: 'Lisbon', lat: 38.7223, lon: -9.1393 },
+  { match: 'stockholm', label: 'Stockholm', lat: 59.3293, lon: 18.0686 },
+  { match: 'oslo', label: 'Oslo', lat: 59.9139, lon: 10.7522 },
+  { match: 'berlin', label: 'Berlin', lat: 52.52, lon: 13.405 },
+];
+
+type Stop = { name: string; date: string };
+type Pin = { label: string; lat: number; lon: number; events: Stop[] };
+
+const unplaced: string[] = [];
+
+function group(list: CollectionEntry<'talks'>[], collectUnplaced: boolean) {
+  const pins = new Map<string, Pin>();
+  for (const e of list) {
+    const loc = (e.data.location ?? '').toLowerCase();
+    const city = CITIES.find((c) => loc.includes(c.match));
+    if (!city) {
+      if (collectUnplaced && e.data.location) unplaced.push(e.data.location);
+      continue;
+    }
+    const pin = pins.get(city.label) ?? { ...city, events: [] };
+    pin.events.push({ name: e.data.event, date: e.data.date.toISOString().slice(0, 10) });
+    pins.set(city.label, pin);
+  }
+  for (const pin of pins.values()) pin.events.sort((a, b) => a.date.localeCompare(b.date));
+  return pins;
+}
+
+const pins = group(entries, true);
+// A city that is also an upcoming stop is drawn once, as an upcoming pin — the
+// faint dot underneath would just make it look smudged.
+const pastPins = new Map([...group(past, false)].filter(([label]) => !pins.has(label)));
+
+// Equirectangular projection onto a 360x180 viewBox — matches the source SVG
+// world map's own projection, so pins land where they should.
+const project = (lat: number, lon: number) => ({ x: lon + 180, y: 90 - lat });
+
+const placed = [...pins.values()].map((p) => ({ ...p, ...project(p.lat, p.lon) }));
+const placedPast = [...pastPins.values()].map((p) => ({ ...p, ...project(p.lat, p.lon) }));
+// Both sets drive the crop, so a city that only appears in the past history
+// (Tokyo, Atlanta) isn't quietly cropped out of the frame.
+const allPlaced = [...placed, ...placedPast];
+
+// Crop the viewBox to the pins rather than always drawing the whole globe —
+// otherwise most of the card is empty ocean and polar region. Padded, clamped
+// to world bounds, and given a minimum span so two nearby cities don't zoom in
+// so far that the result stops reading as a map.
+const PAD = 14;
+const MIN_W = 120;
+const MIN_H = 70;
+const xs = allPlaced.map((p) => p.x);
+const ys = allPlaced.map((p) => p.y);
+let vx = Math.min(...xs) - PAD;
+let vy = Math.min(...ys) - PAD;
+let vw = Math.max(...xs) - Math.min(...xs) + PAD * 2;
+let vh = Math.max(...ys) - Math.min(...ys) + PAD * 2;
+if (vw < MIN_W) { vx -= (MIN_W - vw) / 2; vw = MIN_W; }
+if (vh < MIN_H) { vy -= (MIN_H - vh) / 2; vh = MIN_H; }
+vx = Math.max(0, Math.min(vx, 360 - vw));
+vy = Math.max(0, Math.min(vy, 180 - vh));
+const viewBox = `${vx} ${vy} ${vw} ${vh}`;
+
+// Radii and strokes are in viewBox units, so they must scale with the crop or
+// a zoomed-in map renders comically fat pins. 360 is the un-cropped width.
+const scale = vw / 360;
+const pinR = 2 * scale;
+const stroke = 0.4 * scale;
+---
+{placed.length > 0 && (
+  <div class="bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] p-4 overflow-hidden">
+    <div class="flex items-baseline justify-between mb-3">
+      <div class="text-sm font-bold">Where I'll be</div>
+      <div class="text-xs text-stone-500">{`${placed.length} ${placed.length === 1 ? 'city' : 'cities'}`}</div>
+    </div>
+
+    <div class="overflow-x-auto relative" data-map-wrap>
+      <div
+        data-map-tip
+        hidden
+        class="pointer-events-none absolute z-30 max-w-[15rem] rounded-lg bg-stone-950/95 px-2.5 py-1.5 text-[11px] leading-snug text-stone-100 shadow-lg ring-1 ring-stone-700"
+      ></div>
+      <svg
+        viewBox={viewBox}
+        class="w-full h-auto min-w-[520px]"
+        role="img"
+        aria-label={`Map of upcoming speaking locations: ${placed.map((p) => p.label).join(', ')}`}
+      >
+        {/* Landmasses — Natural Earth 110m, pre-projected to this exact 360x180
+            equirectangular viewBox by scripts/gen-world-path.mjs. */}
+        <path
+          d={WORLD_LAND_PATH}
+          fill="#292524"
+          stroke="#44403c"
+          stroke-width={stroke}
+          stroke-linejoin="round"
+        />
+
+        {/* Graticule at 30° intervals, drawn over the land at low contrast */}
+        <g stroke="#57534e" stroke-width={stroke} fill="none" opacity="0.35">
+          {[-60, -30, 30, 60].map((lat) => (
+            <line x1="0" y1={90 - lat} x2="360" y2={90 - lat} />
+          ))}
+          {[-120, -60, 0, 60, 120].map((lon) => (
+            <line x1={lon + 180} y1="0" x2={lon + 180} y2="180" />
+          ))}
+        </g>
+        <line x1="0" y1="90" x2="360" y2="90" stroke="#57534e" stroke-width={stroke} opacity="0.5" />
+
+        {/* Been-there dots first, so an upcoming pin always draws on top. */}
+        {placedPast.map((p) => (
+          <g
+            class="map-stop cursor-default"
+            data-label={p.label}
+            data-kind="past"
+            data-events={JSON.stringify(p.events)}
+          >
+            {/* Generous invisible hit area — the visible dot is ~1px at this scale. */}
+            <circle cx={p.x} cy={p.y} r={pinR * 2.4} fill="transparent" />
+            <circle cx={p.x} cy={p.y} r={pinR * 0.62} fill="#a8a29e" opacity="0.55" />
+            <title>{p.label}</title>
+          </g>
+        ))}
+
+        {placed.map((p) => (
+          <g
+            class="map-stop cursor-default"
+            data-label={p.label}
+            data-kind="upcoming"
+            data-events={JSON.stringify(p.events)}
+          >
+            <circle cx={p.x} cy={p.y} r={pinR * 2.4} fill="#fb923c" opacity="0.22" />
+            <circle cx={p.x} cy={p.y} r={pinR} fill="#fb923c" />
+            <title>{p.label}</title>
+          </g>
+        ))}
+      </svg>
+    </div>
+
+    <div class="mt-3 flex flex-wrap gap-x-3 gap-y-1 text-xs text-stone-400">
+      {placed.map((p) => (
+        <span>
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-orange-400 mr-1 align-middle"></span>
+          {p.label}
+          {p.events.length > 1 && <span class="text-stone-600"> ×{p.events.length}</span>}
+        </span>
+      ))}
+    </div>
+    {placedPast.length > 0 && (
+      <div class="mt-2 text-[11px] text-stone-500">
+        <span class="inline-block w-1.5 h-1.5 rounded-full bg-stone-400/60 mr-1 align-middle"></span>
+        {placedPast.length} more {placedPast.length === 1 ? 'city' : 'cities'} spoken at — hover a dot for details
+      </div>
+    )}
+    {unplaced.length > 0 && (
+      <div class="mt-2 text-[10px] text-stone-600">
+        Not mapped: {[...new Set(unplaced)].join(', ')}
+      </div>
+    )}
+  </div>
+)}
+
+<script>
+  // Small hover card naming the city and each event held there, with its date.
+  // SVG's native <title> tooltip is kept underneath for touch and screen
+  // readers; this just makes it legible and instant on a pointer.
+  document.querySelectorAll<HTMLElement>('[data-map-wrap]').forEach((wrap) => {
+    const tip = wrap.querySelector<HTMLElement>('[data-map-tip]');
+    if (!tip) return;
+
+    const show = (stop: SVGGElement, ev: MouseEvent) => {
+      let events: { name: string; date: string }[] = [];
+      try {
+        events = JSON.parse(stop.dataset.events ?? '[]');
+      } catch {
+        return;
+      }
+      const label = stop.dataset.label ?? '';
+      const upcoming = stop.dataset.kind === 'upcoming';
+      tip.innerHTML =
+        `<div class="font-semibold ${upcoming ? 'text-orange-300' : 'text-stone-200'}">${label}</div>` +
+        events
+          .map((e) => `<div class="text-stone-400"><span class="tabular-nums">${e.date}</span> · ${e.name}</div>`)
+          .join('');
+      tip.hidden = false;
+      move(ev);
+    };
+
+    const move = (ev: MouseEvent) => {
+      const box = wrap.getBoundingClientRect();
+      // Flip to the left near the right edge so the card never leaves the card.
+      const x = ev.clientX - box.left + wrap.scrollLeft;
+      const y = ev.clientY - box.top;
+      const flip = x + tip.offsetWidth + 16 > wrap.scrollLeft + box.width;
+      tip.style.left = `${flip ? x - tip.offsetWidth - 12 : x + 12}px`;
+      tip.style.top = `${Math.max(0, y - tip.offsetHeight - 8)}px`;
+    };
+
+    wrap.querySelectorAll<SVGGElement>('.map-stop').forEach((stop) => {
+      stop.addEventListener('mouseenter', (ev) => show(stop, ev as MouseEvent));
+      stop.addEventListener('mousemove', (ev) => move(ev as MouseEvent));
+      stop.addEventListener('mouseleave', () => { tip.hidden = true; });
+    });
+  });
+</script>

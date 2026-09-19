@@ -15,7 +15,7 @@ const img = key ? images[key].default : null;
 ---
 <a
   href={d.url}
-  class="block bg-white rounded-xl border-2 border-stone-950 shadow-[3px_3px_0_0_#1c1917] p-4 text-center hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#1c1917] transition"
+  class="block bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] p-4 text-center hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition"
 >
   {img ? (
     <Image src={img} alt={d.name} width={120} height={120} class="mx-auto" />
@@ -23,6 +23,6 @@ const img = key ? images[key].default : null;
     <div class="w-[120px] h-[120px] mx-auto bg-stone-100 rounded" />
   )}
   <div class="mt-3 font-bold text-sm leading-tight">{d.name}</div>
-  <div class="text-xs text-stone-600 mt-1">{d.issuer}</div>
+  <div class="text-xs text-stone-400 mt-1">{d.issuer}</div>
   <div class="text-[10px] text-stone-500 mt-1">issued {d.issued.toISOString().slice(0, 7)}</div>
 </a>

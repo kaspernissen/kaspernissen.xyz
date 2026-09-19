@@ -1,0 +1,6 @@
+kind: blog
+title: "Observing Dapr with OpenTelemetry and Dash0"
+publication: "Dash0 Blog"
+date: 2025-09-03
+url: "https://www.dash0.com/blog/observing-dapr-with-opentelemetry-and-dash0"
+summary: "Dapr shifts service invocation, state, pub/sub and workflow orchestration into a sidecar - which makes runtime observability critical. Learn how Dapr and OpenTelemetry can be combined to deliver unified traces, metrics, "

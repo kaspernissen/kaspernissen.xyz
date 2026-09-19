@@ -1,0 +1,27 @@
+{
+  "_comment": [
+    "Hand-entered corrections for individual talks, applied last in the build",
+    "(see scripts/apply-talk-overrides.mjs). Use this whenever a talk's event,",
+    "title, date or location is wrong: the fetchers wipe their own directories",
+    "every build, so editing the generated YAML does not survive.",
+    "",
+    "Key = the YouTube video id, the one identifier that survives a re-fetch.",
+    "Value = any of: title, event, event_url, session_url, date, end_date,",
+    "location, role, abstract, co_speakers (array), tags (array), featured.",
+    "",
+    "Dates are the day the talk was GIVEN, never the day the video went up.",
+    "",
+    "Overrides whose video id matches nothing are reported by the script, so a",
+    "typo or a delisted video does not fail silently."
+  ],
+
+  "r1gpPpNhT_4": {
+    "_why": "Scrape read the video title as the channel name, so title and event were swapped.",
+    "title": "Breaking Free with Open Standards: OpenTelemetry and Perses for Observability",
+    "event": "KCD Helsinki 2025",
+    "event_url": "https://community.cncf.io/kcd-finland/",
+    "date": "2025-05-27",
+    "location": "Helsinki, Finland",
+    "role": "keynote"
+  }
+}

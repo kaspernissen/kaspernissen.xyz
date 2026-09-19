@@ -1,0 +1,9 @@
+{
+  "_comment": "Talks to keep off the site. Every fetcher wipes and rewrites its own output directory, so deleting a YAML file by hand does not survive the next build — list the talk here instead. Matching is on the title, loosely normalised (case, punctuation and whitespace are ignored), so it catches the same talk arriving from both the GitHub README and the YouTube playlist. scripts/prune-talks.mjs warns about entries that match nothing, so stale lines here are visible rather than silent.",
+  "titles": [
+    "Moving from Day 1 to Day 2 Operations | Damian Marquez and Kasper Nissen",
+    "Cloud Native CI/CD using GitOps",
+    "Building a Fintech Startup on Cloud Native Technology",
+    "A tale of 1,5 years with Cloud Native Technologies at Lunar Way"
+  ]
+}

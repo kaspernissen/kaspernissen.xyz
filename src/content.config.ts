@@ -1,52 +1,58 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+/**
+ * One entry per speaking engagement — scheduled or delivered.
+ *
+ * This replaces what used to be three overlapping collections (conferences,
+ * talks, decks) joined by fuzzy title+date matching. They described the same
+ * events from three angles and could not be reconciled: only 1 of 20 past
+ * conferences recorded what was actually presented, and a talk's `event` was
+ * often just a YouTube channel name.
+ *
+ * Now a single entry carries the engagement through its whole life: announced
+ * with an event and a date, then gaining a deck and a recording once given.
+ * Photos join on date + event, so a talk page can show all three.
+ */
 const talks = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/talks' }),
   schema: z.object({
-    title: z.string(),
+    // Optional: an event Kasper organises, MCs or attends has no session title.
+    // Listings fall back to the event name.
+    title: z.string().nullable().default(null),
     event: z.string(),
+    event_url: z.string().url().nullable().default(null),
+    session_url: z.string().url().nullable().default(null),
     date: z.coerce.date(),
-    location: z.string().optional(),
-    abstract: z.string().optional(),
-    youtube_id: z.string().nullable().default(null),
-    slides_pdf: z.string().nullable().default(null),
+    // Only for multi-day events; a single session leaves this null.
+    end_date: z.coerce.date().nullable().default(null),
+    location: z.string().nullable().default(null),
+    role: z
+      .enum(['speaker', 'keynote', 'co-chair', 'organiser', 'moderator', 'panelist', 'mc', 'attendee'])
+      .default('speaker'),
+    // Normally derived from the date — see src/lib/engagement.ts. Set this only
+    // to override that, e.g. an event that was cancelled or is still unlisted.
+    status: z.enum(['scheduled', 'delivered', 'cancelled']).nullable().default(null),
     co_speakers: z.array(z.string()).default([]),
+    abstract: z.string().nullable().default(null),
+    // Filled in after the fact, by the fetchers, as they become available.
+    youtube_id: z.string().nullable().default(null),
+    deck_file: z.string().nullable().default(null),
+    deck_size_mb: z.number().nullable().default(null),
+    notist_url: z.string().url().nullable().default(null),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     slug: z.string().optional(),
-  }),
-});
-
-const decks = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/decks' }),
-  schema: z.object({
-    title: z.string(),
-    event: z.string(),
-    date: z.coerce.date(),
-    file: z.string(),
-    talk_slug: z.string().nullable().default(null),
-    size_mb: z.number().nullable().default(null),
-  }),
-});
-
-const conferences = defineCollection({
-  loader: glob({ pattern: '**/*.yaml', base: './src/content/conferences' }),
-  schema: z.object({
-    name: z.string(),
-    date: z.coerce.date(),
-    end_date: z.coerce.date().nullable().default(null),
-    location: z.string(),
-    url: z.string().url(),
-    role: z.enum(['speaker', 'co-chair', 'organiser', 'mc', 'attendee']),
-    session_title: z.string().nullable().default(null),
+    // Position in the YouTube playlist; 0 = most recently added. Null for
+    // entries that don't come from the playlist.
+    playlist_position: z.number().nullable().default(null),
   }),
 });
 
 const writing = defineCollection({
   loader: glob({ pattern: '**/*.yaml', base: './src/content/writing' }),
   schema: z.object({
-    kind: z.enum(['blog', 'podcast', 'newsletter', 'interview']),
+    kind: z.enum(['blog', 'guide', 'knowledge', 'podcast', 'newsletter', 'interview']),
     title: z.string(),
     publication: z.string(),
     date: z.coerce.date(),
@@ -62,7 +68,9 @@ const speakers = defineCollection({
     slug: z.string(),
     caption: z.string(),
     event: z.string(),
-    date: z.coerce.date(),
+    // Null where the photo carries no EXIF date and its folder spans several
+    // events, so no date can be inferred without inventing one.
+    date: z.coerce.date().nullable().default(null),
     photographer: z.string(),
     license: z.string(),
     src: z.string(),
@@ -81,4 +89,4 @@ const badges = defineCollection({
   }),
 });
 
-export const collections = { talks, decks, conferences, writing, speakers, badges };
+export const collections = { talks, writing, speakers, badges };

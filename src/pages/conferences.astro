@@ -1,38 +1,48 @@
 ---
+// The schedule view of the unified `talks` collection: everything still to
+// come, plus the history below it. Same entries as /talks — that page shows
+// what has been delivered and what it produced.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
+import UpcomingMap from '../components/UpcomingMap.astro';
+import { isScheduled, isDelivered } from '../lib/engagement';
 
-const today = new Date();
-const all = await getCollection('conferences');
+const all = await getCollection('talks');
+
 const upcoming = all
-  .filter((c) => c.data.date >= today)
+  .filter((e) => isScheduled(e))
   .sort((a, b) => +a.data.date - +b.data.date);
+
+// Only entries that name a real event belong in a schedule history — a YouTube
+// row whose "event" is a channel name says nothing about where he was.
 const past = all
-  .filter((c) => c.data.date < today)
+  .filter((e) => isDelivered(e) && e.data.location)
   .sort((a, b) => +b.data.date - +a.data.date);
 ---
 <BaseLayout title="Conferences — Kasper Nissen" current="/conferences">
   <section class="pt-6">
     <h1 class="text-4xl font-extrabold tracking-tight">Conferences</h1>
-    <p class="text-stone-600 mt-2">Where I'll be next, and where I've been.</p>
+    <p class="text-stone-400 mt-2">Where I'll be next, and where I've been.</p>
   </section>
 
-  <section class="mt-10">
-    <h2 class="text-xl font-bold mb-3">Upcoming</h2>
+  <section class="mt-8">
+    <UpcomingMap entries={upcoming} past={past} />
+  </section>
+
+  <section class="mt-12">
+    <h2 class="text-xl font-bold mb-2">Upcoming</h2>
     {upcoming.length === 0 ? (
-      <p class="text-stone-500 text-sm">No upcoming announced yet.</p>
+      <p class="text-stone-500 text-sm py-4">Nothing announced yet — check back soon.</p>
     ) : (
-      upcoming.map((c) => <ConferenceRow entry={c} />)
+      <div>{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
     )}
   </section>
 
-  <section class="mt-10">
-    <h2 class="text-xl font-bold mb-3">Past</h2>
-    {past.length === 0 ? (
-      <p class="text-stone-500 text-sm">No past entries yet.</p>
-    ) : (
-      past.map((c) => <ConferenceRow entry={c} />)
-    )}
-  </section>
+  {past.length > 0 && (
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-2">Been there</h2>
+      <div>{past.map((c) => <ConferenceRow entry={c} />)}</div>
+    </section>
+  )}
 </BaseLayout>

@@ -6,35 +6,53 @@ import GitHubHeatmap from '../components/GitHubHeatmap.astro';
 import TalkCard from '../components/TalkCard.astro';
 import WritingRow from '../components/WritingRow.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
+import PhotoCarousel from '../components/PhotoCarousel.astro';
+import UpcomingMap from '../components/UpcomingMap.astro';
+import { sortTalks } from '../lib/sortTalks';
+import { sortPhotos } from '../lib/sortPhotos';
+import { isDelivered, isScheduled } from '../lib/engagement';
 
-const today = new Date();
+// One collection now holds both the schedule and the archive; which section an
+// entry appears in is decided by its date. See src/lib/engagement.ts.
+const engagements = await getCollection('talks');
 
-const talks = (await getCollection('talks'))
-  .sort((a, b) => +b.data.date - +a.data.date)
-  .slice(0, 3);
+const talks = sortTalks(engagements.filter((t) => isDelivered(t))).slice(0, 3);
 
 const writing = (await getCollection('writing'))
   .sort((a, b) => +b.data.date - +a.data.date)
   .slice(0, 5);
 
-const upcoming = (await getCollection('conferences'))
-  .filter((c) => c.data.date >= today)
-  .sort((a, b) => +a.data.date - +b.data.date)
-  .slice(0, 3);
+// The map plots every upcoming stop; the list below it shows only the next few.
+const allUpcoming = engagements
+  .filter((e) => isScheduled(e))
+  .sort((a, b) => +a.data.date - +b.data.date);
+// Past stops become the faint 'been there' dots on the map. Only entries that
+// know where they happened can be plotted.
+const allPast = engagements
+  .filter((e) => isDelivered(e) && e.data.location)
+  .sort((a, b) => +b.data.date - +a.data.date);
+const upcoming = allUpcoming.slice(0, 3);
+
+const photos = sortPhotos(await getCollection('speakers'));
 ---
 <BaseLayout
   title="Kasper Nissen — kaspernissen.xyz"
   description="Cloud native, observability, and the people who run it. Talks, writing, and conferences from Kasper Nissen."
   current="/"
 >
-  <Hero />
-
-  <GitHubHeatmap />
+  {/* The cartoon lives inside Hero, anchored to its bottom edge, and overflows
+      downward; the heatmap card (opaque, z-20) crops it. */}
+  <div class="relative">
+    <Hero />
+    <div class="relative z-20">
+      <GitHubHeatmap />
+    </div>
+  </div>
 
   <section class="mt-14">
     <div class="flex items-baseline justify-between mb-4">
       <h2 class="text-2xl font-extrabold tracking-tight">Latest talks</h2>
-      <a href="/talks" class="text-sm text-stone-600 hover:text-stone-950">All talks →</a>
+      <a href="/talks" class="text-sm text-stone-400 hover:text-stone-50">All talks →</a>
     </div>
     {talks.length === 0 ? (
       <p class="text-stone-500 text-sm py-4">Nothing yet — fetcher hasn't run.</p>
@@ -48,7 +66,7 @@ const upcoming = (await getCollection('conferences'))
   <section class="mt-14">
     <div class="flex items-baseline justify-between mb-4">
       <h2 class="text-2xl font-extrabold tracking-tight">Recent writing</h2>
-      <a href="/writing" class="text-sm text-stone-600 hover:text-stone-950">All writing →</a>
+      <a href="/writing" class="text-sm text-stone-400 hover:text-stone-50">All writing →</a>
     </div>
     {writing.length === 0 ? (
       <p class="text-stone-500 text-sm py-4">Nothing yet.</p>
@@ -60,12 +78,27 @@ const upcoming = (await getCollection('conferences'))
   <section class="mt-14">
     <div class="flex items-baseline justify-between mb-4">
       <h2 class="text-2xl font-extrabold tracking-tight">Where I'll be next</h2>
-      <a href="/conferences" class="text-sm text-stone-600 hover:text-stone-950">All conferences →</a>
+      <a href="/conferences" class="text-sm text-stone-400 hover:text-stone-50">All conferences →</a>
     </div>
     {upcoming.length === 0 ? (
       <p class="text-stone-500 text-sm py-4">Nothing announced yet — check back soon.</p>
     ) : (
-      <div>{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
+      <>
+        <UpcomingMap entries={allUpcoming} past={allPast} />
+        <div class="mt-6">{upcoming.map((c) => <ConferenceRow entry={c} />)}</div>
+      </>
+    )}
+  </section>
+
+  <section class="mt-14">
+    <div class="flex items-baseline justify-between mb-4">
+      <h2 class="text-2xl font-extrabold tracking-tight">From the road</h2>
+      <a href="/speaker-kit" class="text-sm text-stone-400 hover:text-stone-50">Speaker kit & all photos →</a>
+    </div>
+    {photos.length === 0 ? (
+      <p class="text-stone-500 text-sm py-4">No photos yet.</p>
+    ) : (
+      <PhotoCarousel entries={photos} />
     )}
   </section>
 </BaseLayout>

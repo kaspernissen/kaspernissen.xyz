@@ -1,34 +1,52 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PhotoGallery from '../../components/PhotoGallery.astro';
 import { talkSlug } from '../../lib/slug';
+import { deckUrl } from '../../lib/deckHost';
+import { displayTitle, isDelivered } from '../../lib/engagement';
 
 export async function getStaticPaths() {
   const talks = await getCollection('talks');
+  const photos = await getCollection('speakers');
+
   return talks.map((entry) => {
-    const slug = entry.data.slug ?? talkSlug(entry.data.title, entry.data.date);
-    return { params: { slug }, props: { entry } };
+    const slug = entry.data.slug ?? talkSlug(displayTitle(entry.data), entry.data.date);
+
+    // Photos join the engagement on date: anything shot between the first and
+    // last day of the event belongs to it. Photos with no date can't be placed
+    // and are left in the general gallery.
+    const from = +entry.data.date;
+    const to = +(entry.data.end_date ?? entry.data.date) + 86_400_000;
+    const gallery = photos.filter(
+      (p) => p.data.date && +p.data.date >= from && +p.data.date < to,
+    );
+
+    return { params: { slug }, props: { entry, gallery } };
   });
 }
 
-const { entry } = Astro.props;
+const { entry, gallery } = Astro.props;
 const d = entry.data;
+const title = displayTitle(d);
 const dateStr = d.date.toISOString().slice(0, 10);
+const delivered = isDelivered(entry);
 ---
-<BaseLayout title={`${d.title} — Kasper Nissen`} description={d.abstract ?? ''} current="/talks">
+<BaseLayout title={`${title} — Kasper Nissen`} description={d.abstract ?? ''} current="/talks">
   <article class="pt-6 max-w-3xl">
     <div class="text-[11px] uppercase tracking-wider text-stone-500">
       {d.event} · {dateStr}{d.location ? ` · ${d.location}` : ''}
+      {!delivered && <span class="ml-2 text-orange-400">upcoming</span>}
     </div>
-    <h1 class="text-4xl font-extrabold tracking-tight mt-2">{d.title}</h1>
-    {d.co_speakers.length > 0 && <div class="text-stone-600 mt-2">with {d.co_speakers.join(', ')}</div>}
+    <h1 class="text-4xl font-extrabold tracking-tight mt-2">{title}</h1>
+    {d.co_speakers.length > 0 && <div class="text-stone-400 mt-2">with {d.co_speakers.join(', ')}</div>}
 
     {d.youtube_id && (
-      <div class="aspect-video mt-6 rounded-xl overflow-hidden border-2 border-stone-950">
+      <div class="aspect-video mt-6 rounded-xl overflow-hidden">
         <iframe
           class="w-full h-full"
           src={`https://www.youtube-nocookie.com/embed/${d.youtube_id}`}
-          title={d.title}
+          title={title}
           loading="lazy"
           allowfullscreen
         ></iframe>
@@ -37,13 +55,50 @@ const dateStr = d.date.toISOString().slice(0, 10);
 
     {d.abstract && <div class="mt-6 prose prose-stone max-w-none whitespace-pre-line">{d.abstract}</div>}
 
-    <div class="mt-8 flex flex-wrap gap-2">
-      {d.slides_pdf && (
-        <a href={d.slides_pdf} class="bg-stone-950 text-white rounded-full px-4 py-1.5 text-sm font-semibold">Download slides</a>
+    <div class="mt-8 flex flex-wrap items-center gap-2">
+      {/* deck_file is a file name; deckUrl resolves it to wherever decks are
+          hosted (see src/lib/deckHost.ts). */}
+      {d.deck_file && (
+        <a
+          href={deckUrl(d.deck_file)}
+          class="inline-flex items-center gap-1.5 bg-stone-50 text-stone-950 rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-white transition"
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download slides{d.deck_size_mb ? ` · ${d.deck_size_mb.toFixed(1)} MB` : ''}
+        </a>
+      )}
+      {d.youtube_id && (
+        <a
+          href={`https://www.youtube.com/watch?v=${d.youtube_id}`}
+          class="inline-flex items-center gap-1.5 bg-stone-800 text-stone-100 rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-stone-700 transition"
+        >Watch on YouTube</a>
+      )}
+      {(d.session_url || d.event_url) && (
+        <a
+          href={d.session_url ?? d.event_url}
+          class="inline-flex items-center gap-1.5 bg-stone-800 text-stone-100 rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-stone-700 transition"
+        >{d.session_url ? 'Session page' : 'Event page'}</a>
+      )}
+      {d.notist_url && (
+        <a href={d.notist_url} class="text-xs text-stone-500 hover:text-stone-300 transition">On Notist →</a>
       )}
       {d.tags.map((t) => (
-        <span class="bg-amber-200 text-stone-900 rounded-full px-3 py-1 text-xs font-medium">{t}</span>
+        <span class="bg-amber-400 text-stone-950 rounded-full px-3 py-1 text-xs font-medium">{t}</span>
       ))}
     </div>
+
   </article>
+
+  {/* Outside the article's max-w-3xl: the grid wants the full column width so
+      four photos fit across on a wide screen. */}
+  {gallery.length > 0 && (
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-4">Photos from {d.event}</h2>
+      <PhotoGallery entries={gallery} />
+    </section>
+  )}
 </BaseLayout>

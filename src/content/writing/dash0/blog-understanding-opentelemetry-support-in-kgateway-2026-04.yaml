@@ -1,0 +1,6 @@
+kind: blog
+title: "Understanding OpenTelemetry Support in kgateway"
+publication: "Dash0 Blog"
+date: 2026-04-24
+url: "https://www.dash0.com/blog/understanding-opentelemetry-support-in-kgateway"
+summary: "A deep dive into kgateway’s OpenTelemetry integration, exploring how traces, logs, and metrics behave in practice and where the project stands using a proposed OpenTelemetry Support Maturity Model."

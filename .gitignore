@@ -26,9 +26,28 @@ pnpm-debug.log*
 .idea/
 .vscode/
 
-# Generated content
-data/
+# Fetcher caches — regenerated on every build, not worth versioning.
+#
+# NOTE: this must be `data/*`, not `data/`. Excluding the directory itself
+# stops git from ever descending into it, which silently makes the negations
+# below do nothing — which is exactly what happened to data/sessionize.json.
+data/*
 !data/sessionize.json
+# Hand-maintained, NOT generated: these are the only durable record of
+# corrections to scraped data. Without them the deployed site rebuilds from
+# raw upstream and quietly loses every override and exclusion.
+!data/conference-overrides.json
+!data/talk-exclusions.json
+!data/talk-overrides.json
+
+# Deck PDFs are mirrored from noti.st at ~8MB each and grow with every talk;
+# they are hosted rather than versioned. See src/lib/deckHost.ts.
+public/decks/*.pdf
 
 # Cloudflare/wrangler artifacts (just in case)
 .wrangler/
+
+# Full-resolution photo originals — hosted alongside the decks, not versioned.
+# public/speakers holds the local mirror you sync from. See src/lib/photoHost.ts.
+public/speakers/*.jpg
+photos-fullres/

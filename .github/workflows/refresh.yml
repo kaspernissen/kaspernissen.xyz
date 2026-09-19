@@ -29,6 +29,11 @@ jobs:
       - run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          # See deploy.yml / infra/README.md. A deck published on noti.st but not
+          # yet synced to the bucket is skipped rather than linked, so this
+          # nightly job can never publish a dead download link.
+          PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com
+          DECKS_METADATA_ONLY: '1'
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

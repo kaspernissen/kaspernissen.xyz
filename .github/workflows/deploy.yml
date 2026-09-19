@@ -30,6 +30,10 @@ jobs:
       - run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          # Deck PDFs are served from S3, not from this repo (see infra/README.md).
+          # METADATA_ONLY keeps the build from pulling ~80MB it would never serve.
+          PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com
+          DECKS_METADATA_ONLY: '1'
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

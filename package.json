@@ -12,6 +12,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
+    "decks:fetch": "node scripts/fetch-notist.mjs",
+    "decks:sync": "node scripts/sync-decks.mjs",
+    "photos:import": "node scripts/import-photos.mjs",
+    "photos:sync": "DECKS_SRC=public/speakers DECKS_PREFIX=photos node scripts/sync-decks.mjs",
     "astro": "astro"
   },
   "dependencies": {

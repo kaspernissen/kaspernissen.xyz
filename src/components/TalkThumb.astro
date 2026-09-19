@@ -1,0 +1,65 @@
+---
+// Generated cover art for a talk with no video thumbnail. See src/lib/thumb.ts
+// for why this exists and how the seed works.
+import { paletteFor, layoutFor } from '../lib/thumb';
+
+interface Props {
+  seed: string;
+  label?: string;
+}
+const { seed, label = 'no recording' } = Astro.props;
+
+const { bg, shapes } = paletteFor(seed);
+const layout = layoutFor(seed);
+const [a, b, c] = shapes;
+---
+<div class="relative w-full aspect-video overflow-hidden" style={`background:${bg}`}>
+  <svg viewBox="0 0 320 180" class="absolute inset-0 w-full h-full" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    {layout === 0 && (
+      <g>
+        <circle cx="255" cy="40" r="58" fill={a} opacity="0.9" />
+        <path d="M-10 150 Q40 110 90 150 T190 150 T290 150 L330 150" stroke={b} stroke-width="9" fill="none" stroke-linecap="round" />
+        <rect x="24" y="28" width="46" height="46" rx="6" fill={c} transform="rotate(-14 47 51)" />
+        <circle cx="150" cy="70" r="11" fill={b} />
+      </g>
+    )}
+    {layout === 1 && (
+      <g>
+        <path d="M0 180 L0 70 L120 180 Z" fill={a} opacity="0.85" />
+        <circle cx="90" cy="48" r="34" fill={c} />
+        <g stroke={b} stroke-width="8" stroke-linecap="round">
+          <line x1="200" y1="36" x2="300" y2="36" />
+          <line x1="200" y1="66" x2="300" y2="66" />
+          <line x1="200" y1="96" x2="262" y2="96" />
+        </g>
+        <circle cx="286" cy="140" r="18" fill={c} opacity="0.9" />
+      </g>
+    )}
+    {layout === 2 && (
+      <g>
+        <circle cx="52" cy="140" r="66" fill={b} opacity="0.85" />
+        <path d="M180 18 L262 18 L221 92 Z" fill={a} />
+        <path d="M-10 46 Q40 12 92 46 T196 46" stroke={c} stroke-width="8" fill="none" stroke-linecap="round" />
+        <rect x="248" y="104" width="52" height="52" rx="8" fill={c} transform="rotate(18 274 130)" />
+      </g>
+    )}
+    {layout === 3 && (
+      <g>
+        <rect x="-10" y="-10" width="170" height="200" fill={a} opacity="0.22" />
+        <circle cx="228" cy="96" r="52" fill={b} opacity="0.9" />
+        <circle cx="228" cy="96" r="24" fill={bg} />
+        <g fill={c}>
+          <circle cx="44" cy="40" r="12" />
+          <circle cx="92" cy="72" r="8" />
+          <circle cx="40" cy="108" r="16" />
+          <circle cx="100" cy="140" r="10" />
+        </g>
+        <path d="M150 178 L320 178" stroke={c} stroke-width="7" stroke-linecap="round" />
+      </g>
+    )}
+  </svg>
+
+  <div class="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full bg-stone-950/70 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-stone-200 backdrop-blur-sm">
+    {label}
+  </div>
+</div>

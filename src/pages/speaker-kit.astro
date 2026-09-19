@@ -2,16 +2,20 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoCard from '../components/PhotoCard.astro';
+import { sortPhotos } from '../lib/sortPhotos';
 
-const photos = (await getCollection('speakers')).sort((a, b) => +b.data.date - +a.data.date);
+const photos = sortPhotos(await getCollection('speakers'));
 
+// Kasper's canonical bios — keep these in sync with what he submits to events.
+// Note "former" on the Co-Chair role: he co-chaired KubeCon + CloudNativeCon
+// EU/NA, he does not currently.
 const bios = {
   short:
-    'Kasper Nissen — CNCF Ambassador, KubeCon co-chair, Senior PMM at Dash0, organiser of Cloud Native Aarhus.',
+    'Kasper Borg Nissen — Director of Developer Relations at Dash0, former Co-Chair KubeCon + CloudNativeCon EU/NA, CNCF Ambassador, Golden Kubestronaut, KCD Organizer, Meet-up organizer.',
   medium:
-    'Kasper Nissen is a CNCF Ambassador, KubeCon + CloudNativeCon co-chair, and Senior Product Marketing Manager at Dash0. He organises Cloud Native Aarhus and Cloud Native Nordics, speaks regularly on observability and cloud-native operations, and helps engineering teams adopt OpenTelemetry in production.',
+    'Kasper Borg Nissen is Director of Developer Relations at Dash0, a CNCF, MergeForward, and AAIF Ambassador, former KubeCon + CloudNativeCon Co-Chair, Golden Kubestronaut, and KCD Organizer. He co-founded Cloud Native Nordics to unite meetups across the region, and speaks regularly on observability, platform engineering, and AI.',
   long:
-    "Kasper Nissen has been working in cloud-native operations and observability for over a decade. He is a CNCF Ambassador, KubeCon + CloudNativeCon co-chair, and Senior Product Marketing Manager at Dash0. Outside of his work at Dash0, Kasper organises Cloud Native Aarhus and Cloud Native Nordics, two of the most active cloud-native communities in the Nordics, and speaks regularly at conferences worldwide on Kubernetes, observability, and OpenTelemetry. He lives in Aarhus, Denmark.",
+    'Kasper is a CNCF, MergeForward, and AAIF Ambassador, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, KCD Organizer and CNCG Group Organizer. He co-founded Cloud Native Nordics to unite meetups across the region. At Dash0, he helps make observability easy for developers by advocating for better tooling, best practices, and seamless integrations. Bridging observability, AI, and platform engineering, he ensures developers stay productive and gain actionable insights exactly when needed.',
 };
 
 const topics = [
@@ -25,15 +29,15 @@ const topics = [
 <BaseLayout title="Speaker kit — Kasper Nissen" current="/speaker-kit">
   <section class="pt-6">
     <h1 class="text-4xl font-extrabold tracking-tight">Speaker kit</h1>
-    <p class="text-stone-600 mt-2">
-      Everything you need to invite me to your event.
-      <a href="mailto:kasper.nissen@dash0.com" class="underline decoration-orange-400 underline-offset-2">kasper.nissen@dash0.com</a>
+    <p class="text-stone-400 mt-2">
+      Everything you need to invite me to your event. Reach me on
+      <a href="https://www.linkedin.com/in/kaspernissen/" class="underline decoration-orange-400 underline-offset-2">LinkedIn</a>.
     </p>
   </section>
 
   <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
     {(['short', 'medium', 'long'] as const).map((k) => (
-      <div class="bg-white rounded-xl border-2 border-stone-950 p-4">
+      <div class="bg-stone-900 rounded-xl p-4">
         <div class="text-[11px] uppercase tracking-wider text-stone-500 mb-2">Bio · {k}</div>
         <p class="text-sm leading-relaxed">{bios[k]}</p>
       </div>
@@ -42,14 +46,14 @@ const topics = [
 
   <section class="mt-12">
     <h2 class="text-xl font-bold mb-3">Topics I'm happy to speak on</h2>
-    <ul class="list-disc pl-6 space-y-1 text-stone-700">
+    <ul class="list-disc pl-6 space-y-1 text-stone-300">
       {topics.map((t) => <li>{t}</li>)}
     </ul>
   </section>
 
   <section class="mt-12">
     <h2 class="text-xl font-bold mb-3">Photos</h2>
-    <p class="text-stone-600 text-sm mb-4">
+    <p class="text-stone-400 text-sm mb-4">
       Click a photo to download the original. Credit the photographer and use under the listed license.
     </p>
     {photos.length === 0 ? (

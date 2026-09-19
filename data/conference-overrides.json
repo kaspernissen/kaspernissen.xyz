@@ -1,0 +1,96 @@
+{
+  "_comment": [
+    "Manual corrections layered on top of scraped Sessionize data.",
+    "Sessionize's public profile only publishes month + year, so every scraped",
+    "date is a last-day-of-month guess. Add an entry here whenever you know the",
+    "real dates, or when the scraped name/location/url is wrong.",
+    "",
+    "Key = the event name, slugified (lowercase, non-alphanumerics -> '-').",
+    "Any of: name, date, end_date, location, url, role, session_title,",
+    "session_url, co_speakers.",
+    "",
+    "Events NOT on the Sessionize profile go in src/content/conferences/manual/",
+    "instead — the fetcher never touches that directory.",
+    "",
+    "Overrides that match no scraped event are reported by the fetcher so typos",
+    "and renamed events don't fail silently."
+  ],
+  "containerdays-hamburg-2026": {
+    "date": "2026-09-02",
+    "end_date": "2026-09-04",
+    "url": "https://www.containerdays.io/",
+    "abstract": "According to the latest CNCF survey, nearly 49% of organizations now run OpenTelemetry in production, yet “supports OpenTelemetry” has become a vague claim that hides large differences in quality, usability, and long-term maintainability.\n\nThis talk introduces a community-driven OpenTelemetry Support Maturity Model that moves beyond checkboxes and helps evaluate how well OpenTelemetry is integrated and evolved. The model breaks maturity down across seven dimensions, providing a structured way to reason about real-world OpenTelemetry support.\n\nWe ground the model in practice by applying it to widely used Kubernetes ingress controllers (kgateway, contour, emissary, traefik, istio gateway), which sit on the critical path of every request. Rather than ranking projects, the model gives platform engineers a framework to evaluate integrations and maintainers guidance for improving OpenTelemetry support intentionally, helping align the ecosystem around what “good” support should mean."
+  },
+  "kubecon-cloudnativecon-north-america-2026": {
+    "date": "2026-11-09",
+    "end_date": "2026-11-12",
+    "location": "Salt Lake City, Utah, United States",
+    "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/",
+    "role": "moderator",
+    "session_title": "Agents on the Platform: Four Perspectives on the Conversation We're Already Having in Private"
+  },
+  "observability-summit-europe-2026": {
+    "date": "2026-10-05",
+    "location": "Prague, Czechia",
+    "url": "https://events.linuxfoundation.org/observability-summit-europe/",
+    "session_title": "Your Agent Did What? Forensic Observability for Systems That Don't Leave Obvious Footprints",
+    "session_url": "https://events.linuxfoundation.org/observability-summit-europe/program/schedule/?id=1262563",
+    "co_speakers": [
+      "Adriana Villela"
+    ]
+  },
+  "open-source-summit-embedded-linux-conference-europe-2026": {
+    "date": "2026-10-07",
+    "end_date": "2026-10-09",
+    "location": "Prague, Czechia",
+    "url": "https://events.linuxfoundation.org/open-source-summit-europe/",
+    "session_title": "Your Agent Did What? Forensic Observability for Systems That Don't Leave Obvious Footprints",
+    "session_url": "https://events.linuxfoundation.org/open-source-summit-europe/program/schedule/",
+    "co_speakers": [
+      "Adriana Villela"
+    ]
+  },
+  "kcd-uk-edinburgh-2026": {
+    "date": "2026-10-19",
+    "end_date": "2026-10-20",
+    "location": "Edinburgh, United Kingdom",
+    "url": "https://community2.cncf.io/events/details/cncf-kcd-uk-presents-kubernetes-community-days-uk-edinburgh-2026/",
+    "session_title": "Your Agent Did What? Forensic Observability for Systems That Don't Leave Obvious Footprints",
+    "session_url": "https://ckranz.github.io/kcduk/",
+    "co_speakers": [
+      "Adriana Villela"
+    ]
+  },
+  "_note_redev": "Key is 'redev-2026', not 'oredev-2026' — slugify() drops the leading Ø rather than folding it to 'o'.",
+  "redev-2026": {
+    "date": "2026-11-04",
+    "end_date": "2026-11-06",
+    "location": "Malmö, Sweden",
+    "url": "https://oredev.org/",
+    "session_title": "Rethinking Observability as a Platform Product",
+    "session_url": "https://oredev.org/line-up/3a3764a1-7dfb-4ee5-8306-f2173fd9e606"
+  },
+  "_note_dublin": "Sessionize lists this as 'Cloud Native Dublin October' dated October 2026, but Kasper confirms it happened on 6 August 2026 — the name is overridden to drop the contradictory month.",
+  "cloud-native-dublin-october": {
+    "_why": "The Dublin meetup reuses one Sessionize listing across meetups, so it is still named 'Cloud Native Dublin October' whatever month the talk was. The key must keep that scraped name to match; `name` fixes the display. The talk itself was on 2026-08-06.",
+    "name": "Cloud Native Dublin",
+    "date": "2026-08-06",
+    "location": "Dublin, Ireland",
+    "url": "https://www.meetup.com/cloud-native-dublin/",
+    "session_title": "Rethinking Observability as a Platform Product",
+    "abstract": "Many organizations still treat observability as a tooling decision: select a vendor, deploy agents, and expect insight to follow. Yet teams continue to struggle with fragmented signals, rising complexity, and slow incident response. The real issue is rarely the tool itself - it’s the absence of a shared foundation and a coherent product experience.\n\nThis talk reframes observability as an internal platform product, designed with clear users, sane defaults, and long-term evolution in mind. Drawing parallels to Kubernetes and platform engineering, we’ll explore why powerful primitives are not enough - and why standardization, correlation, and paved paths matter more than features.\n\nWe’ll look at how OpenTelemetry provides a vendor-neutral foundation for structured telemetry, decoupling instrumentation from backends and enabling correlation by default. This structured approach not only reduces cognitive load and improves reliability, it also lays the groundwork for AI-assisted debugging and natural language interaction with production systems.\n\nObservability isn’t just about collecting more data. It’s about designing a platform that makes understanding systems easier - for both humans and machines."
+  },
+  "cloud-native-days-poland-2026": {
+    "date": "2026-10-22",
+    "location": "Warsaw, Poland",
+    "url": "https://cloudnativedayspoland.org/",
+    "session_title": "Rethinking Observability as a Platform Product",
+    "session_url": "https://cloudnativedayspoland.org/agenda/#talk-rethinking-observability-as-a-platform-product"
+  },
+  "kcd-czech-slovak-2026": {
+    "date": "2026-05-21",
+    "end_date": "2026-05-22",
+    "location": "Prague, Czechia",
+    "url": "https://community.cncf.io/kcd-czech-slovak/"
+  }
+}

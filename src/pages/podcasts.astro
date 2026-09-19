@@ -1,0 +1,32 @@
+---
+// Podcast appearances are talking, not writing, so they get their own page
+// rather than sitting in the middle of the blog archive. They still live in the
+// `writing` collection — one fetcher shape, filtered by kind at render.
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WritingRow from '../components/WritingRow.astro';
+import { PODCAST_KINDS } from '../lib/writingKinds';
+
+const items = (await getCollection('writing'))
+  .filter((w) => PODCAST_KINDS.includes(w.data.kind))
+  .sort((a, b) => +b.data.date - +a.data.date);
+---
+<BaseLayout
+  title="Podcasts — Kasper Nissen"
+  description="Podcast guest spots and interviews with Kasper Nissen on cloud native, observability, and platform engineering."
+  current="/podcasts"
+>
+  <section class="pt-6">
+    <h1 class="text-4xl font-extrabold tracking-tight">Podcasts</h1>
+    <p class="text-stone-400 mt-2">
+      Guest spots and interviews. {items.length} total.
+    </p>
+  </section>
+  {items.length === 0 ? (
+    <p class="text-stone-500 text-sm py-6">Nothing yet.</p>
+  ) : (
+    <div class="mt-8">
+      {items.map((w) => <WritingRow entry={w} />)}
+    </div>
+  )}
+</BaseLayout>

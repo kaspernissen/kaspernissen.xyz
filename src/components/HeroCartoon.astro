@@ -1,0 +1,26 @@
+---
+// Big cartoon, desktop only (md+), rendered INSIDE the hero section.
+//
+// It is anchored to the hero's BOTTOM edge, not its top. The headline rewraps
+// from two lines to four between md and lg, so any fixed `top` offset left the
+// cartoon floating in mid-air with a gap above the heatmap at some widths.
+// Anchoring to the bottom makes the composition independent of headline height:
+// the cartoon always hangs slightly below the hero, where the GitHub heatmap
+// card — opaque bg-stone-900 at z-20 — crops it.
+//
+// Hidden below md: at phone widths there's no room beside the headline.
+import { Image } from 'astro:assets';
+import cartoon from '../assets/hero/cartoon.png';
+---
+<div
+  class="hidden md:block absolute right-[-1.5rem] lg:right-[-3rem] bottom-[-2.5rem] lg:bottom-[-3.5rem] w-[22rem] lg:w-[30rem] pointer-events-none"
+  style="z-index: 1;"
+>
+  <Image
+    src={cartoon}
+    alt="Cartoon portrait of Kasper Nissen"
+    widths={[400, 512, 800, 1024]}
+    sizes="(min-width: 1024px) 480px, 352px"
+    class="cartoon-shadow w-full rotate-1 select-none"
+  />
+</div>

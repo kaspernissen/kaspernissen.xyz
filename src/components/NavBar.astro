@@ -3,20 +3,20 @@ const { current } = Astro.props as { current?: string };
 const links = [
   { href: '/talks', label: 'Talks' },
   { href: '/writing', label: 'Writing' },
+  { href: '/podcasts', label: 'Podcasts' },
   { href: '/conferences', label: 'Conferences' },
-  { href: '/decks', label: 'Decks' },
   { href: '/speaker-kit', label: 'Speaker kit' },
   { href: '/badges', label: 'Badges' },
 ];
 ---
 <nav class="flex items-center justify-between max-w-5xl mx-auto px-6 py-5 text-sm">
   <a href="/" class="font-extrabold tracking-tight text-lg">kasper.</a>
-  <ul class="hidden sm:flex gap-5 text-stone-700">
+  <ul class="hidden sm:flex gap-5 text-stone-300">
     {links.map((l) => (
       <li>
         <a
           href={l.href}
-          class={`hover:text-stone-950 ${current === l.href ? 'text-stone-950 underline decoration-2 decoration-orange-400 underline-offset-4' : ''}`}
+          class={`hover:text-stone-50 ${current === l.href ? 'text-stone-50 underline decoration-2 decoration-orange-400 underline-offset-4' : ''}`}
         >
           {l.label}
         </a>

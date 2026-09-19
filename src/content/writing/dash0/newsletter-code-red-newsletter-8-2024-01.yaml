@@ -1,0 +1,6 @@
+kind: newsletter
+title: "Code Red Newsletter #8"
+publication: "Code RED Newsletter"
+date: 2024-01-01
+url: "https://www.dash0.com/newsletter/code-red-newsletter-8"
+summary: "Hi there, Telemetry is everywhere. And I mean everywhere. From Minecraft servers to CI pipelines to integration tests, OpenTelemetry is popping up in places you might not expect - and it’s being used in clever, practical"

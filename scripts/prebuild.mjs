@@ -8,6 +8,8 @@ const fetchers = [
   ['credly',          'scripts/fetch-credly.mjs'],
   ['github-readme',   'scripts/fetch-github-readme.mjs'],
   ['github-contrib',  'scripts/fetch-github-contributions.mjs'],
+  ['dash0',           'scripts/fetch-dash0.mjs'],
+  ['notist',          'scripts/fetch-notist.mjs'],
 ];
 
 function run(label, file) {
@@ -19,6 +21,28 @@ function run(label, file) {
 }
 
 const results = await Promise.all(fetchers.map(([l, f]) => run(l, f)));
+
+// Post-passes run AFTER every fetcher, never in parallel with them: the same
+// talk can arrive from both the GitHub README and the YouTube playlist, so the
+// duplicates only exist once both have finished writing.
+// prune-talks runs last: dedupe may merge two entries into one keeper, and an
+// excluded talk must be dropped whichever file survives that merge.
+// link-decks runs after prune: it must not link a deck to a talk that is
+// about to be merged away or excluded from the site.
+// link-recordings runs after dedupe (which handles title-matchable pairs) and
+// before link-decks, so a deck can attach to the combined engagement.
+const postPasses = [
+  ['dedupe-talks', 'scripts/dedupe-talks.mjs'],
+  ['link-recordings', 'scripts/link-recordings.mjs'],
+  ['prune-talks', 'scripts/prune-talks.mjs'],
+  ['link-decks', 'scripts/link-decks.mjs'],
+  // Hand-entered corrections win over everything the fetchers inferred.
+  ['talk-overrides', 'scripts/apply-talk-overrides.mjs'],
+];
+for (const [label, file] of postPasses) {
+  results.push(await run(label, file));
+}
+
 console.log('\nprebuild summary:');
 for (const r of results) {
   console.log(
