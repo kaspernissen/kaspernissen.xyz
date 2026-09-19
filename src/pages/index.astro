@@ -10,6 +10,7 @@ import PhotoCarousel from '../components/PhotoCarousel.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
 import { sortTalks } from '../lib/sortTalks';
 import { sortPhotos } from '../lib/sortPhotos';
+import { assignPhotos } from '../lib/photoJoin';
 import { isDelivered, isScheduled, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
 
@@ -35,6 +36,10 @@ const allPast = engagements
 const upcoming = allUpcoming.slice(0, 3);
 
 const photos = sortPhotos(await getCollection('speakers'));
+
+// A talk with no recording can still be pictured, if someone photographed it.
+// Same join the talk pages use, so a card and the page it opens agree.
+const galleries = assignPhotos(talks, photos);
 ---
 <BaseLayout
   title="Kasper Nissen — kaspernissen.xyz"
@@ -59,7 +64,7 @@ const photos = sortPhotos(await getCollection('speakers'));
       <p class="text-stone-500 text-sm py-4">Nothing yet — fetcher hasn't run.</p>
     ) : (
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {talks.map((t) => <TalkCard entry={t} />)}
+        {talks.map((t) => <TalkCard entry={t} photo={galleries.get(t)?.[0] ?? null} />)}
       </div>
     )}
   </section>

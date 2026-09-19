@@ -4,11 +4,16 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import TalkCard from '../../components/TalkCard.astro';
 import { sortTalks } from '../../lib/sortTalks';
 import { isDelivered, visible } from '../../lib/engagement';
+import { sortPhotos } from '../../lib/sortPhotos';
+import { assignPhotos } from '../../lib/photoJoin';
 
 // Delivered engagements only — upcoming ones live on /conferences until their
 // date passes, at which point they appear here and start collecting a deck and
 // a recording.
 const talks = sortTalks(visible(await getCollection('talks')).filter((t) => isDelivered(t)));
+// A talk with no recording can still be pictured, if someone photographed it.
+const galleries = assignPhotos(talks, sortPhotos(await getCollection('speakers')));
+
 const withVideo = talks.filter((t) => t.data.youtube_id).length;
 const withSlides = talks.filter((t) => t.data.deck_file).length;
 
@@ -50,7 +55,7 @@ const years = [...new Set(talks.map((t) => t.data.date.getFullYear()))].sort((a,
         data-video={t.data.youtube_id ? 'true' : 'false'}
         data-slides={t.data.deck_file ? 'true' : 'false'}
       >
-        <TalkCard entry={t} />
+        <TalkCard entry={t} photo={galleries.get(t)?.[0] ?? null} />
       </div>
     ))}
   </div>
