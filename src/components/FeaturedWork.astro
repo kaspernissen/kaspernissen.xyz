@@ -1,11 +1,13 @@
 ---
 // The longer-form work — a book and a course — as cards above the article list.
 //
-// Cover art is `object-contain` on its own ground rather than `object-cover`:
-// a book cover is portrait (462x636) and a course promo is landscape, and
-// cropping either to a uniform box cuts the title off. Entries with no usable
-// cover fall back to the same generated artwork the talk and podcast cards use,
-// so the row stays even.
+// Laid out sideways: a book cover is portrait, and giving it the full width of
+// a card made it tower over everything else on the page. Held to a narrow
+// column with the text beside it, the cards stay the height of their text and
+// the two sit level however differently shaped their art is.
+//
+// `object-contain`, not `object-cover` — a course promo is landscape where a
+// book cover is portrait, and cropping both to one box cuts the titles off.
 import type { CollectionEntry } from 'astro:content';
 import TalkThumb from './TalkThumb.astro';
 
@@ -18,21 +20,24 @@ const { entries } = Astro.props as { entries: CollectionEntry<'writing'>[] };
         href={w.data.url}
         target="_blank"
         rel="noreferrer"
-        class="flex flex-col bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition overflow-hidden"
+        class="flex items-start gap-4 bg-stone-900 rounded-xl p-4 shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition"
       >
-        {w.data.image ? (
-          <div class="bg-stone-950/60 flex items-center justify-center aspect-video">
+        <div class="shrink-0 w-20 sm:w-24">
+          {w.data.image ? (
             <img
               src={w.data.image}
               alt=""
               loading="lazy"
-              class="max-h-full max-w-full object-contain"
+              class="w-full h-auto rounded shadow-lg shadow-stone-950/60"
             />
-          </div>
-        ) : (
-          <TalkThumb seed={w.data.title} label={w.data.kind} />
-        )}
-        <div class="p-4">
+          ) : (
+            <div class="rounded overflow-hidden">
+              <TalkThumb seed={w.data.title} label="" />
+            </div>
+          )}
+        </div>
+        {/* min-w-0 lets a long title wrap instead of forcing the card wider. */}
+        <div class="min-w-0">
           <div class="text-[11px] uppercase tracking-wider text-stone-500">
             {w.data.kind} · {w.data.publication}
             {w.data.duration_min ? ` · ${w.data.duration_min} min` : ''}

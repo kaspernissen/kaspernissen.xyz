@@ -17,7 +17,12 @@ const featured = all.filter((w) => FEATURED_KINDS.includes(w.data.kind)).sort(ne
 const articles = all
   .filter((w) => !isNewsletter(w.data.kind) && !FEATURED_KINDS.includes(w.data.kind))
   .sort(newest);
-const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(newest);
+// Code RED issues are numbered, and their publish dates don't always run in
+// issue order. Sorted by title with a numeric-aware compare, so #37 leads and
+// #10 doesn't sort before #9.
+const byIssue = (a, b) =>
+  b.data.title.localeCompare(a.data.title, undefined, { numeric: true });
+const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(byIssue);
 ---
 <BaseLayout title="Writing — Kasper Nissen" current="/writing">
   <section class="pt-6">
@@ -41,7 +46,7 @@ const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(newest);
     <section class="mt-16">
       <h2 class="text-2xl font-extrabold tracking-tight">Code RED newsletter</h2>
       <p class="text-stone-400 mt-2 text-sm">
-        {newsletters.length} issues, newest first.
+        {newsletters.length} issues, latest first.
       </p>
       <div class="mt-6">
         {newsletters.map((w) => <WritingRow entry={w} />)}

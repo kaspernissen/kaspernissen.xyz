@@ -5,3 +5,4 @@ date: 2025-09-04
 duration_min: 120
 url: "https://university.platformengineering.org/observability-for-platform-engineering"
 summary: "Five modules on making observability a core platform capability — the tooling landscape, OpenTelemetry, and automation. Taught with Michele Mancioppi."
+image: "https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos/art/course-observability-for-platform-engineering.png"
