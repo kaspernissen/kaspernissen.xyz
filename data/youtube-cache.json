@@ -1,0 +1,277 @@
+{
+  "ngchdFcxmxo": {
+    "publishedAt": "2025-10-01",
+    "channelTitle": "Kasper Borg Nissen",
+    "description": "Observability is the backbone of modern cloud-native applications, but many organizations find themselves locked into proprietary tools with rising costs, rigid ecosystems, and limited flexibility. In this talk, we’ll explore how open observability standards like OpenTelemetry for instrumentation and Perses for monitoring-as-code are transforming the landscape by enabling vendor-neutral, scalable, and future-proof observability stacks.\n\nWe’ll start with an introduction to OpenTelemetry, covering how to get started, instrument applications, and provide developer-friendly abstractions for seamless auto-instrumentation. From there, we’ll dive into Perses, a CNCF Sandbox project that brings open, declarative, and portable dashboards to observability. By building on these open standards, organizations gain the freedom to mix and match storage, visualization, and analytics tools without being tied to a single vendor.\n"
+  },
+  "V2rHg1jg6jA": {
+    "publishedAt": "2025-06-23",
+    "channelTitle": "Platform Engineering",
+    "description": "Platform engineers often face the challenge of providing developers with effective tools for managing application observability. Observability sprawl - characterized by multiple tools, disconnected dashboards, and inconsistent instrumentation - can lead to difficulties in troubleshooting, increased cognitive load, and reduced productivity.\n\nIn this talk, Kasper Borg Nissen will demonstrate how platform engineering principles can help bridge this gap by creating developer-friendly observability abstractions. The session will cover how OpenTelemetry can be used for auto-instrumentation, manual instrumentation, and standardizing semantic conventions for telemetry signals.\n"
+  },
+  "kHonSTlbHEc": {
+    "publishedAt": "2019-11-22",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Join us for Kubernetes Forums Seoul, Sydney, Bengaluru and Delhi - learn more at kubecon.io \n\nDon't miss KubeCon + CloudNativeCon 2020 events in Amsterdam March 30 - April 2, Shanghai July 28-30 and Boston November 17-20! Learn more at kubecon.io. The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects \n"
+  },
+  "J0f28fq4aS0": {
+    "publishedAt": "2020-03-26",
+    "channelTitle": "Cloud Native Nordics",
+    "description": "a virtual Cloud Native Nordics sharing session.\n\nJoin us for a relaxed panel conversation about what Cloud Native means for us, and stories about how to do it in practice.\n"
+  },
+  "k6PSX8I-IJY": {
+    "publishedAt": "2025-06-26",
+    "channelTitle": "Kasper Borg Nissen, Dash0",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon India in Hyderabad (August 6-7), and KubeCon + CloudNativeCon North America in Atlanta (November 10-13). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nDebugging OpenTelemetry: Ensuring Your Observability Signals Are Spot On - Kasper Borg Nissen, Dash0\n"
+  },
+  "fye9gTQFdhY": {
+    "publishedAt": "2025-07-02",
+    "channelTitle": "KCD Budapest",
+    "description": "In the ever-evolving landscape of software development, platform engineering and observability have been on parallel journeys of transformation. Kubernetes has revolutionized how we run containers everywhere, standardizing platforms for infrastructure. Similarly, OpenTelemetry is standardizing telemetry collection, enabling developers to own and understand their systems with ease.\n\nIn this talk, we’ll explore the history of platform engineering and the evolution of observability - from fragmented signals to unified platforms built on open standards. We’ll dive into how platform engineering introduced self-service and abstraction to empower developers and how observability platforms, like OpenTelemetry, are achieving similar goals through auto-instrumentation and open ecosystems.\n"
+  },
+  "FVF8b-J7v2c": {
+    "publishedAt": "2019-04-23",
+    "channelTitle": "Cloud Native CI/CD using 'GitOps'",
+    "description": "This Ignite Talk was recorded at DevOpsDays Copenhagen 2019 on April 3rd: https://www.devopsdays.org/events/2019-copenhagen/program/kasper-nissen/"
+  },
+  "r1gpPpNhT_4": {
+    "publishedAt": "2025-06-07",
+    "channelTitle": "Kasper Borg Nissen: Breaking Free with Open Standards OpenTelemetry",
+    "description": "KCD Helsinki 2025 - Kasper Borg Nissen: Breaking Free with Open Standards: OpenTelemetry and Perses for Observability\n\nThis is a recording of Kasper's keynote in Room 1 of KCD Helsinki 2025.\n "
+  },
+  "tSBfDzStoYE": {
+    "publishedAt": "2025-04-15",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Click here to watch the KubeCon + CloudNativeCon Europe 2025 - Keynote (International Sign Language) https://youtube.com/playlist?list=PLj6h78yzYM2Of6psbKjeZxZIHjycSYoYF&amp;si=dRDK3EQXbo2gT7Yb \n\nDon't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Hong Kong, China (June 10-11); Tokyo, Japan (June 16-17); Hyderabad, India (August 6-7); Atlanta, US (November 10-13). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n"
+  },
+  "a9Q5agqV1cE": {
+    "publishedAt": "2018-01-26",
+    "channelTitle": "GOTO Conferences",
+    "description": "This presentation was recorded at GOTO Copenhagen 2017. #gotocon #gotocph\nhttp://gotocph.com\n\nKasper Nissen - DevOps Engineer at Lunar Way"
+  },
+  "Pa7fZ6dz6r4": {
+    "publishedAt": "2025-10-30",
+    "channelTitle": "Cloud Native Bergen",
+    "description": "by Kasper Borg Nissen\n\nCloud Native Day Bergen 2025 brought together developers, engineers, and tech leaders to explore the latest in cloud-native technologies. Watch the talks, get inspired, and join us next year in Bergen!\n "
+  },
+  "q6Nvm2Jhf1s": {
+    "publishedAt": "2019-07-16",
+    "channelTitle": "Kasper Nissen",
+    "description": "At Lunar Way we have been running Kubernetes in production for over two years. This presentation will be an experience report of the challenges we faced and how we overcome them. We started running Kubernetes in March 2017 to support at that time, 7 microservices. Today we manage around 80 microservices in production. In this presentation, Kasper will touch upon topics such as; finding the right abstraction (do developers need to care about Docker and Kubernetes?), Release Management with Git as the single source of truth (GitOps), and lastly Kubernetes Operations (kops) and the quirks that it comes with.\n#cloud #kubernetes #cloudcomputing #cloudnative #k8s #devops #gitops #edgecomputing #multicloud #microservicesarchitecture #docker #tech #saas #opensource #opensourcecommunity #devsecops #kubevirt #containerdays #techconference"
+  },
+  "0hbgOftU_Mg": {
+    "publishedAt": "2026-05-07",
+    "channelTitle": "Dash0",
+    "description": "At KubeCon EU 2026, Kasper Borg Nissen and Mauricio &quot;Salaboy&quot; Salatino took the stage to show how Dapr Workflows and OpenTelemetry can work together to make complex, agentic, event-driven systems actually observable without making developers' lives harder.\n\nNow we're going deeper.\n\nJoin Julia Furst Morgado as she sits down with Kasper and Mauricio to revisit the talk, answer the questions that didn't make it into the session, and dig into the details that 30 minutes on stage couldn't cover. We're diving into the world of AI and agentic workloads. The demo features a complex pizza store managed by multiple agents - handling cooking and delivering pizzas. This demo will serve as the backdrop for a deep discussion on how to tame the complexity of mcp servers, tool calls, and skills in a world of agentic workloads. We will openly discuss what worked in the implementation, the fixes we had to make, and where the current gaps lie. We'll also go deep on no-touch instrumentation and async trace propagation, where the OTel support still has gaps, and what the community is doing about it.\n\nWhether you were in the room in Amsterdam or watched the recording after, this is your chance to go beyond the slides.\n\nYou'll walk away understanding:\n\n- How to observe AI and agentic workloads\n- How the OTel Operator + Dapr observability fit together in practice\n- Where auto-instrumentation breaks down across agent boundaries and what to do about it\n- The current gotchas across all the tooling, and what's coming\n- How to build vendor-portable observability that developers will actually adopt"
+  },
+  "Pc1bTfyD0Fo": {
+    "publishedAt": "2026-08-03",
+    "channelTitle": "Cloud Native Days Romania",
+    "description": "🌐 Website: https://cloudnativedays.ro/\n\n💼 LinkedIn:   / cloudnativedaysromania  \n\n📸 Instagram:   / cloudnativedaysromania  \n\n#CloudNative #Kubernetes #DevOps #PlatformEngineering #CNCF #CloudComputing #TechShorts #Romania #CloudNativeDays #K8s"
+  },
+  "CoiDP9C05T8": {
+    "publishedAt": "2026-09-10",
+    "channelTitle": "Platform Engineering",
+    "description": "AI introduces new challenges for platform engineering teams. Agent-based systems are harder to reason about than traditional services: they are non-deterministic, invoke tools dynamically, generate variable load, and make decisions that are difficult to reconstruct later. When something goes wrong, existing debugging and operational practices often fall short.\n\n- Learn more about this session: https://platformcon.com/sessions/observability-as-a-foundation-for-ai-enabled-platforms-ldn\n- Get your copy of the book, Thinking in Platforms: https://weaveintelligence.io/thinking-in-platforms-book\n- Continue your platform engineering journey with Platform Engineering University: https://university.platformengineering.org\n\nThanks for joining PlatformCon, the world's largest platform engineering conference. See you at the next one!"
+  },
+  "VjtxUAo_Q_4": {
+    "publishedAt": "2025-12-05",
+    "channelTitle": "Buoyant",
+    "description": "Can AI replace the true craftsmanship of a developer? Join Kasper Nissen and William Chia as they dive into the revolutionary intersection of AI, Observability, and Platform Engineering straight from KubeCon.\n\nIn this episode of the AI Kubernetes Show, Kasper Nissen, Principal Developer Advocate at Dash0, explains why Observability is uniquely positioned to combat AI hallucinations, thanks to structured data and semantic conventions provided by projects like OpenTelemetry. He discusses how developers are &quot;moving away from looking at dashboards to asking things in a natural language,&quot; transforming the debugging experience.\n\nThe discussion also highlights the critical role of the Platform Engineering team as an enabler, whose job is to provide a solid foundation for telemetry so feature developers don't need to be telemetry experts. This foundation, combined with AI, creates a powerful loop for AI troubleshooting, saving hours during incidents—a process best seen in the Dash0 product, Agent0. Nissen and Chia balance the productivity gains of using a coding agent with the risk to developer craftsmanship, stressing the importance of staying sharp and treating the platform as a platform as a product with developers as internal customers, fostering the age-old partnership of dev and ops.\n\nKey Learnings/Takeaways\n\n✓ Observability's AI Advantage: Structured data (like OpenTelemetry's semantic conventions) helps reduce LLM hallucinations, making observability data ideal for AI-driven insights.\n\n✓  Shift to Natural Language: The future of interacting with telemetry is moving from dashboard-gazing to simple, natural language queries like &quot;Is my service up and running?&quot;\n\n✓ Platform engineering as an enabler: Platform teams must provide a well-structured, default telemetry foundation so feature developers can focus on their core product without being observability experts.\n\n✓ The power of AI troubleshooting: AI is tremendously effective at ingesting massive amounts of information to quickly diagnose and solve issues that would take human experts hours.\n\n✓  The Craftsmanship Trade-off: While AI accelerates development, it's crucial for engineers to maintain critical thinking and craftsmanship by actively seeking challenges like certifications.\n\nRead the blog post: www.buoyant.io/ai-kubernetes/platform-engineerings-ai-and-observability-playbook\n\nIf you're interested in the future of developer workflows and how AI is shaping the industry, hit the Like button and subscribe for more insights from the AI Kubernetes Show! \n\nLet us know in the comments: How are you balancing AI-driven productivity with maintaining your core engineering skills?\n\n#platformengineering #AI #Observability #AITroubleshooting #KubeCon #OpenTelemetry #LLMs #CodingAgent #DevOps #TechTrends"
+  },
+  "B29H8cx6UyM": {
+    "publishedAt": "2026-06-05",
+    "channelTitle": "KCDCzechSlovak",
+    "description": "Many organizations still treat observability as a tooling decision: select a vendor, deploy agents, and expect insight to follow. Yet teams continue to struggle with fragmented signals, rising complexity, and slow incident response. The real issue is rarely the tool itself - it’s the absence of a shared foundation and a coherent product experience.\n\nThis talk reframes observability as an internal platform product, designed with clear users, sane defaults, and long-term evolution in mind. Drawing parallels to Kubernetes and platform engineering, we’ll explore why powerful primitives are not enough - and why standardization, correlation, and paved paths matter more than features.\n\nWe’ll look at how OpenTelemetry provides a vendor-neutral foundation for structured telemetry, decoupling instrumentation from backends and enabling correlation by default. This structured approach not only reduces cognitive load and improves reliability, it also lays the groundwork for AI-assisted debugging and natural language interaction with production systems.\n\nObservability isn’t just about collecting more data. It’s about designing a platform that makes understanding systems easier - for both humans and machines."
+  },
+  "CJtlUdmDho4": {
+    "publishedAt": "2026-06-05",
+    "channelTitle": "KCDCzechSlovak",
+    "description": "AI agents now touch your prod faster than you can read a Slack thread. Four people who build, sell, or wire up the observability stack will argue about whether you can still tell what they did — and who's holding the bag when you can't."
+  },
+  "0rKdQ-e5RQQ": {
+    "publishedAt": "2025-11-24",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Amsterdam, The Netherlands (23-26 March, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nOpenTelemetry for Platform Engineers: Paving the Road To Self-Service Observability - Kasper Borg Nissen, Dash0\n\nPlatform engineers have a dual responsibility: keeping the infrastructure reliable and making observability effortless for developers. OpenTelemetry offers powerful, open-source standards that simplify these tasks - but knowing how to best leverage them can feel overwhelming. In this talk, we’ll demystify OpenTelemetry, with a practical focus on the Collector component, and explore how platform teams can build intuitive abstractions and automation.\n\nYou’ll learn how to deploy and configure the OpenTelemetry Collector, use it to provide centralized and scalable telemetry pipelines, and discover best practices for creating developer-friendly auto-instrumentation experiences. Through practical examples and lessons learned, you’ll leave empowered to provide your developers a frictionless path to comprehensive observability."
+  },
+  "q_Ffw2P_31Q": {
+    "publishedAt": "2026-07-19",
+    "channelTitle": "Cloud Native Summit Munich",
+    "description": "According to the latest CNCF survey, nearly 49% of organizations now run OpenTelemetry in production, yet “supports OpenTelemetry” has become a vague claim that hides large differences in quality, usability, and long-term maintainability.\n\nThis talk introduces a community-driven OpenTelemetry Support Maturity Model that moves beyond checkboxes and helps evaluate how well OpenTelemetry is integrated and evolved. The model breaks maturity down across seven dimensions, providing a structured way to reason about real-world OpenTelemetry support.\n\nWe ground the model in practice by applying it to widely used Kubernetes ingress controllers (kgateway, contour, emissary, traefik, istio gateway), which sit on the critical path of every request. Rather than ranking projects, the model gives platform engineers a framework to evaluate integrations and maintainers guidance for improving OpenTelemetry support intentionally, helping align the ecosystem around what “good” support should mean.\n\nSpeaker: Kasper Borg Nissen\nSlides: \n\nFind out more on https://cloudnativesummit.de/ \nFollow us on: \nLinkedIn - https://www.linkedin.com/company/cns-munich Twitter/X - https://x.com/cnsmunich \nInstagram - https://www.instagram.com/cnsmunich \nBlueSky - https://bsky.app/profile/cnsmunich.bsky.social"
+  },
+  "Om6K2746GYI": {
+    "publishedAt": "2026-06-23",
+    "channelTitle": "Platform Engineering",
+    "description": "OpenTelemetry has reached a tipping point. The latest CNCF survey shows 49% of organizations running it in production, with another 26% actively evaluating. It is the second-largest project in CNCF, with a 35% increase in contributors last year.\n\n- Learn more about this session: https://platformcon.com/sessions/beyond-supports-opentelemetry-what-platform-engineers-actually-need-to-evaluate\n- Get your copy of the book, Thinking in Platforms: https://weaveintelligence.io/thinking-in-platforms-book\n- Continue your platform engineering journey with Platform Engineering University: https://university.platformengineering.org\n\nThanks for joining PlatformCon, the world's largest platform engineering conference. See you at the next one!"
+  },
+  "Nlx8jSfe8UQ": {
+    "publishedAt": "2026-04-13",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nObservability at the Edge: State of OpenTelemetry in Kubernetes Ingress Controllers - Kasper Borg Nissen, Dash0\n\nIngress controllers are the front door to your Kubernetes cluster, but for many they remain a blind spot. Every request passes through ingress, making it the natural starting point of distributed traces. If you only instrument downstream services, you miss the first span: TLS negotiation, routing decisions, or middleware delays. Without these, your observability story is incomplete.\n\nWe'll explore the current state of observability across the most widely adopted ingress controllers, showing where OpenTelemetry support is strong, and where gaps remain. We will cover why tracing at the edge is critical, how to combine it with metrics and logs, and how to achieve correlation across signals, e.g. by using the OpenTelemetry Collector to enrich and link telemetry. Through practical insights and live demos, We’ll compare controllers, show how to turn ingress from a black box into the root of your distributed traces, and highlight what this means for the future of observability in Kubernetes."
+  },
+  "-SXg48o_SJw": {
+    "publishedAt": "2026-04-10",
+    "channelTitle": "Platform Engineering",
+    "description": "Ingress controllers are the front door to Kubernetes, yet observability at the edge is often overlooked. As ingress-nginx approaches deprecation, platform teams must reassess ingress choices and their OpenTelemetry support. This session introduces a draft OpenTelemetry maturity framework and applies it to popular ingress controllers to reveal strengths, gaps, and trade-offs.\n\nThis webinar will explore:\n\n- How to evaluate OpenTelemetry support beyond “does it emit telemetry” using a draft, multi-dimensional maturity framework covering integration surface, semantics, trace modeling, multi-signal correlation, and stability.\n- Why ingress observability is critical for platform teams, and how missing or incorrect edge telemetry breaks distributed traces, latency attribution, and root-cause analysis.\n- What today’s ingress controllers get right - and wrong through real-world evaluations of widely used controllers, highlighting practical implications for platform design, migration decisions, and future observability architectures.\n\nAfter a 30-minute talk there’ll be a 15-minute Q&amp;A, for which we encourage you to submit questions in advance.\nA webinar recording and related materials will be shared with all attendees after the event.\n_______________\nSpeaker:\nKasper Borg Nissen - Principal Developer Advocate @ Dash0\n\nKasper Borg Nissen is a Principal Developer Advocate at Dash0, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, and a CNCF Ambassador with deep experience in platform engineering and observability. He focuses on OpenTelemetry, Kubernetes infrastructure, and observability as a platform capability. Kasper is a frequent speaker at KubeCon and CNCF events and is actively involved in shaping OpenTelemetry adoption across the cloud-native ecosystem."
+  },
+  "XVEPKb0aCx8": {
+    "publishedAt": "2026-04-09",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nTaming Complexity: Building Observable Workflows With Dapr and OpenTelemetry - Mauricio &quot;Salaboy&quot; Salatino, Diagrid &amp; Kasper Borg Nissen, Dash0\n\nToday’s cloud-native applications are complex and constantly evolving, with new requirements for infrastructure - including emerging services such as LLMs. The challenge is clear: how do we build resilient, observable systems without making life harder for developers?\n\nIn this session, we’ll explore event-driven orchestration with Dapr Workflows, and how it pairs with OpenTelemetry to reveal the interactions between application and infrastructure components. By combining the OpenTelemetry Operator with Dapr observability, we can enable no-touch instrumentation that delivers traces, metrics, and logs - even across asynchronous boundaries.\n\nThrough a live demo, we’ll illustrate these concepts, highlight common pitfalls and current gaps, and showcase the work being done to align Dapr with the OpenTelemetry specification. The result is observability that is portable across vendors and, more importantly, easy for developers to adopt."
+  },
+  "Nb0VGaSRnLA": {
+    "publishedAt": "2025-12-16",
+    "channelTitle": "Cloud Native Suisse Romande",
+    "description": "KCD Suisse Romande 2025: https://kcd.cloud-native-romandy.ch/\n\nSpeaker: Kasper Borg Nissen, Mauricio &quot;Salaboy&quot; Salatino\n\nAsync workflows power modern microservices, but they can be notoriously hard to observe. In this talk, we show how two CNCF projects - Dapr, for developer-friendly building blocks, and OpenTelemetry, for unified observability - create a golden path that bridges developer productivity and platform reliability.\n\nWe’ll start by using Dapr Workflows and Pub/Sub to connect and orchestrate services without boilerplate. Then we’ll add the OpenTelemetry Operator for no-touch instrumentation, instantly delivering traces, metrics, and logs - even across asynchronous boundaries.\n\nYou’ll see current OpenTelemetry capabilities for tracking async requests end-to-end, where the gaps are today, and practical ways to correlate events in complex workflows. Through a live demo, we’ll prove that with the right abstractions, shipping features fast and observing systems deeply can go hand in hand."
+  },
+  "QhTlZs4m59w": {
+    "publishedAt": "2025-04-15",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Hong Kong, China (June 10-11); Tokyo, Japan (June 16-17); Hyderabad, India (August 6-7); Atlanta, US (November 10-13). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nA Day in the Life of a Kubernetes Engineer - Rajas Kakodkar & Nikhita Raghunath, Broadcom; Micah Hausler, AWS; Shane Lawrence, Shopify; Kasper Borg Nissen, Dash0\n\nIn the cloud native universe, Kubernetes engineers are the unsung heroes--who wrangle YAML, tame logs and brave production crises. While AI steals the spotlight, challenges of managing Kubernetes remain in the shadows. Platform engineers, often grappling with relentless war room calls rarely get the stage they deserve.\nFor the first time, we’ll dive into the untold stories of platform engineers: triumphs and the grit it takes to navigate the complexities of Kubernetes. This is a celebration of the human side of cloud native, told through anecdotes, technical insights and lessons learned from the trenches.\n\nJoin industry experts as they explore:\nCritical skills for resolving production issues\nSuccesses & failures that define their journeys\nBalancing ecosystem health\nSecure practices for AI workloads\nReducing Kubernetes complexity\n\nJoin us for unfiltered insights, empowering stories and actionable takeaways to inspire your Kubernetes journey—you, too, deserve to be heard."
+  },
+  "a9yfILcQo34": {
+    "publishedAt": "2024-11-15",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon Europe in London from April 1 - 4, 2025. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "dW0IPLFG9Po": {
+    "publishedAt": "2024-11-15",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon Europe in London from April 1 - 4, 2025. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "_E2Mkebe9Jg": {
+    "publishedAt": "2024-11-13",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Keynote: Paving the Way for AI Through Platform Engineering - Kasper Borg Nissen, Staff Platform Engineer, Lunar\n\nIn today’s ever-evolving world, organizations struggle to integrate AI efficiently. Is AI a department, a team, or a tool for a select few? No, it should be woven into the fabric of the business. Drawing from the principles of platform engineering in cloud native ecosystems, we explore how organizations can reuse experiences and investments in cloud native and platform engineering to democratize AI, enabling every team to access its potential. Real-world examples, like Lunar, demonstrate how businesses can implement AI without needing complex infrastructure and harness the power of AI through simplified platforms and evolutionary architectures."
+  },
+  "vvxzQxeSKWA": {
+    "publishedAt": "2024-11-16",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon Europe in London from April 1 - 4, 2025. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nKeynote: Closing Remarks"
+  },
+  "nos6rJsLLZI": {
+    "publishedAt": "2022-05-10",
+    "channelTitle": "DevOpsDays Denmark",
+    "description": "This presentation was recorded at DevOpsDays Aarhus 2022.\n\nhttps://devopsdays.org/events/2022-aa...\n\nDESCRIPTION\nIn this session, I will present some of the experiences we’ve had so far in implementing a service mesh across multiple clouds. I will touch on the reasoning behind, and provide a detailed overview that the audience can go home and implement themselves afterwards."
+  },
+  "TZ6-SpoFVeY": {
+    "publishedAt": "2023-03-29",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our upcoming event: KubeCon + CloudNativeCon Europe in Amsterdam, The Netherlands from 18 - 21 April, 2023. Learn more at https://kubecon.io The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects."
+  },
+  "On_x4xOn_Og": {
+    "publishedAt": "2023-05-02",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Closing Remarks, Program Committee Member - Kasper Nissen, Lunar"
+  },
+  "-pEQa9Mtkrk": {
+    "publishedAt": "2023-07-01",
+    "channelTitle": "OpenTechNation",
+    "description": "Join us for the exciting conclusion of our event as Kasper Nissen, a valued member of the Program Committee and representative of Lunar, takes the stage to deliver the closing remarks. In this captivating video, we will reflect on the insightful sessions, key takeaways, and the overall success of the event.\n\nDuring this video, you can expect to:\n\n1. Recap of Event Highlights: Kasper Nissen will provide a brief recap of the event's highlights, reminding you of the most memorable moments, engaging discussions, and valuable insights shared by industry experts and thought leaders.\n\n2. Key Takeaways: Get ready to revisit the key takeaways from the event. Kasper Nissen will summarize the main themes, trends, and learnings that emerged throughout the sessions, giving you a concise overview of the valuable knowledge gained during the event.\n\n3. Acknowledging Contributors: This is the perfect opportunity to express gratitude and acknowledge the contributions of speakers, sponsors, attendees, and the organizing team. Kasper Nissen will extend appreciation to all those who made the event possible and highlight their valuable role in its success.\n\n4. Reflection on the Importance of the Event: Gain insights into the significance of the event and its impact on the industry. Kasper Nissen will share thoughts on the relevance of the topics discussed, the challenges addressed, and the opportunities presented, emphasizing the value the event brings to the community.\n\n5. Inspiring Closing Words: Be prepared to be inspired by Kasper Nissen's closing words. He will leave you with a powerful message, encouraging you to continue exploring, learning, and driving innovation in your respective fields, armed with the knowledge and connections gained during the event.\n\n6. Invitation to Future Events: Discover exciting future opportunities as Kasper Nissen invites you to upcoming events, conferences, or initiatives where you can further expand your knowledge, network with industry professionals, and stay at the forefront of the latest developments.\n\n7. Closing Remarks: Finally, Kasper Nissen will formally conclude the event, expressing appreciation for your participation and highlighting the significance of your engagement in fostering collaboration, growth, and progress in the industry.\n\nBy the end of this video, you will have gained a comprehensive understanding of the event's key highlights, takeaways, and the impact it has made on the industry. Kasper Nissen's closing remarks will leave you inspired and motivated to apply the knowledge gained, connect with fellow professionals, and continue driving innovation in your respective domains.\n\nDon't miss this exciting conclusion to our event as Kasper Nissen wraps up the insightful discussions, expresses gratitude to contributors, and leaves you with an inspiring message. Join us for this memorable video and let's celebrate the success of the event together!\n\n(Note: This description focuses on the value, content, and benefits of the video, highlighting the recap of event highlights, key takeaways, acknowledgment of contributors, reflection on the importance of the event, inspiring closing words, invitation to future events, and the formal conclusion.)"
+  },
+  "Gj_MEeKWvvg": {
+    "publishedAt": "2024-03-21",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "mUlCQc6aH54": {
+    "publishedAt": "2024-03-21",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "c0hrg0Z8frw": {
+    "publishedAt": "2024-03-22",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "mhEP-ALj5Ps": {
+    "publishedAt": "2023-12-11",
+    "channelTitle": "Aarhus Universitet",
+    "description": "Vi har spurgt tre af vores tidligere studerende fra Computerteknologi, Elektroteknologi og Biomedicinsk teknologi om, hvorfor de valgte civilingeniør-vejen, og hvad det har betydet for deres muligheder på arbejdsmarkedet"
+  },
+  "vwZANXuYdRI": {
+    "publishedAt": "2024-03-22",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\n Keynote Panel Discussion: Unity in Diversity: A Decade of Inclusive Growth in the Cloud Native Community - Kasper Borg Nissen, Lunar; Jinhong Brejnholt, Saxo Bank; Andrea Giardini, Independent; Anastasiia Gubska, BT Group; Stéphane Este-Gracias, ITQ\n\nJoin this intriguing panel of community members while we celebrate a decade of inclusive evolution in the Cloud Native community. Explore the diverse contributions that extend beyond code, recognizing the vital roles of local ambassadors, glossary translations, and events like Kubernetes Community Days (KCDs) in making the Cloud Native experience accessible globally. Discover how we've worked to remove barriers for individuals with disabilities, or in an underrepresented group ensuring everyone, regardless of background or ability, has a place in our community. \nVive la diversité as we continue shaping the future together."
+  },
+  "VYIHpk6TdTU": {
+    "publishedAt": "2024-03-20",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io"
+  },
+  "7CvuFkOBcgw": {
+    "publishedAt": "2023-12-03",
+    "channelTitle": "Cloud Native Nordics",
+    "description": "Rasmus Steiniche - CEO, Neurospace\nEric D. Schabell - Director Evangelism, Chronosphere\nRoberth Strand - Principal Cloud Engineer, Amesto Fortytwo\nLucy Sweet - Senior Software Engineer, Uber"
+  },
+  "6T3Mf6pdg7E": {
+    "publishedAt": "2023-05-01",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Paved Paths Leading the Way to Compliance - Kasper Borg Nissen & Brian Nielsen, Lunar\n\nLunar, a forward-leaning and technology-first neobank in the Nordics, gained its reputation partly due to our early Kubernetes adoption and relentless focus on pushing the boundaries of what CNCF projects allow us to do. This presentation is no exception. Brian and Kasper will provide insights into how Lunar is building an internal compliance platform using Backstage and paving the paths for developers to be compliant. The value gained from this approach is manyfold when working under extended compliance requirements in the banking industry, such as dynamic documentation, secure and compliant defaults, and much more. Brian and Kasper will highlight a specific use case, detailing how software asset management and classification can be made easy by utilizing the software catalog and built-in models in Backstage. In particular, domain models are useful for Lunar to provide clarity of the entire software catalog and ownership of components. This use case will highlight some of the ways Lunar is embedding compliance throughout the entire development lifecycle, and how we are working with compliance by design that focuses on guaranteed compliance with policies as code."
+  },
+  "_DbZ6SFdY1g": {
+    "publishedAt": "2022-06-01",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don’t miss out! Join us at our upcoming hybrid event: KubeCon + CloudNativeCon North America 2022 from October 24-28 in Detroit (and online!). Learn more at https://kubecon.io. The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects.\n\nLinkerd End User Panel: Case Studies from Production - Catherine Paganini, Buoyant; Kasper Nissen, Lunar; Fredrik Klingenberg, Aurum AS; Eli Goldberg, Salt Security; Christian Hüning, Finleap Connect\n\nPaganini, Eli Goldberg\nIn this panel, you'll hear from end users across a variety of industries on how they use the Linkerd service mesh in real-world production scenarios. Use cases range from applying mutual TLS to encrypt and secure all service-to-service communication, load balancing gRPC requests, and troubleshooting services before they're pushed to production. Panelists represent a variety of companies with very different environments, goals, and priorities, and discussion will be focused on real-world outcomes."
+  },
+  "00d-ujg6gV4": {
+    "publishedAt": "2023-10-26",
+    "channelTitle": "KubeCrash Cloud Native Crash Courses",
+    "description": "Multi-Cluster Scaling in Action: Real-World End User Cases\nJoing this panel with Rob Koch (moderator), Principal, Slalom Build; Sabine Wolz, Senior Product Manager, Mercedes-Benz Tech Innovation; Kasper Nissen, Lead Platform Architect, Lunar; Eddie Wassef, Chief Architect, Vonage."
+  },
+  "Iti5glzYOG8": {
+    "publishedAt": "2023-11-07",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Panel: A Front Row Seat to Backstage Adoption - Poonam Garg, U.S. Bank; Guillermo Manzo, Expedia Group; Alec Jacobs, Twilio Segment and Kasper Nissen, Lunar\n\nSo you’ve gotten started with Backstage? That’s awesome! Next comes a very big, very important (and sometimes a little scary) question: How do you get your developers use it/love it/build plugins for it? In this panel, we’ll dive deep into adoption journeys from different organizations involved in the Backstage community. You’ll hear from mature adopters on the things they've learned in driving widespread adoption of their developer portals within their respective organizations. We’ll cover how they’ve led architectural change through Backstage implementation as part of their broader developer experience and platform engineering goals — and how that change management plays out from both a technical, cultural, and business perspective."
+  },
+  "4xYH36akGSE": {
+    "publishedAt": "2023-05-01",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Keynote: Cappucci-Know: Percolating EU End User Insights in the Cloud Native Café - Moderated by Taylor Dolezal\n\nJoin us for an engaging fireside chat, where leading end users across the European Union will share their insights, experiences, and success stories with cloud native technologies. This session will dive into overcoming challenges, navigating regulations, and fostering collaboration within the EU’s cloud native ecosystem."
+  },
+  "JcBBHKHpOyU": {
+    "publishedAt": "2022-11-01",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don’t miss out! Join us at our upcoming event: KubeCon + CloudNativeCon Europe 2023 in Amsterdam, The Netherlands from April 17-21. Learn more at https://kubecon.io​. The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects.\n\nBuilding a Scalable, Compliant, Multi-Cloud Bank with a Service Mesh - Kasper Nissen, Lunar\n\nKasper Nissen, Lead Platform Architect at Lunar, will share how Lunar built a scalable, multi-cloud bank with cloud native tech, allowing for rapid product iteration while simplifying compliance with strict regulatory requirements. The flexible technical setup also allows them to rapidly absorb newly acquired startups, ensuring they start generating value for the bank quickly. Lunar started by centralizing its log and release management tooling in a single cluster connected to multiple Kubernetes clusters across GCP, Azure, and AWS — all connected through a service mesh. This allowed them to remove state and complexity from edge clusters and manage infra services centrally while exposing these central services to edge clusters. This transformation is part of a strategy to treat the platform as a product and provide the same set of platform features across cloud providers. Attendees will learn how Lunar implemented multi-cluster communication across clouds and how it all fits together with GitOps as a multi-cloud management layer to comply with regulations on the audit trail of all changes, following the principles of least privilege, and the ability to perform cluster failovers."
+  },
+  "fVEazWYPP_s": {
+    "publishedAt": "2022-06-08",
+    "channelTitle": "Garden",
+    "description": "Lunar is a neobank leading the charge in the Nordics to create a new kind of banking platform offering checking accounts, stock and cryptocurrency investments. We discuss Lunar's \"accidental\" transition into multi-cloud, how they solve for those architectural challenges, adventures in service mesh multi-clusters with Linkerd, engineering production cluster failovers, and Lunar's own Shuttle tool for handling shared build and deploy tools between projects.\n\nhttps://github.com/lunarway/shuttle"
+  },
+  "rj4JrM3f4TI": {
+    "publishedAt": "2021-05-10",
+    "channelTitle": "Cloud Native Nordics",
+    "description": "With another KubeCon just wrapped up, what are the key take aways? What trends do we see in cloud native for the future?\nA roundtable discussion with Jessica Andersson, Ihor Dvoretskyi, Kasper Nissen and Johan Tordsson.\n\nIntro music by https://www.bensound.com/"
+  },
+  "sAiOqSmN-B0": {
+    "publishedAt": "2020-09-04",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don’t miss out! Join us at our upcoming events: EnvoyCon Virtual on October 15 and KubeCon + CloudNativeCon North America 2020 Virtual from November 17-20. Learn more at https://kubecon.io. The conferences feature presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects.  \n\nPanel: End User Community Adoption of Cloud Native Principles & Lessons Learned - Ken Owens, Mastercard; Lee Mills, Spotify; Jennifer Strejevitch, Condé Nast; Kasper Nissen, Lunar; & Cheryl Hung, Cloud Native Computing Foundation \n\nThis panel brings together engineers from the CNCF End User Community to provide their insights on the journey their respective companies have undergone in their transformation to Cloud Native. Each End User member company will discuss their Cloud Native principles and what has worked along with what has not worked. Topics will include operational best practices, developer experience, CNCF projects evaluated and implemented, and vendor management along with the lessons learned along the journey.\n\nhttps://sched.co/ZeqU"
+  },
+  "p6oEZEXA5m8": {
+    "publishedAt": "2021-11-02",
+    "channelTitle": "Snyk",
+    "description": "Building a digital bank requires a unique combination of agility and speed while maintaining the highest level of security. Lunar, a digital challenger bank in the Nordics, has always had technology and agility as a differentiator. Lunar was built for the cloud, with Cloud Native principles, such as microservices, containers, and container orchestration amongst others.\n\nIn this presentation Kasper will present some insights into the principles on which the Lunar infrastructure was built on, the continuous focus on security, and how application security is shifting left and becoming a developer concern. Kasper will discuss the challenges faced and conquered in the process of transitioning from a fintech startup to a bank with its own banking license.\n\n\nSnyk helps software-driven businesses develop fast and stay secure. Continuously find and fix vulnerabilities for npm, Maven, NuGet, RubyGems, PyPI and more.\n\nLearn more about Snyk http://bit.ly/snyk-io\n\n📱Social Media📱\n___________________________________________\nTwitter:   / snyksec  \nFacebook:   / snyksec  \nLinkedIn:   / snyk  \nWebsite: https://snyk.io/"
+  },
+  "zJsxAx7MKKk": {
+    "publishedAt": "2020-12-09",
+    "channelTitle": "Snyk",
+    "description": null
+  },
+  "7vxFzzc8rB0": {
+    "publishedAt": "2021-04-22",
+    "channelTitle": "Snyk",
+    "description": "Building a digital bank requires a unique combination of agility and speed while maintaining the highest level of security. Lunar, a digital challenger bank in the Nordics, has always had technology and agility as a differentiator. Lunar was built for the cloud, with Cloud Native principles, such as microservices, containers, and container orchestration amongst others. In this presentation Kasper will present some insights into the principles on which the Lunar infrastructure was built on, the continuous focus on security, and how application security is shifting left and becoming a developer concern. Kasper will discuss the challenges faced and conquered in the process of transitioning from a fintech startup to a bank with its own banking license.\n\nKasper Nissen (@phennex)\nCloud Architect / Site Reliability Engineer, CNCF Ambassador, CKA. Cloud Native Geek, Lunar\n\nSnyk helps software-driven businesses develop fast and stay secure. Continuously find and fix vulnerabilities for npm, Maven, NuGet, RubyGems, PyPI and more.\n\nLearn more about Snyk http://bit.ly/snyk-io\n\n📱Social Media📱\n___________________________________________\nTwitter:   / snyksec  \nFacebook:   / snyksec  \nLinkedIn:   / snyk  \nWebsite: https://snyk.io/"
+  },
+  "_Bm0TELIKaU": {
+    "publishedAt": "2020-09-04",
+    "channelTitle": "CNCF [Cloud Native Computing Foundation]",
+    "description": "Don’t miss out! Join us at our upcoming events: EnvoyCon Virtual on October 15 and KubeCon + CloudNativeCon North America 2020 Virtual from November 17-20. Learn more at https://kubecon.io. The conferences feature presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects.\n\nPanel: CNCF Ambassadors: Building the Cloud Native Community –  Ihor Dvoretskyi, CNCF; Kasper Nissen, Lunar; Alison Dowdney, Weaveworks; Jessica Andersson, Meltwater; & Saiyam Pathak \n\nAs the adoption of Cloud Native increases, the need for local communities increases. End users are looking for others in similar situations to share experiences and learn from each other. CNCF helps and supports local organizers through the meetup and ambassador program. In this session, the panelists will share their experiences in building and scaling local communities around the Cloud Native ecosystem. How can you get started? Where do you find speakers and venues? How to keep the momentum? These are just a few of the questions the panelists will try to answer.\n\nhttps://sched.co/aDjR"
+  },
+  "t7PmU49OdIE": {
+    "publishedAt": "2025-03-27",
+    "channelTitle": "Komodor",
+    "description": "In this episode, Itiel sits down with Kasper, a Developer Advocate at Dash0. Kasper discusses his background, including his extensive experience building platforms on Kubernetes at Lunar, a Nordic challenger bank. He shares insights into the challenges and successes of using cutting-edge cloud-native technologies in a regulated banking environment. Kasper also touches upon his involvement in the CNCF community as an ambassador and co-chair for KubeCon. The discussion explores Lunar's philosophy of leveraging open-source projects and their journey of adopting Kubernetes and other cloud-native tools.\n\n\n\nKasper also explains his move to Dash0, emphasizing his passion for observability and the potential of Open Telemetry."
+  }
+}

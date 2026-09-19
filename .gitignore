@@ -39,6 +39,14 @@ data/*
 !data/conference-overrides.json
 !data/talk-exclusions.json
 !data/talk-overrides.json
+# Generated, but versioned anyway: it is the only copy of each video's title,
+# date and description outside the YouTube API, and CI has no API key. Without
+# it a CI build writes no entry for a video it cannot date, so link-recordings
+# has nothing to fold into the engagement and every talk-override keyed on that
+# video reports "override unused". The deployed site then showed eighteen
+# recordings' worth of conferences as bare event names with no video, no slides
+# and no session title, while the local build looked right.
+!data/youtube-cache.json
 
 # Deck PDFs are mirrored from noti.st at ~8MB each and grow with every talk;
 # they are hosted rather than versioned. See src/lib/deckHost.ts.
