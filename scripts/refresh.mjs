@@ -2,17 +2,12 @@
 // failure logs a warning but does NOT fail the build.
 import { spawn } from 'node:child_process';
 
-// Every fetcher here deletes and rewrites one directory under
-// src/content/talks/, and none of them reads another's output, so they are
-// safe to run together.
-const talkWriters = [
+// Each of these owns one directory and reads nobody else's, so they are safe
+// to run together. fetch-github-readme owns two — talks/ and writing/github.
+const writers = [
   ['sessionize',      'scripts/fetch-sessionize.mjs'],
   ['github-readme',   'scripts/fetch-github-readme.mjs'],
   ['notist',          'scripts/fetch-notist.mjs'],
-];
-
-// Nothing to do with talks; safe to run alongside anything.
-const independent = [
   ['credly',          'scripts/fetch-credly.mjs'],
   ['github-contrib',  'scripts/fetch-github-contributions.mjs'],
   ['dash0',           'scripts/fetch-dash0.mjs'],
@@ -30,8 +25,15 @@ const independent = [
 // The failure was a race, so it did not reproduce: a second build in the same
 // working tree reads the directories the first one rewrote and comes out
 // right, which is why this was invisible locally and wrong on every deploy.
-const talkReaders = [
+//
+// fetch-devto is here for the same reason: it reads every other writing entry
+// to spot a cross-post, and both writing/dash0 and writing/github are rewritten
+// wholesale by fetchers in the wave above. Beside them it would compare against
+// a half-written directory and publish a duplicate of an article the site
+// already lists.
+const readers = [
   ['youtube',         'scripts/fetch-youtube.mjs'],
+  ['devto',           'scripts/fetch-devto.mjs'],
 ];
 
 function run(label, file) {
@@ -49,12 +51,8 @@ function run(label, file) {
 // refreshes to settle.
 const results = [await run('record-sources (pre)', 'scripts/record-sources.mjs')];
 
-results.push(
-  ...(await Promise.all([...talkWriters, ...independent].map(([l, f]) => run(l, f)))),
-);
-for (const [label, file] of talkReaders) {
-  results.push(await run(label, file));
-}
+results.push(...(await Promise.all(writers.map(([l, f]) => run(l, f)))));
+results.push(...(await Promise.all(readers.map(([l, f]) => run(l, f)))));
 
 // Post-passes run AFTER every fetcher, never in parallel with them: a talk can
 // arrive from both the GitHub README and the YouTube playlist, and the pair
