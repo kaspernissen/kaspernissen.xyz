@@ -47,6 +47,23 @@ const IGNORED_HOSTS = [
   'papercall.io', 'pretix.eu', 'universe.com', 'twitch.tv',
 ];
 
+// Channels that publish talks from hundreds of different events. Their name
+// identifies the publisher, never the event, so a name match against one is
+// worthless and the description's domain has to carry the claim on its own.
+//
+// "CNCF [Cloud Native Computing Foundation]" shares three words with "Cloud
+// Native Computing Rheinland - March Edition" and duly handed a Cologne meetup
+// two KubeCon recordings, abstracts included.
+const UMBRELLA_CHANNELS = [
+  /\bcncf\b/, /cloud native computing foundation/, /linux foundation/,
+  /\bkubecon\b/, /cloudnativecon/, /\bkubecrash\b/,
+];
+
+const isUmbrellaChannel = (name) => {
+  const n = (name ?? '').toLowerCase();
+  return UMBRELLA_CHANNELS.some((re) => re.test(n));
+};
+
 /** Registrable-ish domain: drops `www.` and any deeper subdomain. */
 export function registrableDomain(url) {
   if (!url) return null;
@@ -93,7 +110,7 @@ export function scoreRecordingPair(recording, engagement) {
   // "Cloud Native Summit Munich" (the channel) vs "Cloud Native Summit 2026"
   // (the engagement) share enough words to be the same event. The date window
   // below is what keeps the 2025 and 2026 editions apart.
-  const byName = eventAgrees(recording.event, engagement.event);
+  const byName = !isUmbrellaChannel(recording.event) && eventAgrees(recording.event, engagement.event);
   if (!byDomain && !byName) return null;
 
   const start = toTime(engagement.date);

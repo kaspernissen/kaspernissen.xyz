@@ -85,6 +85,9 @@ export function eventAgrees(deckEvent, talkEvent) {
 const GENERIC_EVENT_WORDS = new Set([
   'cloud', 'native', 'community', 'conference', 'conferences', 'meetup',
   'meetups', 'edition', 'group', 'user', 'users', 'tech', 'technology',
+  // "CNCF [Cloud Native Computing Foundation]" is a channel, not an event, and
+  // it shares three words with "Cloud Native Computing Rheinland".
+  'computing', 'foundation',
   'event', 'events', 'online', 'virtual', 'live', 'talks', 'session',
   'sessions', 'january', 'february', 'march', 'april', 'june', 'july',
   'august', 'september', 'october', 'november', 'december',
