@@ -30,7 +30,15 @@ if (!bucket) {
   process.exit(1);
 }
 
-const pdfs = fs.existsSync(SRC) ? fs.readdirSync(SRC).filter((f) => f.endsWith(SRC.includes('decks') ? '.pdf' : '.jpg')) : [];
+// Photo originals are not all .jpg: a Flickr export arrives as .jpeg and a
+// screenshot as .png. Filtering on '.jpg' alone silently skipped two of them,
+// so their thumbnails rendered from the display master while "Download
+// original" 404'd.
+const PHOTO_EXT = ['.jpg', '.jpeg', '.png'];
+const wanted = (f) =>
+  SRC.includes('decks') ? f.endsWith('.pdf') : PHOTO_EXT.some((e) => f.toLowerCase().endsWith(e));
+
+const pdfs = fs.existsSync(SRC) ? fs.readdirSync(SRC).filter(wanted) : [];
 if (pdfs.length === 0) {
   console.error(`sync-decks: no PDFs in ${SRC} — run scripts/fetch-notist.mjs first`);
   process.exit(1);
@@ -41,8 +49,11 @@ const dest = `${bucket.replace(/\/+$/, '')}/${prefix.replace(/^\/+|\/+$/g, '')}`
 const args = [
   's3', 'sync', SRC, dest,
   '--exclude', '*',
-  '--include', SRC.includes('decks') ? '*.pdf' : '*.jpg',
-  '--content-type', SRC.includes('decks') ? 'application/pdf' : 'image/jpeg',
+  // Mirrors `wanted` above. No --content-type: the CLI infers it per file,
+  // which matters once more than one image format is in play.
+  ...(SRC.includes('decks')
+    ? ['--include', '*.pdf', '--content-type', 'application/pdf']
+    : PHOTO_EXT.flatMap((e) => ['--include', `*${e}`])),
   // Deck filenames carry the talk title and month, so a given URL's bytes
   // never change — safe to cache hard and let the browser reuse it.
   '--cache-control', 'public, max-age=31536000, immutable',

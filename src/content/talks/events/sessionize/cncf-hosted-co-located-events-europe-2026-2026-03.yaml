@@ -1,7 +1,8 @@
-title: null
+title: "Observability Day"
 event: "CNCF-Hosted Co-located Events Europe 2026"
 event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/co-located-events/cncf-hosted-co-located-events-overview/"
-date: 2026-03-31
+date: 2026-03-23
+end_date: 2026-03-24
 location: "Amsterdam, The Netherlands"
 role: "speaker"
 tags: []

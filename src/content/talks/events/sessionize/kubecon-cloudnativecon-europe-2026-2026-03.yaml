@@ -1,7 +1,8 @@
 title: null
 event: "KubeCon + CloudNativeCon Europe 2026"
-event_url: "https://sessionize.com/kaspernissen"
-date: 2026-03-31
+event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/"
+date: 2026-03-23
+end_date: 2026-03-26
 location: "Amsterdam, The Netherlands"
 role: "speaker"
 tags: []

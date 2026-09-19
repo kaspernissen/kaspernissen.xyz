@@ -94,5 +94,26 @@
     "end_date": "2026-05-22",
     "location": "Prague, Czechia",
     "url": "https://community.cncf.io/kcd-czech-slovak/"
+  },
+  "kubecon-cloudnativecon-europe-2025": {
+    "_why": "Sessionize publishes month+year only, so the scrape guessed 2025-04-30.",
+    "date": "2025-04-01",
+    "end_date": "2025-04-04",
+    "location": "London, United Kingdom",
+    "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe-2025/"
+  },
+  "kubecon-cloudnativecon-europe-2026": {
+    "_why": "Scrape guessed 2026-03-31; the event runs 23-26 March in Amsterdam.",
+    "date": "2026-03-23",
+    "end_date": "2026-03-26",
+    "location": "Amsterdam, The Netherlands",
+    "url": "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/"
+  },
+  "cncf-hosted-co-located-events-europe-2026": {
+    "_why": "Co-located day ahead of KubeCon EU 2026. Observability Day is the session.",
+    "date": "2026-03-23",
+    "end_date": "2026-03-24",
+    "location": "Amsterdam, The Netherlands",
+    "session_title": "Observability Day"
   }
 }
