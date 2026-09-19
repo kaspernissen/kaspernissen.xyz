@@ -1,5 +1,5 @@
-title: "Observability Day"
-event: "CNCF-Hosted Co-located Events Europe 2026"
+title: "Observability at the Edge: State of OpenTelemetry in Kubernetes Ingress Controllers"
+event: "Observability Day"
 event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/co-located-events/cncf-hosted-co-located-events-overview/"
 date: 2026-03-23
 end_date: 2026-03-24
@@ -7,3 +7,6 @@ location: "Amsterdam, The Netherlands"
 role: "speaker"
 tags: []
 featured: false
+youtube_id: Nlx8jSfe8UQ
+abstract: "Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nObservability at the Edge: State of OpenTelemetry in Kubernetes Ingress Controllers - Kasper Borg Nissen, Dash0\n"
+playlist_position: 10

@@ -7,6 +7,9 @@ location: "Geneva, Switzerland"
 role: "speaker"
 tags: []
 featured: false
+youtube_id: Nb0VGaSRnLA
+abstract: "KCD Suisse Romande 2025: https://kcd.cloud-native-romandy.ch/\n\nSpeaker: Kasper Borg Nissen, Mauricio &quot;Salaboy&quot; Salatino\n"
+playlist_position: 13
 deck_file: "golden-paths-for-async-workflows-dapr-meets-opentelemetry-2025-12.pdf"
 deck_size_mb: 10.7
 notist_url: "https://noti.st/kasperborgnissen/Okk1sP/golden-paths-for-async-workflows-dapr-meets-opentelemetry"

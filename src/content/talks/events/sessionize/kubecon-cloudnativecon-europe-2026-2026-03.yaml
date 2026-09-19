@@ -1,4 +1,4 @@
-title: null
+title: "Taming Complexity: Building Observable Workflows With Dapr and OpenTelemetry"
 event: "KubeCon + CloudNativeCon Europe 2026"
 event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/"
 date: 2026-03-23
@@ -7,3 +7,8 @@ location: "Amsterdam, The Netherlands"
 role: "speaker"
 tags: []
 featured: false
+youtube_id: XVEPKb0aCx8
+abstract: "Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io\n\nTaming Complexity: Building Observable Workflows With Dapr and OpenTelemetry - Mauricio &quot;Salaboy&quot; Salatino, Diagrid &amp; Kasper Borg Nissen, Dash0\n"
+playlist_position: 12
+co_speakers:
+  - "Mauricio Salatino"
