@@ -93,10 +93,16 @@ your environment — copy `.env.example` to `.env.local` and source it, or pass
 them inline. The prefix is set by the npm script, so don't add one to
 `DECKS_BUCKET`.
 
-`--delete` is deliberately never passed and the upload user has no
-`s3:DeleteObject`, so a sync can only ever add. Removing an object is a console
-action, which is the right amount of friction for breaking a URL someone may
-have shared.
+`--delete` is deliberately never passed, so a **sync** can only ever add. The
+upload user does hold `s3:DeleteObject`, which makes a rename (copy + delete)
+and tidying an orphan possible without the console — but only one object at a
+time and only on purpose. The two are separate on purpose: deleting a specific
+object is routine, while a sync that mass-deletes whatever is missing locally
+is how a whole prefix disappears because a fetcher returned nothing.
+
+Now that the bucket is public, a delete breaks whatever URL that object had.
+Filenames encode the talk title and month, so a rename is only ever cosmetic —
+prefer leaving an old key in place over breaking a link someone shared.
 
 `sync-decks.mjs` sets a one-year immutable `Cache-Control`, which is safe
 because a deck's filename encodes its title and month — the bytes behind a

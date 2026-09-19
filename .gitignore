@@ -49,5 +49,11 @@ public/decks/*.pdf
 
 # Full-resolution photo originals — hosted alongside the decks, not versioned.
 # public/speakers holds the local mirror you sync from. See src/lib/photoHost.ts.
-public/speakers/*.jpg
+public/speakers/*
+!public/speakers/.gitkeep
+
+# Speaker photo display masters. Uploaded to the bucket's photos/display/
+# prefix and fetched by Astro at build time; see src/lib/photoHost.ts.
+src/assets/speakers/*
+!src/assets/speakers/.gitkeep
 photos-fullres/

@@ -14,7 +14,19 @@ describe('slugify', () => {
 });
 
 describe('talkSlug', () => {
-  it('combines title and date into yyyy-mm slug', () => {
-    expect(talkSlug('From Zero to OTel', new Date('2025-04-02'))).toBe('from-zero-to-otel-2025-04');
+  it('combines title and date into a yyyy-mm-dd slug', () => {
+    expect(talkSlug('From Zero to OTel', new Date('2025-04-02'))).toBe('from-zero-to-otel-2025-04-02');
+  });
+
+  // Regression: on a year-month slug these two collided and Astro silently
+  // dropped one of the pages, so a real engagement had no URL.
+  it('distinguishes the same talk given twice in one month', () => {
+    const brisbane = talkSlug('Rethinking Observability', new Date('2026-12-07'));
+    const provence = talkSlug('Rethinking Observability', new Date('2026-12-10'));
+    expect(brisbane).not.toBe(provence);
+  });
+
+  it('uses UTC so a local timezone cannot shift the day', () => {
+    expect(talkSlug('X', new Date('2025-01-01T00:00:00Z'))).toBe('x-2025-01-01');
   });
 });

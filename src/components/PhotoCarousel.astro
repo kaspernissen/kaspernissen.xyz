@@ -1,13 +1,9 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
+import { photoDisplayUrl } from '../lib/photoHost';
 
 const { entries } = Astro.props as { entries: CollectionEntry<'speakers'>[] };
-
-const images = import.meta.glob<{ default: ImageMetadata }>(
-  '../assets/speakers/*.{jpg,jpeg,png,webp}',
-  { eager: true },
-);
 ---
 <div class="relative -mx-6">
   <div
@@ -16,24 +12,16 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   >
     {entries.map((entry) => {
       const d = entry.data;
-      const filename = d.src.replace(/^\.\//, '').replace(/^src\/assets\/speakers\//, '');
-      const key = Object.keys(images).find((k) => k.endsWith('/' + filename));
-      const img = key ? images[key].default : null;
       return (
         <figure class="snap-start shrink-0 w-72 md:w-96 bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] overflow-hidden">
-          {img ? (
-            <Image
-              src={img}
-              alt={d.caption}
-              widths={[320, 480, 640]}
-              sizes="(min-width: 768px) 384px, 288px"
-              class="w-full aspect-[4/3] object-cover"
-            />
-          ) : (
-            <div class="w-full aspect-[4/3] bg-orange-950 flex items-center justify-center text-stone-500 text-xs">
-              photo missing
-            </div>
-          )}
+          <Image
+            src={photoDisplayUrl(d.src)}
+            alt={d.caption}
+            inferSize
+            widths={[320, 480, 640]}
+            sizes="(min-width: 768px) 384px, 288px"
+            class="w-full aspect-[4/3] object-cover"
+          />
           <figcaption class="p-3 text-xs text-stone-300">
             <div class="font-semibold text-stone-50 line-clamp-1">{d.caption}</div>
             <div class="text-stone-500 mt-0.5">{d.event}{d.event !== 'TBD' && d.date ? ` · ${d.date.toISOString().slice(0, 7)}` : ''}</div>

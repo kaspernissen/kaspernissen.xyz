@@ -1,22 +1,31 @@
 /**
- * Where full-resolution speaker photos are served from.
+ * Where speaker photos are served from.
  *
- * Same split as the decks (see src/lib/deckHost.ts): the site commits a 1600px
- * display master per photo — which Astro downsamples to the sizes the gallery
- * actually serves — and the heavy 3200px original that people download lives
- * outside the repo.
+ * Nothing image-shaped is versioned any more. The bucket holds two sizes under
+ * one prefix:
  *
- * Default `/speakers` serves them from `public/speakers/`. Set
- * PUBLIC_PHOTO_BASE_URL to a bucket to serve them from there instead:
+ *   photos/<name>            the 3200px original, what "Download original" links to
+ *   photos/display/<name>    the 1600px master the gallery renders from
  *
- *   PUBLIC_PHOTO_BASE_URL=https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos
+ * Astro fetches the display master at build time and emits responsive WebP from
+ * it, exactly as it did when the file sat in src/assets/speakers/. The tradeoff
+ * is that a build now depends on the bucket being reachable and public; see the
+ * `image.remotePatterns` note in astro.config.mjs.
  *
- * `download` in each photo's YAML is a bare file name, so moving the host never
- * means rewriting content.
+ * Both URLs derive from PUBLIC_PHOTO_BASE_URL, so pointing this at a CloudFront
+ * distribution or a different bucket is a one-line change. Unset it to serve
+ * from public/speakers/ locally instead, which is what `npm run dev` does when
+ * you have not copied .env.example.
  */
 const configured = import.meta.env.PUBLIC_PHOTO_BASE_URL?.trim();
 
 export const PHOTO_BASE = configured ? configured.replace(/\/+$/, '') : '/speakers';
 
-export const photoUrl = (file: string) =>
-  `${PHOTO_BASE}/${file.replace(/^\/?speakers\//, '').replace(/^\//, '')}`;
+/** Strips any directory part; content stores bare file names. */
+const bare = (file: string) => file.replace(/^.*\//, '');
+
+/** The full-resolution original, for download links. */
+export const photoUrl = (file: string) => `${PHOTO_BASE}/${bare(file)}`;
+
+/** The display master, for rendering. */
+export const photoDisplayUrl = (file: string) => `${PHOTO_BASE}/display/${bare(file)}`;
