@@ -1,10 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoCard from '../components/PhotoCard.astro';
+import FeaturedWork from '../components/FeaturedWork.astro';
 import { sortPhotos } from '../lib/sortPhotos';
 
 const photos = sortPhotos(await getCollection('speakers'));
+
+// The two cut-out headshots, which are a different thing from the gallery
+// below: those are shots of Kasper on stage that an organiser might use in a
+// programme, these are the square portrait a conference site wants for a
+// speaker tile. They live beside the other artwork in the bucket rather than
+// in the speakers collection so they stay out of the photo grid.
+const ART = 'https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos/art';
+const headshots = [
+  { src: `${ART}/headshot-cyan.png`, alt: 'Kasper Nissen, square headshot on a cyan background' },
+  { src: `${ART}/headshot-red.jpg`, alt: 'Kasper Nissen, square headshot on a red background' },
+];
 
 // An organiser writing a programme wants the longer-form work in one place,
 // not spelt out in the bio. Read from the collection so it can never drift
@@ -48,34 +61,37 @@ const topics = [
   <section class="mt-10">
     <div class="bg-stone-900 rounded-xl p-5">
       <div class="text-[11px] uppercase tracking-wider text-stone-500 mb-3">Bio</div>
-      <p class="text-lg font-bold leading-snug">Kasper Borg Nissen</p>
-      <p class="text-sm text-stone-400 mt-1 leading-relaxed">{bioTitle}</p>
-      <p class="text-sm leading-relaxed mt-4">{bio}</p>
+      {/* Headshots beside the bio on a wide screen, above it on a phone — an
+          organiser filling in a speaker form copies both in one pass. */}
+      <div class="flex flex-col sm:flex-row sm:items-start gap-5">
+        <div class="shrink-0 grid grid-cols-2 sm:grid-cols-1 gap-3 w-full sm:w-32">
+          {headshots.map((h) => (
+            <a href={h.src} class="block group" title="Download this headshot">
+              <Image
+                src={h.src}
+                alt={h.alt}
+                inferSize
+                widths={[256, 512]}
+                sizes="(min-width: 640px) 128px, 45vw"
+                class="w-full aspect-square object-cover rounded-lg shadow-[3px_3px_0_0_#44403c] group-hover:-translate-y-0.5 transition"
+              />
+            </a>
+          ))}
+        </div>
+        <div class="min-w-0">
+          <p class="text-lg font-bold leading-snug">Kasper Borg Nissen</p>
+          <p class="text-sm text-stone-400 mt-1 leading-relaxed">{bioTitle}</p>
+          <p class="text-sm leading-relaxed mt-4">{bio}</p>
+          <p class="text-xs text-stone-500 mt-4">Click a headshot to download it.</p>
+        </div>
+      </div>
     </div>
   </section>
 
   {longForm.length > 0 && (
     <section class="mt-12">
       <h2 class="text-xl font-bold mb-3">Book and course</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {longForm.map((w) => (
-          <a
-            href={w.data.url}
-            target="_blank"
-            rel="noreferrer"
-            class="block bg-stone-900 rounded-xl p-4 shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition"
-          >
-            <div class="text-[11px] uppercase tracking-wider text-stone-500">
-              {w.data.kind} · {w.data.publication}
-              {w.data.duration_min ? ` · ${w.data.duration_min} min` : ''}
-            </div>
-            <div class="font-bold mt-1 leading-snug">{w.data.title}</div>
-            {w.data.summary && (
-              <p class="text-sm text-stone-400 mt-2 leading-relaxed">{w.data.summary}</p>
-            )}
-          </a>
-        ))}
-      </div>
+      <FeaturedWork entries={longForm} />
     </section>
   )}
 
