@@ -1,3 +1,15 @@
+# Pulls in what the sources have published, as a pull request.
+#
+# This used to build and deploy straight to production every night. Everything
+# it did — scraping Sessionize, reading the YouTube playlist, and then GUESSING
+# which recording belonged to which conference — went live with nobody looking
+# at it. When the guessing went wrong it went wrong silently: eighteen
+# recordings vanished from the site for a fortnight while every local build
+# looked correct.
+#
+# So the job no longer deploys. It reconciles upstream into src/content/ and
+# opens a PR. Every heuristic decision is then a diff you can read and reject,
+# and merging it is what triggers the deploy.
 name: Nightly refresh
 on:
   schedule:
@@ -5,20 +17,18 @@ on:
   workflow_dispatch: {}
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
+  pull-requests: write
 
+# Not the `pages` group: this job does not deploy, so it must never cancel or
+# be cancelled by a running deployment.
 concurrency:
-  group: pages
+  group: content-refresh
   cancel-in-progress: true
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,17 +36,84 @@ jobs:
           node-version: '22'
           cache: 'npm'
       - run: npm ci
-      - run: npm run build
+
+      - name: Reconcile upstream into the content files
+        run: npm run refresh 2>&1 | tee /tmp/refresh.log
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          # See deploy.yml. A deck published on noti.st but not
-          # yet synced to the bucket is skipped rather than linked, so this
-          # nightly job can never publish a dead download link.
+          # A deck published on noti.st but not yet synced to the bucket is
+          # skipped rather than linked, so this job can never propose a dead
+          # download link.
           PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com
           DECKS_METADATA_ONLY: '1'
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Stop early if nothing changed
+        id: changed
+        run: |
+          if git diff --quiet -- src/content data; then
+            echo "any=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing new upstream."
+          else
+            echo "any=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Proof that the proposed content builds, run in the same job. A PR
+      # opened by GITHUB_TOKEN does not trigger other workflows, so the
+      # checks would otherwise never run on it.
+      - name: Test and build the proposed content
+        if: steps.changed.outputs.any == 'true'
+        run: |
+          npm test
+          npm run build
+        env:
+          PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks
+          PUBLIC_PHOTO_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos
+          PUBLIC_BADGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/badges
+
+      - name: Summarise the change
+        if: steps.changed.outputs.any == 'true'
+        id: summary
+        run: |
+          {
+            echo 'body<<PRBODY'
+            echo 'Upstream changes picked up by the nightly refresh.'
+            echo
+            echo '```'
+            grep -E '^\[(sessionize|youtube|notist|github|link-|record-)' /tmp/refresh.log || true
+            echo '```'
+            echo
+            echo '### Files'
+            echo '```'
+            git diff --stat -- src/content data
+            echo '```'
+            echo
+            echo 'Anything listed as "kept (yours differs)" is a field where upstream'
+            echo 'disagrees with what is committed and the committed value won. That is'
+            echo 'the intended behaviour: a fetcher may fill a blank, never overwrite.'
+            echo
+            echo 'Check the adoption decisions — a recording folded into the wrong'
+            echo 'conference looks exactly like a correct one in the diff. Close this PR'
+            echo 'to reject it; the next run opens a fresh one.'
+            echo 'PRBODY'
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Open or update the pull request
+        if: steps.changed.outputs.any == 'true'
+        uses: peter-evans/create-pull-request@v7
         with:
-          path: dist
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          branch: content/refresh
+          # Rebuilt from main each run rather than accumulating commits, so the
+          # PR always shows the current difference from main and never a stale
+          # pile of overnight states.
+          delete-branch: true
+          title: 'Content refresh'
+          body: ${{ steps.summary.outputs.body }}
+          commit-message: |
+            Refresh content from upstream
+
+            Opened by .github/workflows/refresh.yml. Fetchers may fill blank
+            fields and create entries; they never overwrite a value that is
+            already committed.
+          add-paths: |
+            src/content
+            data

@@ -1,0 +1,15 @@
+title: "Keynote: Paving the Way for AI Through Platform Engineering"
+event: CloudNativeCon+KubeCon, North America 2024
+date: 2024-11-13
+location: Salt Lake City
+abstract: |-
+  Keynote: Paving the Way for AI Through Platform Engineering - Kasper Borg Nissen, Staff Platform Engineer, Lunar
+
+  In today’s ever-evolving world, organizations struggle to integrate AI efficiently. Is AI a department, a team, or a tool for a select few? No, it should be woven into the fabric of the business. Drawing from the principles of platform engineering in cloud native ecosystems, we explore how organizations can reuse experiences and investments in cloud native and platform engineering to democratize AI, enabling every team to access its potential. Real-world examples, like Lunar, demonstrate how businesses can implement AI without needing complex infrastructure and harness the power of AI through simplified platforms and evolutionary architectures.
+youtube_id: _E2Mkebe9Jg
+tags: []
+featured: false
+playlist_position: 25
+sources:
+  github: keynote-paving-the-way-for-ai-through-platform-engineering-2024-11
+  youtube: _E2Mkebe9Jg

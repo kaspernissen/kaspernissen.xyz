@@ -1,0 +1,13 @@
+title: Two years in Production with Kubernetes - an experience report
+event: ContainerDays Hamburg 2019
+date: 2019-06-26
+abstract: |-
+  At Lunar Way we have been running Kubernetes in production for over two years. This presentation will be an experience report of the challenges we faced and how we overcome them. We started running Kubernetes in March 2017 to support at that time, 7 microservices. Today we manage around 80 microservices in production. In this presentation, Kasper will touch upon topics such as; finding the right abstraction (do developers need to care about Docker and Kubernetes?), Release Management with Git as the single source of truth (GitOps), and lastly Kubernetes Operations (kops) and the quirks that it comes with.
+  #cloud #kubernetes #cloudcomputing #cloudnative #k8s #devops #gitops #edgecomputing #multicloud #microservicesarchitecture #docker #tech #saas #opensource #opensourcecommunity #devsecops #kubevirt #containerdays #techconference
+youtube_id: q6Nvm2Jhf1s
+tags: []
+featured: false
+playlist_position: 54
+sources:
+  github: two-years-in-production-with-kubernetes-an-experience-report-2019-06
+  youtube: q6Nvm2Jhf1s

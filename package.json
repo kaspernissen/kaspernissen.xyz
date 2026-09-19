@@ -8,10 +8,10 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "node scripts/prebuild.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "test": "vitest run",
+    "refresh": "node scripts/refresh.mjs",
     "decks:fetch": "node scripts/fetch-notist.mjs",
     "decks:sync": "DECKS_PREFIX=decks node scripts/sync-decks.mjs",
     "photos:import": "node scripts/import-photos.mjs",
@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@types/node": "^25.6.0",
-    "vitest": "^4.1.5"
+    "vitest": "^4.1.5",
+    "yaml": "^2.9.1"
   }
 }

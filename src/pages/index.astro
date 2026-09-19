@@ -10,12 +10,12 @@ import PhotoCarousel from '../components/PhotoCarousel.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
 import { sortTalks } from '../lib/sortTalks';
 import { sortPhotos } from '../lib/sortPhotos';
-import { isDelivered, isScheduled } from '../lib/engagement';
+import { isDelivered, isScheduled, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
 
 // One collection now holds both the schedule and the archive; which section an
 // entry appears in is decided by its date. See src/lib/engagement.ts.
-const engagements = await getCollection('talks');
+const engagements = visible(await getCollection('talks'));
 
 const talks = sortTalks(engagements.filter((t) => isDelivered(t))).slice(0, 3);
 

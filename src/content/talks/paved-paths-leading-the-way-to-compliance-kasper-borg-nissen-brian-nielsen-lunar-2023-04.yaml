@@ -1,0 +1,15 @@
+title: Paved Paths Leading the Way to Compliance - Kasper Borg Nissen & Brian Nielsen, Lunar
+event: CloudNativeCon+KubeCon, Europe 2023
+date: 2023-04-21
+location: Amsterdam
+abstract: |-
+  Paved Paths Leading the Way to Compliance - Kasper Borg Nissen & Brian Nielsen, Lunar
+
+  Lunar, a forward-leaning and technology-first neobank in the Nordics, gained its reputation partly due to our early Kubernetes adoption and relentless focus on pushing the boundaries of what CNCF projects allow us to do. This presentation is no exception. Brian and Kasper will provide insights into how Lunar is building an internal compliance platform using Backstage and paving the paths for developers to be compliant. The value gained from this approach is manyfold when working under extended compliance requirements in the banking industry, such as dynamic documentation, secure and compliant defaults, and much more. Brian and Kasper will highlight a specific use case, detailing how software asset management and classification can be made easy by utilizing the software catalog and built-in models in Backstage. In particular, domain models are useful for Lunar to provide clarity of the entire software catalog and ownership of components. This use case will highlight some of the ways Lunar is embedding compliance throughout the entire development lifecycle, and how we are working with compliance by design that focuses on guaranteed compliance with policies as code.
+youtube_id: 6T3Mf6pdg7E
+tags: []
+featured: false
+playlist_position: 40
+sources:
+  github: paved-paths-leading-the-way-to-compliance-kasper-borg-nissen-brian-nielsen-lunar-2023-04
+  youtube: 6T3Mf6pdg7E

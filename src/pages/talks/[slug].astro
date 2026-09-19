@@ -5,10 +5,10 @@ import PhotoGallery from '../../components/PhotoGallery.astro';
 import { talkSlug } from '../../lib/slug';
 import { assignPhotos } from '../../lib/photoJoin';
 import { deckUrl } from '../../lib/deckHost';
-import { displayTitle, isDelivered } from '../../lib/engagement';
+import { displayTitle, isDelivered, visible } from '../../lib/engagement';
 
 export async function getStaticPaths() {
-  const talks = await getCollection('talks');
+  const talks = visible(await getCollection('talks'));
   const photos = await getCollection('speakers');
 
   // A photo names its event where it can and falls back to its date where it

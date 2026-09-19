@@ -1,4 +1,5 @@
 import fs from 'node:fs/promises';
+import { reconcile, summarise } from './lib/reconcile-io.mjs';
 import path from 'node:path';
 
 const PLAYLIST_ID = 'PL5T4q56AEyfVPQUu4R6ESZfIT-gq8AYw1';
@@ -274,94 +275,68 @@ try {
   process.exit(0);
 }
 
-await fs.mkdir(OUT_DIR, { recursive: true });
+// No directory to prepare and nothing to wipe.
+//
+// Two pieces of machinery used to live here and are gone with the wipe:
+//
+//   `previous` re-read every file before deleting it, so that a detail lookup
+//   coming back empty could not replace a real date with a placeholder. The
+//   reconcile rule covers that by construction: a field with a value is never
+//   overwritten.
+//
+//   `claimed` scanned the whole of src/content/talks/ for video IDs some other
+//   entry already used, so this fetcher would not write a duplicate. It ran
+//   concurrently with the fetchers that owned those directories, read a mix of
+//   two builds' files, and on a fresh checkout skipped eighteen videos whose
+//   claims were about to be deleted. An entry is now found by the key it
+//   records in `sources.youtube`, which no other fetcher can disturb.
 
-// Remember what we already knew before wiping the directory. When a detail
-// lookup comes back empty — rate limiting, a captcha, a transient 5xx — these
-// values are reused instead of being replaced by placeholders.
-const previous = new Map();
-for (const f of await fs.readdir(OUT_DIR)) {
-  if (!f.endsWith('.yaml')) continue;
-  const full = path.join(OUT_DIR, f);
-  const text = await fs.readFile(full, 'utf8');
-  const id = text.match(/^youtube_id:\s*(\S+)$/m)?.[1];
-  const date = text.match(/^date:\s*(\d{4}-\d{2}-\d{2})/m)?.[1];
-  if (id && id !== 'null' && date) {
-    const field = (k) => {
-      const raw = text.match(new RegExp(`^${k}:\\s*(.*)$`, 'm'))?.[1]?.trim();
-      if (!raw || raw === 'null') return null;
-      try { return raw.startsWith('"') ? JSON.parse(raw) : raw; } catch { return null; }
-    };
-    previous.set(id, { date, event: field('event'), abstract: field('abstract') });
-  }
-  await fs.unlink(full);
-}
-
-const claimed = await readManualClaimedIds();
-
-let n = 0, skipped = 0, undated = 0, recovered = 0;
+const records = [];
+let n = 0, undated = 0;
 for (const it of items) {
   const s = it.snippet ?? {};
   const videoId = it.contentDetails?.videoId ?? s.resourceId?.videoId;
   if (!videoId) continue;
   const tlow = (s.title ?? '').toLowerCase();
   if (tlow.includes('private video') || tlow.includes('deleted video')) continue;
-  if (claimed.has(videoId)) {
-    skipped++;
-    continue;
-  }
   let { title, event } = splitTitle(s.title ?? 'Untitled');
   if (event === 'Unknown event' && s.channelTitle) event = s.channelTitle;
 
-  const prior = previous.get(videoId);
-
   // NEVER invent a date. This used to be `s.publishedAt ?? Date.now()`, which
   // silently restamped every talk with today's date the first time YouTube
-  // rate-limited us — destroying real dates, and with them the deck matching
-  // and the chronological ordering. Prefer what upstream said, then what we
-  // already had, and if neither exists skip the video entirely.
-  const publishedAt = s.publishedAt ? new Date(s.publishedAt).toISOString().slice(0, 10) : null;
-  const date = publishedAt ?? prior?.date ?? null;
+  // rate-limited us. A video with no date is skipped: an entry that already
+  // exists keeps the date on disk regardless, because reconcile does not
+  // overwrite, and a new entry without one is not worth creating.
+  const date = s.publishedAt ? new Date(s.publishedAt).toISOString().slice(0, 10) : null;
   if (!date) {
     undated++;
     continue;
   }
-  if (!publishedAt && prior) recovered++;
 
-  // Same rule for the other scraped fields: a placeholder must not overwrite a
-  // real value we already had on disk.
-  if ((event === 'Unknown event' || !event) && prior?.event) event = prior.event;
-  const description = s.description ?? prior?.abstract ?? null;
-
-  const slug = `${slugify(title)}-${date.slice(0, 7)}`;
-  const lines = [
-    `title: ${JSON.stringify(title)}`,
-    `event: ${JSON.stringify(event)}`,
-    `date: ${date}`,
-    `youtube_id: ${videoId}`,
-    `tags: []`,
-    `featured: false`,
-  ];
+  const fields = {
+    title,
+    event,
+    date,
+    youtube_id: videoId,
+    tags: [],
+    featured: false,
+  };
   // Playlist order (0 = most recently added). Talks listings sort on this so
   // the site reflects the order Kasper curates the playlist in, not upload date.
-  if (typeof it.playlistPosition === 'number') {
-    lines.push(`playlist_position: ${it.playlistPosition}`);
-  }
-  if (description) {
-    const teaser = description.split('\n').slice(0, 4).join('\n');
-    lines.push(`abstract: ${JSON.stringify(teaser)}`);
-  }
-  await fs.writeFile(path.join(OUT_DIR, `${slug}.yaml`), lines.join('\n') + '\n');
+  if (typeof it.playlistPosition === 'number') fields.playlist_position = it.playlistPosition;
+  if (s.description) fields.abstract = s.description.split('\n').slice(0, 4).join('\n');
+
+  records.push({ key: videoId, fields });
   n++;
 }
 
 await saveDetailsCache();
 
+const report = await reconcile('youtube', records, { matchField: 'youtube_id' });
 console.log(
-  `[youtube] wrote ${n} talks (skipped ${skipped} already-claimed) → ${OUT_DIR}\n` +
-    `[youtube] details: ${cacheHits} cached, ${cacheMisses} fetched` +
+  summarise(report) +
+    ` — ${cacheHits} cached, ${cacheMisses} fetched` +
     (blocked ? `, ${blocked} blocked by YouTube` : '') +
-    (recovered ? `, ${recovered} dates kept from previous run` : '') +
     (undated ? `, ${undated} skipped with no known date` : ''),
 );
 

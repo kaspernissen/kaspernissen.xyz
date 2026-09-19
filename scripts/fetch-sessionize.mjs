@@ -8,24 +8,18 @@
 //   <span class="c-s-event__meta c-s-event__meta--location">City, Country</span>
 
 import fs from 'node:fs/promises';
+import { reconcile, summarise } from './lib/reconcile-io.mjs';
 import path from 'node:path';
 
 const PROFILE_URL = 'https://sessionize.com/kaspernissen';
 const OUT_DIR = 'src/content/talks/events/sessionize';
-const OVERRIDES_FILE = 'data/conference-overrides.json';
 
-// Sessionize's profile publishes month + year only, so scraped dates are always
-// a last-day-of-month guess. Overrides let a real date (or a corrected name,
-// location or URL) survive this fetcher deleting and rewriting OUT_DIR.
-async function loadOverrides() {
-  try {
-    const raw = JSON.parse(await fs.readFile(OVERRIDES_FILE, 'utf8'));
-    return Object.fromEntries(Object.entries(raw).filter(([k]) => !k.startsWith('_')));
-  } catch (e) {
-    if (e.code !== 'ENOENT') console.warn(`[sessionize] ${OVERRIDES_FILE}: ${e.message}`);
-    return {};
-  }
-}
+// Sessionize's profile publishes month + year only, so every date scraped here
+// is a last-day-of-month guess. It used to need an override file to correct
+// one, because this fetcher deleted and rewrote its directory each build. Now
+// the real date is simply typed into the entry: reconcile fills blanks and
+// never overwrites, so the guess below only ever applies to an event nobody
+// has dated yet.
 
 function slugify(s) {
   return s.normalize('NFKD').replace(/[̀-ͯ]/g, '')
@@ -94,10 +88,7 @@ try {
   process.exit(0);
 }
 
-await fs.mkdir(OUT_DIR, { recursive: true });
-for (const f of await fs.readdir(OUT_DIR)) {
-  if (f.endsWith('.yaml')) await fs.unlink(path.join(OUT_DIR, f));
-}
+const records = [];
 
 // Carve out just the Events section so we don't pick up Sessions etc.
 const eventsStart = html.indexOf('id="events"');
@@ -111,8 +102,6 @@ const eventsHtml = html.slice(
   sessionsStart > eventsStart ? sessionsStart : undefined,
 );
 
-const overrides = await loadOverrides();
-const usedOverrides = new Set();
 
 // Each event lives in a <div class="c-s-event"> ... </div> block.
 const blockRe = /<div\s+class="c-s-event">([\s\S]*?)<\/div>\s*<\/div>/g;
@@ -150,54 +139,35 @@ for (const m of eventsHtml.matchAll(blockRe)) {
     ? decodeEntities(locMatch[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim())
     : 'Unknown';
 
-  // Overrides are keyed on the slugified event NAME (not name+date), so a
-  // corrected date doesn't move the key out from under its own override.
+  // The key is the slugified event NAME as Sessionize publishes it, never
+  // name+date: a corrected date must not move the handle by which this entry
+  // is recognised. It is written into the entry as `sources.sessionize`.
   const key = slugify(name);
-  if (Object.hasOwn(overrides, key)) usedOverrides.add(key);
-  const ov = overrides[key] ?? {};
 
-  const finalName = ov.name ?? name;
-  const finalDate = ov.date ?? date;
-  const finalLocation = ov.location ?? location;
-  const finalUrl = ov.url ?? url;
-
-  const slug = slugify(`${finalName}-${finalDate.slice(0, 7)}`);
-  // Emitted in the unified engagement shape (see src/content.config.ts): the
-  // event's own name is `event`, and `title` is the session given there, which
-  // Sessionize does not expose — it comes from an override when known.
-  const lines = [
-    ov.session_title ? `title: ${JSON.stringify(ov.session_title)}` : `title: null`,
-    `event: ${JSON.stringify(finalName)}`,
-    `event_url: ${JSON.stringify(finalUrl)}`,
-    ov.session_url ? `session_url: ${JSON.stringify(ov.session_url)}` : null,
-    `date: ${finalDate}`,
-    ov.end_date ? `end_date: ${ov.end_date}` : null,
-    `location: ${JSON.stringify(finalLocation)}`,
-    `role: ${JSON.stringify(ov.role ?? 'speaker')}`,
-    // Sessionize publishes no abstract, so it comes from the override when the
-    // talk page should carry a description.
-    ov.abstract ? `abstract: ${JSON.stringify(ov.abstract)}` : null,
-    // A deck that never went to Notist — link-decks can only pair what the
-    // Notist fetcher wrote, so a hand-added PDF is declared here instead.
-    ov.deck_file ? `deck_file: ${JSON.stringify(ov.deck_file)}` : null,
-    ov.deck_size_mb ? `deck_size_mb: ${ov.deck_size_mb}` : null,
-    ov.co_speakers?.length
-      ? `co_speakers:\n${ov.co_speakers.map((s) => `  - ${JSON.stringify(s)}`).join('\n')}`
-      : null,
-    `tags: []`,
-    `featured: false`,
-    tag.toLowerCase().includes('upcoming') ? `# Upcoming per Sessionize` : null,
-  ].filter(Boolean).join('\n');
-
-  await fs.writeFile(path.join(OUT_DIR, `${slug}.yaml`), lines + '\n');
+  // Raw scraped values, deliberately. Corrections used to live in
+  // a separate override file because this fetcher deleted and rewrote
+  // its directory; now they live in the entry itself, and reconcile only ever
+  // fills a blank. So a real date typed into the YAML beats the month-end
+  // guess below without anything having to remember that it is a correction.
+  records.push({
+    key,
+    fields: {
+      title: null,
+      event: name,
+      event_url: url,
+      date,
+      location,
+      role: 'speaker',
+      tags: [],
+      featured: false,
+    },
+  });
   n++;
 }
-// Surface overrides that matched nothing — a renamed event would otherwise
-// silently revert to the scraped month-end guess.
-const unused = Object.keys(overrides).filter((k) => !usedOverrides.has(k));
-if (unused.length > 0) {
-  console.warn(`[sessionize] ${unused.length} override(s) matched no event: ${unused.join(', ')}`);
+const report = await reconcile('sessionize', records);
+console.log(summarise(report));
+for (const m of report.missing) {
+  // Not deleted: Sessionize drops an event from the profile once it is well
+  // past, which is not a reason to erase a talk that was given.
+  console.log(`[sessionize] no longer listed upstream: ${m.key}`);
 }
-console.log(
-  `[sessionize] wrote ${n} conferences (${usedOverrides.size} overridden) → ${OUT_DIR}`,
-);

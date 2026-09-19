@@ -1,0 +1,20 @@
+title: Observability as a Foundation for AI-Enabled Platforms
+event: PlatformCon Live Day London 2026
+event_url: https://2026.platformcon.com/live-day-london
+date: 2026-06-23
+location: London, United Kingdom
+role: speaker
+co_speakers: []
+abstract: |-
+  AI introduces new challenges for platform engineering teams. Agent-based systems are harder to reason about than traditional services: they are non-deterministic, invoke tools dynamically, generate variable load, and make decisions that are difficult to reconstruct later. When something goes wrong, existing debugging and operational practices often fall short.
+
+  - Learn more about this session: https://platformcon.com/sessions/observability-as-a-foundation-for-ai-enabled-platforms-ldn
+  - Get your copy of the book, Thinking in Platforms: https://weaveintelligence.io/thinking-in-platforms-book
+youtube_id: CoiDP9C05T8
+deck_file: observability-as-a-foundation-for-ai-enabled-platforms-2026-06.pdf
+deck_size_mb: 8.8
+tags: []
+featured: false
+playlist_position: 2
+sources:
+  youtube: CoiDP9C05T8

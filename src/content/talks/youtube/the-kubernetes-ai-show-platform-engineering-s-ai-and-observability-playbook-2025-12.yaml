@@ -1,8 +1,0 @@
-title: "The Kubernetes AI Show: Platform Engineering's AI and Observability Playbook"
-event: "Buoyant"
-date: 2025-12-05
-youtube_id: VjtxUAo_Q_4
-tags: []
-featured: false
-playlist_position: 4
-abstract: "Can AI replace the true craftsmanship of a developer? Join Kasper Nissen and William Chia as they dive into the revolutionary intersection of AI, Observability, and Platform Engineering straight from KubeCon.\n\nIn this episode of the AI Kubernetes Show, Kasper Nissen, Principal Developer Advocate at Dash0, explains why Observability is uniquely positioned to combat AI hallucinations, thanks to structured data and semantic conventions provided by projects like OpenTelemetry. He discusses how developers are &quot;moving away from looking at dashboards to asking things in a natural language,&quot; transforming the debugging experience.\n"

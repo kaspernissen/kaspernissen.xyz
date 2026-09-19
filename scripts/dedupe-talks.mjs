@@ -7,6 +7,7 @@
 // for the merge rules and why title-only matching would be unsafe.
 
 import fs from 'node:fs/promises';
+import { loadEntries, save } from './lib/entries.mjs';
 import path from 'node:path';
 import { planMerges } from './lib/talk-merge.mjs';
 
@@ -93,8 +94,13 @@ const DECKS = path.join(ROOT, 'decks');
 const YOUTUBE = path.join(ROOT, 'youtube');
 
 const talks = [];
-for (const file of await walk(ROOT)) {
-  const parsed = parseYaml(await fs.readFile(file, 'utf8'));
+// Read with a real YAML parser rather than the hand-rolled one below. That
+// parser reads `sources:` as an empty list and the writer dropped the block
+// entirely, so every entry looked hand-curated, no two were ever collapsed,
+// and a merge would have erased the provenance it depends on.
+for (const { file, fields: parsed } of await loadEntries(ROOT)) {
+  // See the note in link-decks.mjs: a tombstone must not be merged with.
+  if (parsed.hidden) continue;
   if (!parsed.title) continue;
   // 'youtube'  — event is a channel name, date is the upload date.
   // 'deck'     — a real delivery, but pairing it with a recording is
@@ -102,9 +108,14 @@ for (const file of await walk(ROOT)) {
   //              closest-delivery decision and then leaves it alone.
   // 'curated'  — the README, Sessionize and manual entries: a real event on a
   //              real date. Two of these are never collapsed into each other.
-  const source = file.startsWith(YOUTUBE + path.sep)
+  // Classified by where the entry CAME FROM, not by which folder it sits in.
+  // This used to read the path, because each fetcher owned a directory; with
+  // one flat directory that test silently called everything 'curated', and two
+  // CNCF-channel recordings of the same keynote stopped being collapsed.
+  const origins = Object.keys(parsed.sources ?? {});
+  const source = origins.length === 1 && origins[0] === 'youtube'
     ? 'youtube'
-    : file.startsWith(DECKS + path.sep)
+    : parsed.notist_url
       ? 'deck'
       : 'curated';
   talks.push({ ...parsed, file, source });
@@ -113,7 +124,17 @@ for (const file of await walk(ROOT)) {
 const plans = planMerges(talks);
 
 for (const plan of plans) {
-  await fs.writeFile(plan.keep, toYaml(plan.merged));
+  // The survivor inherits both origins. Without this the dropped entry's key
+  // is forgotten, and the next refresh sees an upstream record nothing claims
+  // and writes the duplicate straight back.
+  const dropped = talks.find((t) => t.file === plan.drop);
+  const merged = {
+    ...plan.merged,
+    sources: { ...(dropped?.sources ?? {}), ...(plan.merged.sources ?? {}) },
+  };
+  delete merged.file;
+  delete merged.source;
+  await save(plan.keep, merged);
   await fs.unlink(plan.drop);
   console.log(
     `[dedupe-talks] merged (${plan.score.toFixed(2)}) ${JSON.stringify(plan.merged.title)}\n` +

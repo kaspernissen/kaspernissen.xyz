@@ -1,0 +1,22 @@
+title: "Golden Paths for Async Workflows: Dapr Meets OpenTelemetry"
+event: KCD Suisse Romande 2025
+event_url: https://cloud-native-romandy.ch/
+date: 2025-12-04
+end_date: 2025-12-05
+location: Geneva, Switzerland
+role: speaker
+abstract: |
+  KCD Suisse Romande 2025: https://kcd.cloud-native-romandy.ch/
+
+  Speaker: Kasper Borg Nissen, Mauricio &quot;Salaboy&quot; Salatino
+youtube_id: Nb0VGaSRnLA
+deck_file: golden-paths-for-async-workflows-dapr-meets-opentelemetry-2025-12.pdf
+deck_size_mb: 10.7
+notist_url: https://noti.st/kasperborgnissen/Okk1sP/golden-paths-for-async-workflows-dapr-meets-opentelemetry
+tags: []
+featured: false
+playlist_position: 13
+sources:
+  sessionize: kcd-suisse-romande-2025
+  youtube: Nb0VGaSRnLA
+  notist: https://noti.st/kasperborgnissen/Okk1sP/golden-paths-for-async-workflows-dapr-meets-opentelemetry

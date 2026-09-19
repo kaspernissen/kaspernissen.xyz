@@ -1,0 +1,15 @@
+title: Shifting Security Left While Building A Cloud Native Bank
+event: SnykCon
+date: 2021-10-05
+abstract: |
+  Building a digital bank requires a unique combination of agility and speed while maintaining the highest level of security. Lunar, a digital challenger bank in the Nordics, has always had technology and agility as a differentiator. Lunar was built for the cloud, with Cloud Native principles, such as microservices, containers, and container orchestration amongst others.
+
+  In this presentation Kasper will present some insights into the principles on which the Lunar infrastructure was built on, the continuous focus on security, and how application security is shifting left and becoming a developer concern. Kasper will discuss the challenges faced and conquered in the process of transitioning from a fintech startup to a bank with its own banking license.
+youtube_id: p6oEZEXA5m8
+tags: []
+featured: false
+playlist_position: 44
+sources:
+  github: shifting-security-left-while-building-a-cloud-native-bank-2021-10
+  youtube: p6oEZEXA5m8
+hidden: true

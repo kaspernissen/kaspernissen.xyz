@@ -23,6 +23,7 @@
 // the repo alone; only the bytes move around.
 
 import fs from 'node:fs/promises';
+import { reconcile, summarise } from './lib/reconcile-io.mjs';
 import path from 'node:path';
 
 const USER = 'kasperborgnissen';
@@ -77,12 +78,10 @@ if (presentations.length === 0) {
   process.exit(0);
 }
 
-await fs.mkdir(OUT, { recursive: true });
 await fs.mkdir(PDF_DIR, { recursive: true });
-// Only the YAML is rewritten each run; the PDFs in public/decks are the cache.
-for (const f of await fs.readdir(OUT)) {
-  if (f.endsWith('.yaml')) await fs.unlink(path.join(OUT, f));
-}
+// Nothing is wiped: an entry is found by the Notist URL it records in
+// `sources.notist`, and the PDFs in public/decks remain the download cache.
+const records = [];
 
 // A presentation's event is embedded in its own relationships — no second
 // request needed. The `related` URL is only a fallback for the (unobserved)
@@ -192,27 +191,28 @@ for (const p of presentations) {
   // A published deck IS a delivery, so this is emitted as a full engagement
   // (see src/content.config.ts). link-decks folds it into the matching
   // recording afterwards where one exists.
-  const yaml = [
-    `title: ${JSON.stringify(title)}`,
-    `event: ${JSON.stringify(event)}`,
-    `date: ${date}`,
-    `location: null`,
-    `role: "speaker"`,
-    `youtube_id: null`,
-    `deck_file: ${JSON.stringify(fileName)}`,
-    `deck_size_mb: ${(size / 1048576).toFixed(1)}`,
-    `notist_url: ${JSON.stringify(`https://noti.st/${USER}/${id}/${slug}`)}`,
-    `tags: []`,
-    `featured: false`,
-  ].join('\n');
-
-  await fs.writeFile(path.join(OUT, `${slugify(`${title}-${date.slice(0, 7)}`)}.yaml`), yaml + '\n');
+  const notistUrl = `https://noti.st/${USER}/${id}/${slug}`;
+  records.push({
+    key: notistUrl,
+    fields: {
+      title,
+      event,
+      date,
+      role: 'speaker',
+      deck_file: fileName,
+      deck_size_mb: Number((size / 1048576).toFixed(1)),
+      notist_url: notistUrl,
+      tags: [],
+      featured: false,
+    },
+  });
   written++;
 }
 
+const report = await reconcile('notist', records, { matchField: 'notist_url' });
 console.log(
-  METADATA_ONLY
-    ? `[notist] wrote ${written} decks → ${OUT} (metadata only, ${skipped} PDFs left upstream)`
-    : `[notist] wrote ${written} decks → ${OUT} ` +
-        `(${downloaded} PDFs downloaded, ${skipped} already cached)`,
+  summarise(report) +
+    (METADATA_ONLY
+      ? ` — metadata only, ${skipped} PDFs left upstream`
+      : ` — ${downloaded} PDFs downloaded, ${skipped} already cached`),
 );

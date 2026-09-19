@@ -46,6 +46,21 @@ const talks = defineCollection({
     // Position in the YouTube playlist; 0 = most recently added. Null for
     // entries that don't come from the playlist.
     playlist_position: z.number().nullable().default(null),
+    // Which upstream record each fetcher built this entry from, keyed by
+    // source name. This is what makes a merge permanent: "this recording
+    // belongs to that conference" used to be re-guessed from titles and dates
+    // on every build, so a merge could quietly stop working when an upstream
+    // title changed. Written once, it is a fact the next run matches on.
+    //
+    // An entry with no `sources` is entirely hand-written and no fetcher will
+    // ever touch it.
+    sources: z.record(z.string(), z.string()).default({}),
+    // Kept on disk, shown nowhere. Deleting an unwanted entry does not work:
+    // the fetcher would see the record upstream, find nothing claiming it and
+    // create the file again on the next refresh. The tombstone is what stops
+    // that — it still matches by `sources`, so the entry is recognised and
+    // left alone. Replaces the exclusion list this used to need.
+    hidden: z.boolean().default(false),
   }),
 });
 

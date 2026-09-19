@@ -1,0 +1,17 @@
+title: "From Signals to Standards: Unifying Platform Engineering and Observability (Kasper B. Nissen, Dash0)"
+event: KCD Budapest 2025
+event_url: https://kcdbudapest.hu
+date: 2025-04-30
+location: Budapest, Hungary
+role: speaker
+abstract: |
+  In the ever-evolving landscape of software development, platform engineering and observability have been on parallel journeys of transformation. Kubernetes has revolutionized how we run containers everywhere, standardizing platforms for infrastructure. Similarly, OpenTelemetry is standardizing telemetry collection, enabling developers to own and understand their systems with ease.
+
+  In this talk, we’ll explore the history of platform engineering and the evolution of observability - from fragmented signals to unified platforms built on open standards. We’ll dive into how platform engineering introduced self-service and abstraction to empower developers and how observability platforms, like OpenTelemetry, are achieving similar goals through auto-instrumentation and open ecosystems.
+youtube_id: fye9gTQFdhY
+tags: []
+featured: false
+playlist_position: 19
+sources:
+  sessionize: kcd-budapest-2025
+  youtube: fye9gTQFdhY

@@ -1,0 +1,18 @@
+title: "Building and Scaling Cloud Native Nordics: Tips, Tricks, and Lessons Learned"
+event: "KubeCon + CloudNativeCon North America 2019"
+event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america-2019/"
+date: 2019-11-21
+location: "San Diego, California, United States"
+abstract: |
+  Join us for Kubernetes Forums Seoul, Sydney, Bengaluru and Delhi - learn more at kubecon.io 
+
+  Don't miss KubeCon + CloudNativeCon 2020 events in Amsterdam March 30 - April 2, Shanghai July 28-30 and Boston November 17-20! Learn more at kubecon.io. The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects 
+youtube_id: kHonSTlbHEc
+tags: []
+featured: false
+playlist_position: 51
+sources:
+  github: building-and-scaling-cloud-native-nordics-tips-tricks-and-lessons-learned-with-lucas-kaldstrom-2019-11
+  youtube: kHonSTlbHEc
+co_speakers:
+  - "Lucas Käldström"

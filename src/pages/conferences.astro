@@ -6,10 +6,10 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
-import { isScheduled, isDelivered } from '../lib/engagement';
+import { isScheduled, isDelivered, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
 
-const all = await getCollection('talks');
+const all = visible(await getCollection('talks'));
 
 const upcoming = all
   .filter((e) => isScheduled(e))

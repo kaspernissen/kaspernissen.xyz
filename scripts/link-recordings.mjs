@@ -23,6 +23,15 @@ async function walk(dir, acc = []) {
   return acc;
 }
 
+// The names under the `sources:` block — just the keys, which is all the
+// classification below needs. Matching indented lines anywhere in the file
+// would also pick up co_speakers entries and the like.
+function readSourceNames(text) {
+  const block = text.match(/^sources:\n((?:[ \t]+.*\n?)*)/m);
+  if (!block) return [];
+  return [...block[1].matchAll(/^[ \t]+([A-Za-z0-9_-]+):/gm)].map((m) => m[1]);
+}
+
 function readField(text, key) {
   const m = text.match(new RegExp(`^${key}:\\s*(.*)$`, 'm'));
   if (!m) return null;
@@ -57,7 +66,12 @@ const all = [];
 for (const file of await walk(ROOT)) {
   const text = await fs.readFile(file, 'utf8');
   const rec = { path: file, text };
+  // A hidden entry is a tombstone: it exists only so the fetchers recognise
+  // the upstream record and do not create the file again. It must never win a
+  // deck or a recording away from an entry the site actually shows.
+  if (/^hidden:\s*true\s*$/m.test(text)) continue;
   for (const f of FIELDS) rec[f] = readField(text, f);
+  rec.sources = readSourceNames(text);
   if (!rec.date) continue;
   all.push(rec);
 }
@@ -65,11 +79,14 @@ for (const file of await walk(ROOT)) {
 // Only YouTube-sourced entries are candidates to be absorbed: they are the ones
 // whose `event` is a channel name and whose date is an upload date. Curated
 // entries already know where and when they happened.
-const recordings = all.filter((r) => r.youtube_id && r.path.startsWith(YOUTUBE_DIR + path.sep));
+// "YouTube-sourced" now means the entry records the playlist as its ONLY
+// origin, rather than living in the directory the YouTube fetcher owned. An
+// entry that also carries a Sessionize or README key is a real engagement that
+// happens to have a video, and must not be absorbed into something else.
+const youtubeOnly = (r) => r.sources.length === 1 && r.sources[0] === 'youtube';
+const recordings = all.filter((r) => r.youtube_id && youtubeOnly(r));
 // No event_url requirement: an engagement can also be identified by its name.
-const engagements = all.filter(
-  (r) => !r.youtube_id && r.event && !r.path.startsWith(YOUTUBE_DIR + path.sep),
-);
+const engagements = all.filter((r) => !r.youtube_id && r.event && !youtubeOnly(r));
 
 const { links, adoptions } = planRecordingLinks(recordings, engagements);
 

@@ -3,12 +3,12 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TalkCard from '../../components/TalkCard.astro';
 import { sortTalks } from '../../lib/sortTalks';
-import { isDelivered } from '../../lib/engagement';
+import { isDelivered, visible } from '../../lib/engagement';
 
 // Delivered engagements only — upcoming ones live on /conferences until their
 // date passes, at which point they appear here and start collecting a deck and
 // a recording.
-const talks = sortTalks((await getCollection('talks')).filter((t) => isDelivered(t)));
+const talks = sortTalks(visible(await getCollection('talks')).filter((t) => isDelivered(t)));
 const withVideo = talks.filter((t) => t.data.youtube_id).length;
 const withSlides = talks.filter((t) => t.data.deck_file).length;
 

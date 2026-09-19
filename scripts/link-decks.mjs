@@ -1,7 +1,7 @@
 // Folds a Notist-sourced deck entry into the recording entry for the same
 // delivery, so one engagement carries both.
 //
-// Runs as a post-pass (see prebuild.mjs) after dedupe-talks and prune-talks, so
+// Runs as a post-pass (see refresh.mjs) after link-recordings, so
 // it never merges into an entry that is about to be dropped.
 //
 // Both sides are now entries in the same `talks` collection: the YouTube
@@ -58,6 +58,18 @@ function assertUnder(file, dir) {
   }
 }
 
+// Deletion guard. This used to be `assertUnder(file, ROOT/decks)`: a deck
+// entry was only ever removed if it sat in the directory fetch-notist owned,
+// so a bug here could not eat a hand-written engagement. The directories are
+// gone, so the same protection now asks what the entry IS rather than where it
+// lives — a deck absorbed into another entry must carry the Notist URL it came
+// from, which no hand-written engagement has.
+function assertIsDeckEntry(rec) {
+  if (!rec.notist_url) {
+    throw new Error(`[link-decks] refusing to delete a non-deck entry: ${rec.path}`);
+  }
+}
+
 const FIELDS = [
   'title', 'date', 'end_date', 'event', 'location', 'youtube_id',
   'deck_file', 'deck_size_mb', 'notist_url', 'abstract',
@@ -67,6 +79,10 @@ const all = [];
 for (const file of await walk(ROOT)) {
   const text = await fs.readFile(file, 'utf8');
   const rec = { path: file, text };
+  // A hidden entry is a tombstone: it exists only so the fetchers recognise
+  // the upstream record and do not create the file again. It must never win a
+  // deck or a recording away from an entry the site actually shows.
+  if (/^hidden:\s*true\s*$/m.test(text)) continue;
   for (const f of FIELDS) rec[f] = readField(text, f);
   // A title is required of decks (the first pass matches on it) but NOT of
   // engagements — a Sessionize entry usually has none and displays its event
@@ -104,7 +120,7 @@ for (const link of links) {
 
   // The deck's own entry has been absorbed; keeping it would list the same
   // delivery twice. Only ever removes a file the Notist fetcher regenerates.
-  assertUnder(link.deck.path, DECK_DIR);
+  assertIsDeckEntry(link.deck);
   await fs.unlink(link.deck.path);
 
   console.log(
@@ -119,7 +135,7 @@ for (const link of links) {
 // halves of the same delivery. Matching on event + date folds them together and
 // gives the engagement the session title it was missing.
 const engagementSide = all.filter(
-  (r) => !r.deck_file && !r.youtube_id && !r.path.startsWith(DECK_DIR + path.sep),
+  (r) => !r.deck_file && !r.youtube_id && !r.notist_url,
 );
 const second = planEngagementDeckLinks(unlinkedDecks, engagementSide);
 
@@ -139,7 +155,7 @@ for (const link of second.links) {
   }
   await fs.writeFile(link.engagement.path, text);
 
-  assertUnder(link.deck.path, DECK_DIR);
+  assertIsDeckEntry(link.deck);
   await fs.unlink(link.deck.path);
 
   console.log(

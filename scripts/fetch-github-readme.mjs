@@ -14,6 +14,7 @@
 //   - **[Title](url)** (Publication)
 
 import fs from 'node:fs/promises';
+import { reconcile, summarise } from './lib/reconcile-io.mjs';
 import path from 'node:path';
 
 const REPO = 'kaspernissen/kaspernissen';
@@ -103,13 +104,15 @@ if (!md) {
   process.exit(0);
 }
 
-await fs.mkdir(TALKS_OUT, { recursive: true });
+// Talks are reconciled into the engagement files and nothing is wiped; the
+// writing collection still owns its own directory, which is safe because no
+// correction lives there — src/content/writing/manual/ is a separate folder
+// this fetcher never touches.
 await fs.mkdir(WRITING_OUT, { recursive: true });
-for (const dir of [TALKS_OUT, WRITING_OUT]) {
-  for (const f of await fs.readdir(dir)) {
-    if (f.endsWith('.yaml')) await fs.unlink(path.join(dir, f));
-  }
+for (const f of await fs.readdir(WRITING_OUT)) {
+  if (f.endsWith('.yaml')) await fs.unlink(path.join(WRITING_OUT, f));
 }
+const talkRecords = [];
 
 let nTalks = 0;
 let nWriting = 0;
@@ -157,17 +160,23 @@ async function writeBoldLinkBlock(block, sectionType) {
   const ytId = recUrl ? extractYoutubeId(recUrl) : null;
 
   if (sectionType === 'talks') {
+    // The slug is the key, so uniqueSlug's disambiguating suffix has to stay
+    // stable between runs — it is what `sources.github` records. Three talks
+    // share the title "Shifting Security Left While Building A Cloud Native
+    // Bank", and they are told apart by nothing else.
     const slug = uniqueSlug(slugify(`${title}-${dateStr.slice(0, 7)}`));
-    const yaml = [
-      `title: ${JSON.stringify(title)}`,
-      `event: ${JSON.stringify(event)}`,
-      `date: ${dateStr}`,
-      location ? `location: ${JSON.stringify(location)}` : null,
-      `youtube_id: ${ytId ?? 'null'}`,
-      `tags: []`,
-      `featured: false`,
-    ].filter(Boolean).join('\n');
-    await fs.writeFile(path.join(TALKS_OUT, `${slug}.yaml`), yaml + '\n');
+    talkRecords.push({
+      key: slug,
+      fields: {
+        title,
+        event,
+        date: dateStr,
+        ...(location ? { location } : {}),
+        ...(ytId ? { youtube_id: ytId } : {}),
+        tags: [],
+        featured: false,
+      },
+    });
     nTalks++;
   } else if (sectionType === 'podcasts') {
     const slug = slugify(`podcast-${title}-${dateStr.slice(0, 7)}`);
@@ -279,6 +288,7 @@ for (const raw of lines) {
 }
 await flushBlock();
 
+const report = await reconcile('github', talkRecords);
 console.log(
-  `[github-readme] wrote ${nTalks} talks → ${TALKS_OUT}, ${nWriting} writing → ${WRITING_OUT}`,
+  `${summarise(report)}, ${nWriting} writing → ${WRITING_OUT}`,
 );

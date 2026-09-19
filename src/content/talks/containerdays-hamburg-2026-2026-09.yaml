@@ -1,0 +1,21 @@
+title: "Beyond “Supports OpenTelemetry”:  A maturity model for Cloud Native Observability"
+event: ContainerDays Hamburg 2026
+event_url: https://www.containerdays.io/
+date: 2026-09-02
+end_date: 2026-09-04
+location: Hamburg, Germany
+role: speaker
+abstract: |-
+  According to the latest CNCF survey, nearly 49% of organizations now run OpenTelemetry in production, yet “supports OpenTelemetry” has become a vague claim that hides large differences in quality, usability, and long-term maintainability.
+
+  This talk introduces a community-driven OpenTelemetry Support Maturity Model that moves beyond checkboxes and helps evaluate how well OpenTelemetry is integrated and evolved. The model breaks maturity down across seven dimensions, providing a structured way to reason about real-world OpenTelemetry support.
+
+  We ground the model in practice by applying it to widely used Kubernetes ingress controllers (kgateway, contour, emissary, traefik, istio gateway), which sit on the critical path of every request. Rather than ranking projects, the model gives platform engineers a framework to evaluate integrations and maintainers guidance for improving OpenTelemetry support intentionally, helping align the ecosystem around what “good” support should mean.
+deck_file: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.pdf
+deck_size_mb: 9.1
+notist_url: https://noti.st/kasperborgnissen/E2MWI7/beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability
+tags: []
+featured: false
+sources:
+  sessionize: containerdays-hamburg-2026
+  notist: https://noti.st/kasperborgnissen/E2MWI7/beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability

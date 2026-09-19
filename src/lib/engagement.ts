@@ -41,3 +41,15 @@ export function hasMaterial(e: Engagement): boolean {
 export function displayTitle(data: { title?: string | null; event: string }): string {
   return data.title?.trim() || data.event;
 }
+
+/**
+ * Every engagement the site is allowed to show.
+ *
+ * An entry marked `hidden` stays on disk as a tombstone so the fetchers keep
+ * recognising it and do not create the file again — see the note on `hidden`
+ * in src/content.config.ts. Read talks through this rather than calling
+ * getCollection directly, or a suppressed talk quietly comes back.
+ */
+export function visible<T extends { data: { hidden?: boolean } }>(entries: T[]): T[] {
+  return entries.filter((e) => !e.data.hidden);
+}

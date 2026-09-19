@@ -1,0 +1,21 @@
+title: "Panel: A Front Row Seat to Backstage Adoption"
+event: "BackstageCon"
+event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america-2023/"
+date: 2023-11-06
+location: "Chicago, Illinois, United States"
+role: "panelist"
+abstract: |-
+  Panel: A Front Row Seat to Backstage Adoption - Poonam Garg, U.S. Bank; Guillermo Manzo, Expedia Group; Alec Jacobs, Twilio Segment and Kasper Nissen, Lunar
+
+  So you’ve gotten started with Backstage? That’s awesome! Next comes a very big, very important (and sometimes a little scary) question: How do you get your developers use it/love it/build plugins for it? In this panel, we’ll dive deep into adoption journeys from different organizations involved in the Backstage community. You’ll hear from mature adopters on the things they've learned in driving widespread adoption of their developer portals within their respective organizations. We’ll cover how they’ve led architectural change through Backstage implementation as part of their broader developer experience and platform engineering goals — and how that change management plays out from both a technical, cultural, and business perspective.
+youtube_id: Iti5glzYOG8
+tags: []
+featured: false
+playlist_position: 38
+sources:
+  github: panel-a-front-row-seat-to-backstage-adoption-2023-11
+  youtube: Iti5glzYOG8
+co_speakers:
+  - "Poonam Garg"
+  - "Guillermo Manzo"
+  - "Alec Jacobs"
