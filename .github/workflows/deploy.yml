@@ -30,8 +30,8 @@ jobs:
       - run: npm run build
         env:
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          # Decks and photo originals are served from S3, not from this repo
-          # (see infra/README.md). Both live in one bucket under a prefix, so
+          # Decks and photo originals are served from S3, not from this repo.
+          # Both live in one bucket under a prefix, so
           # these URLs must carry it — the bucket root holds nothing.
           PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks
           # Without this the build falls back to /speakers, which is gitignored,
