@@ -68,5 +68,10 @@
       "Guillermo Manzo",
       "Alec Jacobs"
     ]
+  },
+  "q_Ffw2P_31Q": {
+    "_why": "Deck sent by Kasper; not on Notist, so no fetcher will ever attach it. The engagement is scraped from Sessionize and rewritten each build, hence here.",
+    "deck_file": "beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-06.pdf",
+    "deck_size_mb": 10.4
   }
 }
