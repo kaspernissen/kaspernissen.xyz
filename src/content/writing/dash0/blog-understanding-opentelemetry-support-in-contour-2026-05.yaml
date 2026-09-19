@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2026-05-04
 url: "https://www.dash0.com/blog/understanding-opentelemetry-support-in-contour"
 summary: "A deep dive into Contour’s OpenTelemetry integration, exploring how traces, logs, and metrics behave in practice and where the project stands using a proposed OpenTelemetry Support Maturity Model."
+image: "https://www.dash0.com/_content/blog/understanding-opentelemetry-support-in-contour/blog-image_understanding-opentelemetry-support-in-contour_04.png"

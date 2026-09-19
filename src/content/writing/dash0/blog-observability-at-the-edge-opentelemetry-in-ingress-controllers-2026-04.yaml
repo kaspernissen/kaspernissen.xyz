@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2026-04-15
 url: "https://www.dash0.com/blog/observability-at-the-edge-opentelemetry-in-ingress-controllers"
 summary: "An evaluation of OpenTelemetry support across Kubernetes ingress controllers and gateways - tracing, metrics, logs, semantic conventions, and resource identity. Most projects &quot;support OpenTelemetry.&quot; What that "
+image: "https://www.dash0.com/_content/blog/observability-at-the-edge-opentelemetry-in-ingress-controllers/blog-image_observability-at-the-edge_02.png"

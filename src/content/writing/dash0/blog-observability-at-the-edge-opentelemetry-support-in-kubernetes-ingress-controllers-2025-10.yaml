@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2025-10-01
 url: "https://www.dash0.com/blog/observability-at-the-edge-opentelemetry-support-in-kubernetes-ingress-controllers"
 summary: "This article compares the state of OpenTelemetry observability across four of the most prominent ingress controllers - Ingress-NGINX, Contour, Emissary Ingress, and Traefik - before diving into what makes ingress observa"
+image: "https://www.dash0.com/_content/blog/observability-at-the-edge-opentelemetry-support-in-kubernetes-ingress-controllers/frame-1.png"

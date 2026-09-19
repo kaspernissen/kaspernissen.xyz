@@ -4,3 +4,4 @@ publication: "Dash0 Guides"
 date: 2025-03-26
 url: "https://www.dash0.com/guides/kubernetes-observability-opentelemetry-operator"
 summary: "Learn how the OpenTelemetry Operator simplifies telemetry collection in Kubernetes and enables the monitoring of clusters and the apps running on them."
+image: "https://www.dash0.com/images/og-image.png"

@@ -4,7 +4,7 @@
 // `writing` collection — one fetcher shape, filtered by kind at render.
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import WritingRow from '../components/WritingRow.astro';
+import PodcastCard from '../components/PodcastCard.astro';
 import { PODCAST_KINDS } from '../lib/writingKinds';
 
 const items = (await getCollection('writing'))
@@ -25,8 +25,8 @@ const items = (await getCollection('writing'))
   {items.length === 0 ? (
     <p class="text-stone-500 text-sm py-6">Nothing yet.</p>
   ) : (
-    <div class="mt-8">
-      {items.map((w) => <WritingRow entry={w} />)}
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {items.map((w) => <PodcastCard entry={w} />)}
     </div>
   )}
 </BaseLayout>

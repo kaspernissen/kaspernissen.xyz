@@ -11,6 +11,7 @@ import UpcomingMap from '../components/UpcomingMap.astro';
 import { sortTalks } from '../lib/sortTalks';
 import { sortPhotos } from '../lib/sortPhotos';
 import { isDelivered, isScheduled } from '../lib/engagement';
+import { isMappable } from '../lib/cities';
 
 // One collection now holds both the schedule and the archive; which section an
 // entry appears in is decided by its date. See src/lib/engagement.ts.
@@ -29,7 +30,7 @@ const allUpcoming = engagements
 // Past stops become the faint 'been there' dots on the map. Only entries that
 // know where they happened can be plotted.
 const allPast = engagements
-  .filter((e) => isDelivered(e) && e.data.location)
+  .filter((e) => isDelivered(e) && isMappable(e.data.location, e.data.event))
   .sort((a, b) => +b.data.date - +a.data.date);
 const upcoming = allUpcoming.slice(0, 3);
 

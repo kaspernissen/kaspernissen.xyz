@@ -4,3 +4,4 @@ publication: "Dash0 Guides"
 date: 2025-03-26
 url: "https://www.dash0.com/guides/opentelemetry-go-ebpf-instrumentation"
 summary: "Discover zero-code tracing for Go apps with OpenTelemetry and eBPF, covering benefits, challenges of Go&#x27;s compiled nature, and key security insights"
+image: "https://www.dash0.com/images/og-image.png"

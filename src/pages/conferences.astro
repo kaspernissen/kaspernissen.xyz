@@ -7,6 +7,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
 import { isScheduled, isDelivered } from '../lib/engagement';
+import { isMappable } from '../lib/cities';
 
 const all = await getCollection('talks');
 
@@ -14,10 +15,13 @@ const upcoming = all
   .filter((e) => isScheduled(e))
   .sort((a, b) => +a.data.date - +b.data.date);
 
-// Only entries that name a real event belong in a schedule history — a YouTube
-// row whose "event" is a channel name says nothing about where he was.
+// Only entries that name a real place belong in a schedule history — a YouTube
+// row whose "event" is a channel name says nothing about where he was. The test
+// is whether the map can place it, not whether a location field was filled in:
+// most engagements have none, and "CloudNativeCon+KubeCon San Diego 2019" says
+// where it was perfectly well.
 const past = all
-  .filter((e) => isDelivered(e) && e.data.location)
+  .filter((e) => isDelivered(e) && isMappable(e.data.location, e.data.event))
   .sort((a, b) => +b.data.date - +a.data.date);
 ---
 <BaseLayout title="Conferences — Kasper Nissen" current="/conferences">

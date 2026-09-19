@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2026-05-18
 url: "https://www.dash0.com/blog/observing-kubernetes-ingress-controllers-with-opentelemetry"
 summary: "Comparing OpenTelemetry support across Contour, Emissary, Istio Gateway, kgateway, and Traefik. The final post in our series on Kubernetes ingress observability."
+image: "https://www.dash0.com/_content/blog/observing-kubernetes-ingress-controllers-with-opentelemetry/blog-image_observing-kubernetes-ingress-controllers-with-opentelemetry_08.png"

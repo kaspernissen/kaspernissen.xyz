@@ -6,17 +6,17 @@ import { sortPhotos } from '../lib/sortPhotos';
 
 const photos = sortPhotos(await getCollection('speakers'));
 
-// Kasper's canonical bios — keep these in sync with what he submits to events.
+// Kasper's canonical bio — one version, kept in sync with what he submits to
+// events. There were three (short/medium/long); three near-identical
+// paragraphs is three chances to be out of date, and an organiser only ever
+// copies one.
+//
 // Note "former" on the Co-Chair role: he co-chaired KubeCon + CloudNativeCon
 // EU/NA, he does not currently.
-const bios = {
-  short:
-    'Kasper Borg Nissen — Director of Developer Relations at Dash0, former Co-Chair KubeCon + CloudNativeCon EU/NA, CNCF Ambassador, Golden Kubestronaut, KCD Organizer, Meet-up organizer.',
-  medium:
-    'Kasper Borg Nissen is Director of Developer Relations at Dash0, a CNCF, MergeForward, and AAIF Ambassador, former KubeCon + CloudNativeCon Co-Chair, Golden Kubestronaut, and KCD Organizer. He co-founded Cloud Native Nordics to unite meetups across the region, and speaks regularly on observability, platform engineering, and AI.',
-  long:
-    'Kasper is a CNCF, MergeForward, and AAIF Ambassador, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, KCD Organizer and CNCG Group Organizer. He co-founded Cloud Native Nordics to unite meetups across the region. At Dash0, he helps make observability easy for developers by advocating for better tooling, best practices, and seamless integrations. Bridging observability, AI, and platform engineering, he ensures developers stay productive and gain actionable insights exactly when needed.',
-};
+const bioTitle =
+  'Director of Developer Relations at Dash0, former Co-Chair KubeCon+CloudNativeCon EU/NA, CNCF Ambassador, Golden Kubestronaut, KCD Organizer, Meet-up organizer';
+const bio =
+  'Kasper is a CNCF, MergeForward, and AAIF Ambassador, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, KCD Organizer and CNCG Group Organizer. He co-founded Cloud Native Nordics to unite meetups across the region. At Dash0, he helps make observability easy for developers by advocating for better tooling, best practices, and seamless integrations. Bridging observability, AI, and platform engineering, he ensures developers stay productive and gain actionable insights exactly when needed.';
 
 const topics = [
   'OpenTelemetry in production: from zero to insight',
@@ -35,13 +35,13 @@ const topics = [
     </p>
   </section>
 
-  <section class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">
-    {(['short', 'medium', 'long'] as const).map((k) => (
-      <div class="bg-stone-900 rounded-xl p-4">
-        <div class="text-[11px] uppercase tracking-wider text-stone-500 mb-2">Bio · {k}</div>
-        <p class="text-sm leading-relaxed">{bios[k]}</p>
-      </div>
-    ))}
+  <section class="mt-10">
+    <div class="bg-stone-900 rounded-xl p-5">
+      <div class="text-[11px] uppercase tracking-wider text-stone-500 mb-3">Bio</div>
+      <p class="text-lg font-bold leading-snug">Kasper Borg Nissen</p>
+      <p class="text-sm text-stone-400 mt-1 leading-relaxed">{bioTitle}</p>
+      <p class="text-sm leading-relaxed mt-4">{bio}</p>
+    </div>
   </section>
 
   <section class="mt-12">

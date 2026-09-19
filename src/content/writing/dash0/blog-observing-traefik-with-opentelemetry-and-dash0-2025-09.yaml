@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2025-09-29
 url: "https://www.dash0.com/blog/observing-traefik-with-opentelemetry-and-dash0"
 summary: "Ingress controllers are the gatekeepers of Kubernetes, handling TLS termination, routing, and middleware at the edge of your cluster. That makes them a prime vantage point for observability, but also a tricky one to inst"
+image: "https://www.dash0.com/_content/blog/observing-traefik-with-opentelemetry-and-dash0/traefik-otel.png"

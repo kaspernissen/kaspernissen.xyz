@@ -4,3 +4,4 @@ publication: "Dash0 Guides"
 date: 2026-08-17
 url: "https://www.dash0.com/guides/observing-goose-on-ollama-with-opentelemetry"
 summary: "Run a coding agent entirely on your own hardware with goose and Ollama, then instrument the agent with OpenTelemetry. Here is what its telemetry shows, what it hides, and where it still falls short of the conventions."
+image: "https://www.dash0.com/_content/guides/observing-goose-on-ollama-with-opentelemetry/image-42e9eaa913fc.png"

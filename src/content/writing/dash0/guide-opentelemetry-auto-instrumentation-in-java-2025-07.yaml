@@ -4,3 +4,4 @@ publication: "Dash0 Guides"
 date: 2025-07-01
 url: "https://www.dash0.com/guides/opentelemetry-autoinstrumentation-in-java"
 summary: "In this guide, we’ll take a deep dive into instrumentation for Java applications. We’ll explore the three ways to instrument - manual, auto, and no-touch - and we’ll discuss what to expect from each."
+image: "https://www.dash0.com/_content/guides/opentelemetry-autoinstrumentation-in-java/image-1809d77e2bfa.png"

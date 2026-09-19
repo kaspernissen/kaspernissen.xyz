@@ -1,0 +1,55 @@
+---
+// A podcast appearance as a card, matching TalkCard so the two grids read as
+// one site.
+//
+// Cover art comes from whichever source can supply it without a build-time
+// fetch: a YouTube episode has a still at a known URL, and an entry can name
+// its own `image`. Everything else gets the same generated artwork a talk with
+// no recording gets — most of these episodes are on podcast hosts with no
+// predictable image, and several are on domains that no longer resolve at all.
+import type { CollectionEntry } from 'astro:content';
+import TalkThumb from './TalkThumb.astro';
+
+const { entry } = Astro.props as { entry: CollectionEntry<'writing'> };
+const d = entry.data;
+
+/** The video id from any of YouTube's URL shapes, or null. */
+function youtubeId(url: string): string | null {
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, '');
+    if (host === 'youtu.be') return u.pathname.slice(1) || null;
+    if (host !== 'youtube.com' && host !== 'm.youtube.com') return null;
+    if (u.pathname === '/watch') return u.searchParams.get('v');
+    const m = u.pathname.match(/^\/(?:embed|v|shorts|live)\/([^/?#]+)/);
+    return m ? m[1] : null;
+  } catch {
+    return null;
+  }
+}
+
+const videoId = youtubeId(d.url);
+const cover = d.image ?? (videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : null);
+const dateStr = d.date.toISOString().slice(0, 10);
+---
+<a
+  href={d.url}
+  target="_blank"
+  rel="noreferrer"
+  class="block bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition group overflow-hidden"
+>
+  {cover ? (
+    <img src={cover} alt="" loading="lazy" class="w-full aspect-video object-cover" />
+  ) : (
+    <TalkThumb seed={d.title} label={d.kind} />
+  )}
+  <div class="p-4">
+    <div class="text-[11px] uppercase tracking-wider text-stone-500">
+      {d.publication} · {dateStr}
+    </div>
+    <div class="font-bold mt-1 leading-snug">{d.title}</div>
+    {d.duration_min && (
+      <div class="mt-2 text-[11px] text-stone-400">{d.duration_min} min</div>
+    )}
+  </div>
+</a>

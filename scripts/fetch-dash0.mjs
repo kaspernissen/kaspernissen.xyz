@@ -119,7 +119,15 @@ async function fetchPage(url, { requireAuthor }) {
 
     const summary = metaContent(html, 'og:description');
 
-    return { url, title, published, summary, authors };
+    // Cover art for the podcast cards. Relative to the page when dash0.com
+    // emits a path rather than an absolute URL.
+    const rawImage = metaContent(html, 'og:image');
+    let image = null;
+    if (rawImage) {
+      try { image = new URL(decodeEntities(rawImage), url).href; } catch { image = null; }
+    }
+
+    return { url, title, published, summary, image, authors };
   } catch {
     return undefined;
   }
@@ -158,7 +166,10 @@ for (const section of SECTIONS) {
   // `null` is a meaningful cached result ("checked, not Kasper's"), so the
   // cache stores it explicitly rather than treating it as a miss.
   const results = await mapWithLimit(urls, FETCH_CONCURRENCY, async (u) => {
-    if (Object.hasOwn(cache, u)) {
+    // A cached page from before og:image was collected has no `image` key at
+    // all, which is different from having no image. Re-fetch those once so the
+    // field backfills instead of staying empty until the cache is cleared.
+    if (Object.hasOwn(cache, u) && (cache[u] === null || 'image' in cache[u])) {
       cached++;
       nextCache[u] = cache[u];
       return cache[u];
@@ -189,6 +200,7 @@ for (const section of SECTIONS) {
       `date: ${date}`,
       `url: ${JSON.stringify(p.url)}`,
       summary ? `summary: ${JSON.stringify(summary)}` : null,
+      p.image ? `image: ${JSON.stringify(p.image)}` : null,
     ].filter(Boolean).join('\n');
 
     await fs.writeFile(path.join(OUT_DIR, `${slug}.yaml`), yaml + '\n');

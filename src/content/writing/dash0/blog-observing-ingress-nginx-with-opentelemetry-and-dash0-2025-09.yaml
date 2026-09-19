@@ -4,3 +4,4 @@ publication: "Dash0 Blog"
 date: 2025-09-23
 url: "https://www.dash0.com/blog/observing-ingress-nginx-with-opentelemetry-and-dash0"
 summary: "Ingress-nginx is an ingress controller. It sits at the edge of your cluster, routing external requests to pods that would otherwise not be reachable from the outside. Ingress controllers are a critical part of most Kuber"
+image: "https://www.dash0.com/_content/blog/observing-ingress-nginx-with-opentelemetry-and-dash0/ingress-nginx-otel-2.png"

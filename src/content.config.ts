@@ -59,6 +59,10 @@ const writing = defineCollection({
     url: z.string().url(),
     duration_min: z.number().nullable().default(null),
     summary: z.string().nullable().default(null),
+    // Cover art, when a fetcher or a hand-written entry can supply one. A
+    // YouTube episode's still is derived from its URL instead (see
+    // PodcastCard.astro), and anything else falls back to generated artwork.
+    image: z.string().url().nullable().default(null),
   }),
 });
 
