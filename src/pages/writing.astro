@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import WritingRow from '../components/WritingRow.astro';
+import FeaturedWork from '../components/FeaturedWork.astro';
 import { isPodcast, isNewsletter } from '../lib/writingKinds';
 
 // Podcast and interview appearances live on /podcasts — they are talking, not
@@ -9,18 +10,30 @@ import { isPodcast, isNewsletter } from '../lib/writingKinds';
 const newest = (a, b) => +b.data.date - +a.data.date;
 const all = (await getCollection('writing')).filter((w) => !isPodcast(w.data.kind));
 
-const articles = all.filter((w) => !isNewsletter(w.data.kind)).sort(newest);
+// The book and the course are the two pieces someone is most likely to have
+// come here for, and a one-line row sells neither. They lead, as cards.
+const FEATURED_KINDS = ['book', 'course'];
+const featured = all.filter((w) => FEATURED_KINDS.includes(w.data.kind)).sort(newest);
+const articles = all
+  .filter((w) => !isNewsletter(w.data.kind) && !FEATURED_KINDS.includes(w.data.kind))
+  .sort(newest);
 const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(newest);
 ---
 <BaseLayout title="Writing — Kasper Nissen" current="/writing">
   <section class="pt-6">
     <h1 class="text-4xl font-extrabold tracking-tight">Writing</h1>
     <p class="text-stone-400 mt-2">
-      Blog posts, guides, a book and a course. {articles.length} of them, newest first —
+      A book, a course, and {articles.length} posts and guides, newest first —
       podcast appearances are on <a href="/podcasts" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the podcasts page</a>.
     </p>
   </section>
-  <div class="mt-8">
+  {featured.length > 0 && (
+    <section class="mt-8">
+      <FeaturedWork entries={featured} />
+    </section>
+  )}
+
+  <div class="mt-10">
     {articles.map((w) => <WritingRow entry={w} />)}
   </div>
 
