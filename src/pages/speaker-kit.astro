@@ -6,6 +6,13 @@ import { sortPhotos } from '../lib/sortPhotos';
 
 const photos = sortPhotos(await getCollection('speakers'));
 
+// An organiser writing a programme wants the longer-form work in one place,
+// not spelt out in the bio. Read from the collection so it can never drift
+// from /writing.
+const longForm = (await getCollection('writing'))
+  .filter((w) => w.data.kind === 'book' || w.data.kind === 'course')
+  .sort((a, b) => +b.data.date - +a.data.date);
+
 // Kasper's canonical bio — one version, kept in sync with what he submits to
 // events. There were three (short/medium/long); three near-identical
 // paragraphs is three chances to be out of date, and an organiser only ever
@@ -46,6 +53,31 @@ const topics = [
       <p class="text-sm leading-relaxed mt-4">{bio}</p>
     </div>
   </section>
+
+  {longForm.length > 0 && (
+    <section class="mt-12">
+      <h2 class="text-xl font-bold mb-3">Book and course</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {longForm.map((w) => (
+          <a
+            href={w.data.url}
+            target="_blank"
+            rel="noreferrer"
+            class="block bg-stone-900 rounded-xl p-4 shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition"
+          >
+            <div class="text-[11px] uppercase tracking-wider text-stone-500">
+              {w.data.kind} · {w.data.publication}
+              {w.data.duration_min ? ` · ${w.data.duration_min} min` : ''}
+            </div>
+            <div class="font-bold mt-1 leading-snug">{w.data.title}</div>
+            {w.data.summary && (
+              <p class="text-sm text-stone-400 mt-2 leading-relaxed">{w.data.summary}</p>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
 
   <section class="mt-12">
     <h2 class="text-xl font-bold mb-3">Topics I'm happy to speak on</h2>

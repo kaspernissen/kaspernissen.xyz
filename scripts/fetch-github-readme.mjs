@@ -191,14 +191,30 @@ async function writeBulletItem(line, sectionType) {
   const [, title, url] = links[0];
 
   const date = parseDate(line) ?? '2024-01-01';
-  // Publication = first parenthesized text after the link, or italics
+  // Publication = the parenthesised text after the link, or italics.
+  //
+  // The bullets are bold: `- **[Title](url)** (TechTarget)`. The first pattern
+  // used to require the link's ")" to be followed straight away by "(", so the
+  // "**" in between made it miss, and the italics pattern then matched from the
+  // second "*" and captured the entire markdown link as the publication. Eleven
+  // entries rendered their own title and raw URL where the publisher should be.
   const pubMatch =
-    line.match(/\)\s*\(([^)]+)\)/) ||
+    line.match(/\)\*{0,2}\s*\(([^)]+)\)/) ||
     line.match(/\*([^*]+)\*/) ||
     line.match(/—\s*([^—\n]+)$/);
+
+  // Whatever matched, it must not still be markup. Reduce a markdown link to
+  // its text and fall back to the host rather than printing a URL at a reader.
+  const cleaned = (pubMatch?.[1] ?? '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`]/g, '')
+    .trim();
   let publication;
   try {
-    publication = pubMatch ? pubMatch[1].trim() : new URL(url).hostname.replace(/^www\./, '');
+    publication =
+      cleaned && slugify(cleaned) !== slugify(title)
+        ? cleaned
+        : new URL(url).hostname.replace(/^www\./, '');
   } catch {
     publication = 'Unknown';
   }
