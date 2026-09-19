@@ -32,10 +32,19 @@ const toTime = (d) => {
 };
 
 // Hosts that appear in nearly every description and identify no event.
+//
+// The second group matters as much as the social links: meetup.com, Sessionize
+// and friends host thousands of different events, so two entries sharing one of
+// them agree on nothing. A ContainerDays recording was handed to a Cloud Native
+// London meetup purely because both mentioned meetup.com.
 const IGNORED_HOSTS = [
   'youtube.com', 'youtu.be', 'linkedin.com', 'twitter.com', 'x.com',
   'github.com', 'bsky.app', 'mastodon.social', 'instagram.com',
   'facebook.com', 'slack.com', 'bit.ly', 'cncf.io', 'linuxfoundation.org',
+  // Event-hosting platforms — a shared domain says nothing about the event.
+  'meetup.com', 'sessionize.com', 'eventbrite.com', 'eventbrite.co.uk',
+  'lu.ma', 'hopin.com', 'tito.io', 'ti.to', 'community.cncf.io', 'cvent.com',
+  'papercall.io', 'pretix.eu', 'universe.com', 'twitch.tv',
 ];
 
 /** Registrable-ish domain: drops `www.` and any deeper subdomain. */

@@ -92,15 +92,21 @@ const DECKS = path.join(ROOT, 'decks');
 
 const YOUTUBE = path.join(ROOT, 'youtube');
 
-const files = (await walk(ROOT)).filter((f) => !f.startsWith(DECKS + path.sep));
 const talks = [];
-for (const file of files) {
+for (const file of await walk(ROOT)) {
   const parsed = parseYaml(await fs.readFile(file, 'utf8'));
   if (!parsed.title) continue;
-  // Everything outside youtube/ is hand-curated (the README, Sessionize, and
-  // manual entries) and names a real event on a real date. planMerges refuses
-  // to collapse two of those into each other.
-  const source = file.startsWith(YOUTUBE + path.sep) ? 'youtube' : 'curated';
+  // 'youtube'  — event is a channel name, date is the upload date.
+  // 'deck'     — a real delivery, but pairing it with a recording is
+  //              link-decks' job, so planMerges lets it compete for the
+  //              closest-delivery decision and then leaves it alone.
+  // 'curated'  — the README, Sessionize and manual entries: a real event on a
+  //              real date. Two of these are never collapsed into each other.
+  const source = file.startsWith(YOUTUBE + path.sep)
+    ? 'youtube'
+    : file.startsWith(DECKS + path.sep)
+      ? 'deck'
+      : 'curated';
   talks.push({ ...parsed, file, source });
 }
 

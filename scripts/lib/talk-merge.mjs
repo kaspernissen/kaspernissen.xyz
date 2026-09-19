@@ -179,6 +179,14 @@ export function planMerges(talks, { threshold = 0.7 } = {}) {
     if (consumed.has(c.withVideo) || consumed.has(c.withoutVideo)) continue;
     consumed.add(c.withVideo);
     consumed.add(c.withoutVideo);
+    // A deck entry competes for the recording but is never merged here: that
+    // pairing belongs to link-decks, which knows how to fold a deck and a video
+    // into one engagement. Letting it win and then standing aside is the point
+    // — otherwise the recording goes to whichever non-deck entry happens to
+    // share the title, however far away. The "Breaking Free" video uploaded
+    // 2025-10-01 belongs to the ContainerDays delivery 22 days earlier, not to
+    // the Cloud Native London meetup 91 days earlier.
+    if (c.withoutVideo.source === 'deck') continue;
     plans.push({
       keep: c.withoutVideo.file,
       drop: c.withVideo.file,
