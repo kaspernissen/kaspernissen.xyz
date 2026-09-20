@@ -34,7 +34,10 @@ PRESETS = {
     "wide":   dict(w=1920, h=1080, pad=120, font=124, kicker=30, mascot=0.40, gap=56, stack=False),
     # padl: LinkedIn overlays the profile photo on a cover's lower-left.
     "banner": dict(w=1584, h=396, pad=64, padl=380, font=62, kicker=18, mascot=0.24, gap=48, stack=False),
-    "card":   dict(w=1200, h=627, pad=76, font=80, kicker=22, mascot=0.36, gap=40, stack=False),
+    # A share card is read at thumbnail size in a feed or a chat, so the
+    # headline is sized to survive that: a narrower mascot and a tighter pad
+    # buy the copy the width it needs to hold a larger face.
+    "card":   dict(w=1200, h=627, pad=64, font=96, kicker=24, mascot=0.30, gap=36, stack=False),
 }
 
 
@@ -51,6 +54,21 @@ FIT_JS = """(start) => {
   while (size > 14 && !fits()) {
     size -= 2;
     h1.style.fontSize = size + 'px';
+  }
+  return size;
+}"""
+
+# The kicker is one line by definition — it is a label, not a sentence. Let it
+# wrap and it reads as a typo, and at 0.18em tracking even a short credit line
+# wraps on a card. Shrink it to fit instead of trimming the words.
+KICKER_JS = """(start) => {
+  const el = document.getElementById('kicker');
+  if (!el) return start;
+  el.style.whiteSpace = 'nowrap';
+  let size = start;
+  while (size > 9 && el.scrollWidth > el.parentElement.clientWidth) {
+    size -= 1;
+    el.style.fontSize = size + 'px';
   }
   return size;
 }"""
@@ -76,32 +94,54 @@ def parse_headline(text):
 
 def decor(rng, w, h, pad):
     """Confetti and the hero's squiggle, kept in the margins so they do not
-    land on the headline."""
+    land on the headline.
+
+    Placement is stratified rather than random: a coin-flip per dot, over only
+    five or six of them, regularly dealt nearly all of them to one side, and a
+    card with every dot bunched in the right margin looks like a mistake. Sides
+    alternate, and each side's dots are spread down its own height bands, so
+    the frame is decorated evenly however the seed falls.
+    """
     bits = []
     unit = max(10, round(w / 150))
-    for _ in range(rng.randint(5, 8)):
+    m = unit * 1.5
+    n = rng.randint(6, 8)
+    # Wide enough to read as a scatter. The headline and the mascot own the
+    # middle; these bands are the margins either side of them.
+    # The left band stops short of `pad`, where the copy starts — a dot resting
+    # on the kicker's first letter reads as a rendering fault, not decoration.
+    # The right band can run wider: the mascot is cut narrower than its column.
+    bands = {
+        0: (unit * 0.5, max(unit, pad * 0.7 - unit * 1.7)),
+        1: (w - pad * 1.9, w - m - unit * 1.7),
+    }
+    for i in range(n):
         size = rng.choice([unit, round(unit * 1.3), round(unit * 1.7)])
-        # Bias towards the edges: the middle belongs to the type and the mascot.
-        # Kept a clear margin in from the frame so none is sliced in half.
-        m = unit * 1.5
-        if rng.random() < 0.5:
-            x = rng.uniform(m, max(m, pad * 0.75))
-        else:
-            x = rng.uniform(w - pad * 1.2, w - m - size)
-        y = rng.uniform(m, h - m - size)
+        lo, hi = bands[i % 2]
+        x = rng.uniform(lo, max(lo, hi))
+        # One dot per horizontal band, jittered inside it, so they never stack.
+        slot = i // 2
+        slots = (n + 1) // 2
+        span = (h - 2 * m - size) / slots
+        y = m + slot * span + rng.uniform(0, span * 0.7)
         bits.append(
             f'<span class="dot" style="left:{x:.0f}px;top:{y:.0f}px;'
             f'width:{size}px;height:{size}px;background:{rng.choice(DOT_COLOURS)}"></span>'
         )
-    # The exact path from Hero.astro, scaled to the canvas.
-    s = max(1.0, w / 900)
-    sx, sy = rng.uniform(pad * 0.4, w * 0.5), rng.uniform(pad * 0.25, pad * 0.9)
-    bits.append(
-        f'<svg style="position:absolute;left:{sx:.0f}px;top:{sy:.0f}px" '
-        f'width="{58*s:.0f}" height="{20*s:.0f}" viewBox="0 0 58 20">'
-        '<path d="M2 10 Q10 2 18 10 T34 10 T50 10 L56 10" stroke="#7c3aed" '
-        'stroke-width="3.5" fill="none" stroke-linecap="round" /></svg>'
-    )
+    # The exact path from Hero.astro, scaled to the canvas. One near the top
+    # left, one low on the opposite side, so the pair frames the type instead
+    # of crowding one corner of it.
+    s = max(1.0, w / 750)
+    for sx, sy in (
+        (rng.uniform(pad * 0.5, w * 0.34), rng.uniform(pad * 0.2, pad * 0.8)),
+        (rng.uniform(w * 0.55, w - pad * 1.4), rng.uniform(h - pad * 1.5, h - pad * 0.6)),
+    ):
+        bits.append(
+            f'<svg style="position:absolute;left:{sx:.0f}px;top:{sy:.0f}px" '
+            f'width="{58*s:.0f}" height="{20*s:.0f}" viewBox="0 0 58 20">'
+            '<path d="M2 10 Q10 2 18 10 T34 10 T50 10 L56 10" stroke="#7c3aed" '
+            'stroke-width="3.5" fill="none" stroke-linecap="round" /></svg>'
+        )
     return "".join(bits)
 
 
@@ -188,6 +228,11 @@ def main():
         # a size that is wrong once Inter arrives and every line rebreaks.
         page.evaluate("document.fonts.ready")
         page.wait_for_timeout(250)
+        # Kicker first: it sits above the headline, so shrinking it frees
+        # height the headline may then be able to use.
+        kick = page.evaluate(KICKER_JS, p["kicker"])
+        if kick < p["kicker"]:
+            print(f"kicker shrunk {p['kicker']} -> {kick}px to fit one line", file=sys.stderr)
         final = page.evaluate(FIT_JS, p["font"])
         if final < p["font"]:
             print(f"headline shrunk {p['font']} -> {final}px to fit", file=sys.stderr)
