@@ -33,6 +33,7 @@ compositions, and a headline one word longer can change how it balances.
 | `--headline` | The line. `{...}` marks a chip. |
 | `--kicker` | Small uppercase line above the headline. Optional. Shrunk to fit one line, so keep it to a short credit — a long one just renders small. |
 | `--flip` | Put the mascot on the left. |
+| `--mascot-scale` | Multiply the preset's mascot width. The headline auto-fits into whatever is left, so watch what the run prints: on a `card`, `1.8` still leaves a 74px headline, while `2.1` drops it to 52px and the kicker to 13px, which is too small to read at feed size. |
 | `--seed` | Fixes the confetti. Same seed + same text = same image. |
 
 ## Writing the headline
@@ -80,6 +81,15 @@ reimplementing rotated rounded rectangles and font metrics by hand for a worse
 match. The colours in `template.html` are copied from `src/styles/global.css`
 and `src/components/Hero.astro`; if the site's palette changes, change them
 there too.
+
+The confetti is placed in the browser too, for the same reason. `render.py`
+scatters far more dots and squiggles than it wants across the whole frame, then
+— once the headline has been auto-fitted and its line boxes are final — keeps a
+well-spaced subset of the ones that clear the type and the mascot. So the
+scatter fills the frame instead of hugging the margins, and a long headline
+simply leaves fewer places for it. If a run prints `decor: room for N dots`, the
+copy and the mascot have taken most of the space; that is information, not a
+fault, but it is worth a look.
 
 Needs `playwright` with Chromium installed. Inter loads from rsms.me, the same
 place the site gets it, so rendering needs network.
