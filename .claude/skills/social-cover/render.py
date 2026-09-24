@@ -58,6 +58,74 @@ FIT_JS = """(start) => {
   return size;
 }"""
 
+# Thins the candidate confetti down to a spread subset that clears the type.
+# Runs after the fit passes, because only then is the headline at its final
+# size and its line boxes where they will actually be.
+DECOR_JS = """(opts) => {
+  const h1 = document.querySelector('h1');
+  const kicker = document.getElementById('kicker');
+  const mascot = document.querySelector('#mascot img');
+
+  // Per line box, not the h1's block box: a block box spans the full column
+  // width, so short last lines would fence off empty space beside them.
+  const keep = [];
+  const range = document.createRange();
+  range.selectNodeContents(h1);
+  for (const r of range.getClientRects()) if (r.width) keep.push(r);
+  if (kicker) keep.push(kicker.getBoundingClientRect());
+  // The banner's reserved corner: LinkedIn lays the profile photo over it, so
+  // confetti placed there is simply covered up, and the cover renders sparser
+  // than it looks here.
+  if (opts.reserve) keep.push(opts.reserve);
+  if (mascot) {
+    // Inset: a PNG's box includes its transparent margin, and decor sits
+    // behind the figure anyway, so only the opaque core needs protecting.
+    const b = mascot.getBoundingClientRect();
+    const ix = b.width * 0.16, iy = b.height * 0.1;
+    keep.push({left: b.left + ix, right: b.right - ix,
+               top: b.top + iy, bottom: b.bottom - iy});
+  }
+
+  const grow = opts.grow;
+  const clear = (b) => !keep.some(k =>
+    b.left < k.right + grow && b.right > k.left - grow &&
+    b.top < k.bottom + grow && b.bottom > k.top - grow);
+
+  const thin = (sel, want, start, floor) => {
+    const free = [];
+    for (const el of document.querySelectorAll(sel)) {
+      const b = el.getBoundingClientRect();
+      if (!clear(b)) { el.remove(); continue; }
+      free.push({el, b, x: b.left + b.width / 2, y: b.top + b.height / 2});
+    }
+    // Farthest-first: accept a candidate only if it stands clear of the ones
+    // already accepted, relaxing the spacing until enough fit. Without this
+    // the survivors clump into whatever gap the copy happens to leave.
+    // `floor` is where relaxing stops: past it, fewer marks beat tangled ones.
+    let gap = start, taken = [];
+    while (true) {
+      taken = [];
+      for (const c of free) {
+        if (taken.every(t => Math.hypot(t.x - c.x, t.y - c.y) >= gap)) taken.push(c);
+        if (taken.length >= want) break;
+      }
+      if (taken.length >= want || gap < floor) break;
+      gap *= 0.82;
+    }
+    const kept = new Set(taken.map(t => t.el));
+    for (const {el} of free) if (!kept.has(el)) el.remove();
+    return taken;
+  };
+
+  // Squiggles first, and the ones that land become keep-out for the dots.
+  // They are the biggest marks and the only ones that read as tangled when
+  // they touch, so they get the pick of the space and a hard spacing floor.
+  const squigs = thin('.squig.cand', opts.squigs, opts.spread * 1.6, opts.spread);
+  for (const s of squigs) keep.push(s.b);
+  const dots = thin('.dot.cand', opts.dots, opts.spread, 12);
+  return [dots.length, squigs.length];
+}"""
+
 # The kicker is one line by definition — it is a label, not a sentence. Let it
 # wrap and it reads as a typo, and at 0.18em tracking even a short credit line
 # wraps on a card. Shrink it to fit instead of trimming the words.
@@ -93,51 +161,38 @@ def parse_headline(text):
 
 
 def decor(rng, w, h, pad):
-    """Confetti and the hero's squiggle, kept in the margins so they do not
-    land on the headline.
+    """Candidate confetti and squiggles, scattered over the whole frame.
 
-    Placement is stratified rather than random: a coin-flip per dot, over only
-    five or six of them, regularly dealt nearly all of them to one side, and a
-    card with every dot bunched in the right margin looks like a mistake. Sides
-    alternate, and each side's dots are spread down its own height bands, so
-    the frame is decorated evenly however the seed falls.
+    These are candidates, not final placements: far more are emitted than are
+    wanted, spread on a jittered grid, and DECOR_JS keeps a well-spaced subset
+    of the ones that miss the type and the mascot. Confining them to the left
+    and right margins here instead — the obvious way to keep them off the
+    headline — is what makes a cover look edged rather than scattered, and it
+    cannot be fixed from Python: the headline is auto-fitted after layout, so
+    its real box is not known until the browser has it.
     """
     bits = []
     unit = max(10, round(w / 150))
-    m = unit * 1.5
-    n = rng.randint(6, 8)
-    # Wide enough to read as a scatter. The headline and the mascot own the
-    # middle; these bands are the margins either side of them.
-    # The left band stops short of `pad`, where the copy starts — a dot resting
-    # on the kicker's first letter reads as a rendering fault, not decoration.
-    # The right band can run wider: the mascot is cut narrower than its column.
-    bands = {
-        0: (unit * 0.5, max(unit, pad * 0.7 - unit * 1.7)),
-        1: (w - pad * 1.9, w - m - unit * 1.7),
-    }
-    for i in range(n):
-        size = rng.choice([unit, round(unit * 1.3), round(unit * 1.7)])
-        lo, hi = bands[i % 2]
-        x = rng.uniform(lo, max(lo, hi))
-        # One dot per horizontal band, jittered inside it, so they never stack.
-        slot = i // 2
-        slots = (n + 1) // 2
-        span = (h - 2 * m - size) / slots
-        y = m + slot * span + rng.uniform(0, span * 0.7)
-        bits.append(
-            f'<span class="dot" style="left:{x:.0f}px;top:{y:.0f}px;'
-            f'width:{size}px;height:{size}px;background:{rng.choice(DOT_COLOURS)}"></span>'
-        )
-    # The exact path from Hero.astro, scaled to the canvas. One near the top
-    # left, one low on the opposite side, so the pair frames the type instead
-    # of crowding one corner of it.
+    m = unit * 1.2
+    # One candidate per cell, jittered inside it, so the pool itself is even
+    # and the survivors inherit that evenness wherever the copy leaves room.
+    cols, rows = 8, 5
+    for r in range(rows):
+        for c in range(cols):
+            size = rng.choice([unit, round(unit * 1.3), round(unit * 1.7)])
+            x = m + (w - 2 * m - size) * (c + rng.uniform(0.15, 0.85)) / cols
+            y = m + (h - 2 * m - size) * (r + rng.uniform(0.15, 0.85)) / rows
+            bits.append(
+                f'<span class="dot cand" style="left:{x:.0f}px;top:{y:.0f}px;'
+                f'width:{size}px;height:{size}px;background:{rng.choice(DOT_COLOURS)}"></span>'
+            )
+    # The exact path from Hero.astro, scaled to the canvas.
     s = max(1.0, w / 750)
-    for sx, sy in (
-        (rng.uniform(pad * 0.5, w * 0.34), rng.uniform(pad * 0.2, pad * 0.8)),
-        (rng.uniform(w * 0.55, w - pad * 1.4), rng.uniform(h - pad * 1.5, h - pad * 0.6)),
-    ):
+    for _ in range(10):
+        sx = rng.uniform(m, w - m - 58 * s)
+        sy = rng.uniform(m, h - m - 20 * s)
         bits.append(
-            f'<svg style="position:absolute;left:{sx:.0f}px;top:{sy:.0f}px" '
+            f'<svg class="squig cand" style="position:absolute;left:{sx:.0f}px;top:{sy:.0f}px" '
             f'width="{58*s:.0f}" height="{20*s:.0f}" viewBox="0 0 58 20">'
             '<path d="M2 10 Q10 2 18 10 T34 10 T50 10 L56 10" stroke="#7c3aed" '
             'stroke-width="3.5" fill="none" stroke-linecap="round" /></svg>'
@@ -167,7 +222,7 @@ def build_html(args, p):
         if not path.exists():
             have = ", ".join(sorted(f.stem for f in MASCOTS.glob("*.png")))
             sys.exit(f"no mascot {name!r} in {MASCOTS}\navailable: {have}")
-        mascot_w = int(w * p["mascot"])
+        mascot_w = int(w * p["mascot"] * args.mascot_scale)
         mascot_html = f'<div id="mascot"><img src="{data_uri(path)}" alt="" /></div>'
 
     # Scaled off the mascot, not the canvas: the hero's offset reads as a hard
@@ -206,6 +261,11 @@ def main():
     ap.add_argument("--kicker", help="small uppercase line above the headline")
     ap.add_argument("--mascot", help="name from assets/mascots, or 'random'")
     ap.add_argument("--flip", action="store_true", help="mascot on the left")
+    # The presets size the mascot to leave the headline the width it needs. A
+    # short headline does not need all of it, so this trades that slack back to
+    # the figure; the type auto-fits to whatever is left.
+    ap.add_argument("--mascot-scale", type=float, default=1.0,
+                    help="multiply the preset's mascot width, e.g. 1.4 for a bigger figure")
     ap.add_argument("--seed", help="fix the confetti")
     ap.add_argument("--out", required=True, type=Path)
     args = ap.parse_args()
@@ -236,6 +296,19 @@ def main():
         final = page.evaluate(FIT_JS, p["font"])
         if final < p["font"]:
             print(f"headline shrunk {p['font']} -> {final}px to fit", file=sys.stderr)
+        # Last: the confetti is placed against the type's final boxes.
+        reserve = None
+        if p.get("padl", p["pad"]) > p["pad"]:
+            reserve = {"left": 0, "right": p["padl"],
+                       "top": p["h"] * 0.2, "bottom": p["h"]}
+        dots, squigs = page.evaluate(DECOR_JS, {
+            "dots": 9, "squigs": 2,
+            "spread": min(p["w"], p["h"]) / 3.0,
+            "grow": p["pad"] * 0.3,
+            "reserve": reserve,
+        })
+        if dots < 9 or squigs < 2:
+            print(f"decor: room for {dots} dots and {squigs} squiggles", file=sys.stderr)
         page.screenshot(path=str(args.out))
         browser.close()
     print(f"{args.out}  {p['w']}x{p['h']}")
