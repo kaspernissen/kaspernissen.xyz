@@ -13,6 +13,7 @@ abstract: |-
   We ground the model in practice by applying it to widely used Kubernetes ingress controllers (kgateway, contour, emissary, traefik, istio gateway), which sit on the critical path of every request. Rather than ranking projects, the model gives platform engineers a framework to evaluate integrations and maintainers guidance for improving OpenTelemetry support intentionally, helping align the ecosystem around what “good” support should mean.
 deck_file: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.pdf
 deck_size_mb: 9.1
+deck_cover: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.jpg
 notist_url: https://noti.st/kasperborgnissen/E2MWI7/beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability
 tags: []
 featured: false

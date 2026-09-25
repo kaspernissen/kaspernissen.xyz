@@ -33,10 +33,12 @@ The deployed site always reads from the bucket (see `.github/workflows/deploy.ym
 4. Only then set `deck_file` (and `deck_size_mb`) in the talk's
    `src/content/talks/*.yaml`. A YAML entry pointing at a file that is not in the
    bucket is a dead download link on the live site.
-5. Optional, for a talk with no recording: render the title slide as the card
-   thumbnail with
-   `pdftoppm -f 1 -l 1 -singlefile -jpeg -jpegopt quality=85 -scale-to-x 1600 -scale-to-y -1 public/decks/<file>.pdf public/decks/covers/<file>`,
-   upload it to `decks/covers/`, check it returns `200`, then set `deck_cover: <file>.jpg`.
+5. Render the title slide with `npm run decks:covers` (writes
+   `public/decks/covers/<file>.jpg` for any deck without one), look at it to
+   confirm page 1 really is the title slide, upload it with `npm run decks:sync`
+   (it syncs `covers/` too), check it returns `200`, then set
+   `deck_cover: <file>.jpg`. The talk page and, for talks with no recording,
+   the card on /talks show it.
 
 ### Adding photos
 
