@@ -1,18 +1,13 @@
 /**
  * Where deck PDFs are served from.
  *
- * Default: `/decks`, i.e. the files committed under `public/decks/` and served
- * by GitHub Pages alongside the site. At ~80MB total that is well inside the
- * 1GB Pages limit, needs no credentials, and keeps the decks downloadable
- * without a second piece of infrastructure.
+ * Decks are hosted in the S3 bucket under `decks/`, and PUBLIC_DECK_BASE_URL
+ * points at it (set in .env and in the deploy workflow). `public/decks/` is a
+ * gitignored local mirror that `npm run decks:sync` uploads from; the PDFs are
+ * never committed.
  *
- * To move them off the repo instead (S3, R2, any CDN), sync `public/decks/`
- * to the bucket and set PUBLIC_DECK_BASE_URL to its public base, e.g.
- *
- *   PUBLIC_DECK_BASE_URL=https://decks.kaspernissen.xyz
- *
- * Nothing else changes: the fetcher keeps writing the same file names, and
- * `public/decks/` stays the local mirror you sync from.
+ * The `/decks` fallback when the variable is unset exists only so `npm run dev`
+ * works without a .env. It is not a hosting option. See AGENTS.md.
  */
 const configured = import.meta.env.PUBLIC_DECK_BASE_URL?.trim();
 

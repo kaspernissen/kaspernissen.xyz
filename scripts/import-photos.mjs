@@ -4,10 +4,12 @@
 //
 // For each image it produces two things:
 //
-//   src/assets/speakers/<slug>.jpg   a 1600px display master, committed. Astro
-//                                    downsamples this to the 400/800px variants
-//                                    the gallery actually serves, so it needs to
-//                                    be good but not enormous.
+//   src/assets/speakers/<slug>.jpg   a 1600px display master, uploaded to the
+//                                    bucket's photos/display/ prefix (not
+//                                    committed). Astro downsamples this to the
+//                                    400/800px variants the gallery actually
+//                                    serves, so it needs to be good but not
+//                                    enormous.
 //   <out-full>/<slug>.jpg            a 3200px high-quality original for people
 //                                    to download. These are the heavy files and
 //                                    are meant for the S3 bucket, not the repo.
