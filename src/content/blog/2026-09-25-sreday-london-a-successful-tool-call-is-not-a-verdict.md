@@ -29,9 +29,6 @@ Behind the animals were different languages and instrumentation libraries: Java 
 
 The encouraging finding was how far the tools have converged on OpenTelemetry's [GenAI semantic conventions](https://github.com/open-telemetry/semantic-conventions-genai). The naming isn't fully aligned yet, but the shared vocabulary is visible, and normalizing in the Collector bridges most of what remains.
 
-<!-- TODO: one concrete example. Which attribute did OpenInference and
-OpenLLMetry emit differently, and what did the normalizer map it to? -->
-
 That matters because changing frameworks shouldn't mean relearning what a model call or a tool invocation looks like. Shared conventions give you a common starting point for comparing and connecting the evidence.
 
 ## Evidence is not a verdict
@@ -39,9 +36,6 @@ That matters because changing frameworks shouldn't mean relearning what a model 
 What interests me most is what you can actually conclude from all that telemetry.
 
 In the demo, the investigators could pull an audit log that identified goose as the client behind the deletions. goose's own telemetry added the rest: the sequence of calls, the arguments passed to the deletion tool, and what the agent reported afterwards. Connected, those two views gave a much better picture than either one alone.
-
-<!-- TODO: how did it end? Did all three investigators identify goose, and
-did any of them get it wrong? -->
 
 We can already collect a lot of evidence. Depending on the instrumentation and what you choose to capture, you can inspect model inputs and outputs, tool calls with their arguments and results, and the order of the steps an agent took.
 
@@ -53,8 +47,6 @@ Someone still has to put that evidence together and judge whether the outcome wa
 </figure>
 
 This is where we touched on LLM-as-judge. In the demo, a judge reads the incident prompt, the ordered tool calls and the investigator's report, then returns a score with an explanation. That gives you a second mechanism for assessing the outcome of an agent workflow.
-
-<!-- TODO: what score did the judge give, and did you agree with it? -->
 
 It also raises questions I enjoy more than the answers I have. When do you stop evaluating? Do you need a second judge to check the first, or a full jury going through the evidence? If they disagree, when does a human step in? And not every action deserves that level of scrutiny, so something has to decide which ones do.
 
@@ -93,8 +85,6 @@ The trip started on Wednesday evening with dinner with Mauricio Salatino, Andrea
 It was also a reminder of something I value in this community. Across Dynatrace and Dash0, we work for competing vendors, but we have open source and OpenTelemetry in common. We share a belief in OpenTelemetry as the vendor-neutral way to collect telemetry, and helping people understand what it can do today benefits all of us. Doing that work with people you also enjoy having dinner with is a good arrangement.
 
 The dinner conversations went well beyond observability. We talked about AI sovereignty and how people are building around it, and about coding agents turning more of the working day into reviewing generated pull requests. We also spent a long time on what we actually mean when we call something an agent, and how much depends on the model compared with the harness, tools and context around it. Does a given task need the largest model, or would a smaller one do the job with more precise context?
-
-<!-- TODO: your answer to that last question, if you have one. -->
 
 Then there was the question of what happens when these systems move into hardware that can physically hurt people, and whether the safeguards exist for that. Questions about trust and oversight get very concrete once the consequences reach the physical world.
 
