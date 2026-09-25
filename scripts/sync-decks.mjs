@@ -67,4 +67,20 @@ if (r.error?.code === 'ENOENT') {
   console.error('sync-decks: the AWS CLI is not installed — brew install awscli');
   process.exit(1);
 }
-process.exit(r.status ?? 1);
+if (r.status !== 0) process.exit(r.status ?? 1);
+
+// Title-slide renders (npm run decks:covers) ride along with the decks. A
+// separate pass, because the one above pins every file to application/pdf.
+const COVERS = `${SRC}/covers`;
+if (SRC.includes('decks') && fs.existsSync(COVERS)) {
+  console.log(`sync-decks: covers → ${dest}/covers`);
+  const c = spawnSync('aws', [
+    's3', 'sync', COVERS, `${dest}/covers`,
+    '--exclude', '*', '--include', '*.jpg',
+    '--content-type', 'image/jpeg',
+    '--cache-control', 'public, max-age=31536000, immutable',
+    ...process.argv.slice(2),
+  ], { stdio: 'inherit' });
+  process.exit(c.status ?? 1);
+}
+process.exit(0);
