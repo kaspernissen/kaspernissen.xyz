@@ -14,3 +14,6 @@ const configured = import.meta.env.PUBLIC_DECK_BASE_URL?.trim();
 export const DECK_BASE = configured ? configured.replace(/\/+$/, '') : '/decks';
 
 export const deckUrl = (file: string) => `${DECK_BASE}/${file}`;
+
+/** A deck's title slide, rendered to JPEG and stored beside the decks. */
+export const deckCoverUrl = (file: string) => `${DECK_BASE}/covers/${file}`;

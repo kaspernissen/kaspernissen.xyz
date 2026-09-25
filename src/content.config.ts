@@ -39,6 +39,9 @@ const talks = defineCollection({
     youtube_id: z.string().nullable().default(null),
     deck_file: z.string().nullable().default(null),
     deck_size_mb: z.number().nullable().default(null),
+    // The deck's title slide as a JPEG under the bucket's decks/covers/ prefix,
+    // used as the card thumbnail when there is no recording. Set by hand.
+    deck_cover: z.string().nullable().default(null),
     notist_url: z.string().url().nullable().default(null),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
