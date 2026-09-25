@@ -11,6 +11,7 @@ Every deck PDF and every speaker photo is served from the public bucket
 | What                     | Bucket key                   | Local staging dir     |
 | ------------------------ | ---------------------------- | --------------------- |
 | Deck PDFs                | `decks/<file>.pdf`           | `public/decks/`       |
+| Deck cover slides        | `decks/covers/<file>.jpg`    | `public/decks/covers/`|
 | Photo originals (3200px) | `photos/<name>.jpg`          | `public/speakers/`    |
 | Photo display masters    | `photos/display/<name>.jpg`  | `src/assets/speakers/`|
 
@@ -32,6 +33,10 @@ The deployed site always reads from the bucket (see `.github/workflows/deploy.ym
 4. Only then set `deck_file` (and `deck_size_mb`) in the talk's
    `src/content/talks/*.yaml`. A YAML entry pointing at a file that is not in the
    bucket is a dead download link on the live site.
+5. Optional, for a talk with no recording: render the title slide as the card
+   thumbnail with
+   `pdftoppm -f 1 -l 1 -singlefile -jpeg -jpegopt quality=85 -scale-to-x 1600 -scale-to-y -1 public/decks/<file>.pdf public/decks/covers/<file>`,
+   upload it to `decks/covers/`, check it returns `200`, then set `deck_cover: <file>.jpg`.
 
 ### Adding photos
 

@@ -53,6 +53,8 @@ data/*
 # Deck PDFs are mirrored from noti.st at ~8MB each and grow with every talk;
 # they are hosted rather than versioned. See src/lib/deckHost.ts.
 public/decks/*.pdf
+# Title-slide renders used as talk thumbnails, hosted under decks/covers/.
+public/decks/covers/*
 
 # Cloudflare/wrangler artifacts (just in case)
 .wrangler/

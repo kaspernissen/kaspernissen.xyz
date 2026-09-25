@@ -87,6 +87,7 @@ const KNOWN_EVENTS = [
   { from: '2024-11-11', to: '2024-11-16', name: 'KubeCon + CloudNativeCon North America 2024', location: 'Salt Lake City, USA' },
   { from: '2025-04-01', to: '2025-04-05', name: 'KubeCon + CloudNativeCon Europe 2025', location: 'London, UK' },
   { from: '2026-09-01', to: '2026-09-05', name: 'ContainerDays Hamburg 2026', location: 'Hamburg, Germany' },
+  { from: '2026-09-23', to: '2026-09-25', name: 'SREday London 2026 Q3', location: 'London, UK' },
 ];
 
 function eventFor(date) {

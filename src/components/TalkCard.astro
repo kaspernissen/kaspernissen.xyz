@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import { talkSlug } from '../lib/slug';
 import { displayTitle } from '../lib/engagement';
 import { photoDisplayUrl } from '../lib/photoHost';
+import { deckCoverUrl } from '../lib/deckHost';
 import GeneratedThumb from './GeneratedThumb.astro';
 
 // `photo` is optional: a caller that has not done the photo join just omits it
@@ -14,10 +15,11 @@ const { entry, photo = null } = Astro.props as {
 };
 const slug = entry.data.slug ?? talkSlug(displayTitle(entry.data), entry.data.date);
 
-// Three ways to picture a talk, best first. The recording's still is the most
-// informative, and a photo of Kasper actually giving it beats generated art —
-// nine delivered talks have no recording and five of those have photographs,
-// which were only ever shown on the talk's own page.
+// Four ways to picture a talk, best first. The recording's still is the most
+// informative. Without one, the deck's title slide names the talk outright,
+// then a photo of Kasper actually giving it, then generated art — nine
+// delivered talks have no recording and five of those have photographs, which
+// were only ever shown on the talk's own page.
 const thumb = entry.data.youtube_id
   ? `https://i.ytimg.com/vi/${entry.data.youtube_id}/hqdefault.jpg`
   : null;
@@ -33,6 +35,20 @@ const missing = entry.data.deck_file ? 'slides only' : 'no recording';
 >
   {thumb ? (
     <img src={thumb} alt="" loading="lazy" class="w-full aspect-video object-cover" />
+  ) : entry.data.deck_cover ? (
+    <div class="relative">
+      <Image
+        src={deckCoverUrl(entry.data.deck_cover)}
+        alt=""
+        inferSize
+        widths={[400, 800]}
+        sizes="(min-width: 768px) 33vw, 100vw"
+        class="w-full aspect-video object-cover"
+      />
+      <span class="absolute bottom-2 left-2 rounded-full bg-stone-950/80 px-2 py-0.5 text-[10px] uppercase tracking-wider text-stone-300">
+        {missing}
+      </span>
+    </div>
   ) : photo ? (
     <div class="relative">
       <Image
