@@ -153,6 +153,8 @@ const jsonLd = {
   .post li::marker { color: #fb923c; }
   .post img { border-radius: 0.6rem; background: #1c1917; }
   .post figure { margin-top: 1.15rem; }
+  /* A phone photo at full column width is taller than the screen. */
+  .post figure.portrait img { max-height: 34rem; width: auto; margin-inline: auto; }
   /* Captions are real figcaptions, not a styled italic line — an ordinary
      italic paragraph in the prose must not come out looking like one. */
   .post figcaption {

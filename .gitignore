@@ -56,6 +56,10 @@ public/decks/*.pdf
 # Title-slide renders used as talk thumbnails, hosted under decks/covers/.
 public/decks/covers/*
 
+# Images inside blog posts. Hosted under the bucket's blog/ prefix and
+# referenced as /blog-images/<file>; see src/lib/blogHost.ts.
+public/blog-images/*
+
 # Cloudflare/wrangler artifacts (just in case)
 .wrangler/
 
