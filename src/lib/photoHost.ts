@@ -13,9 +13,9 @@
  * `image.remotePatterns` note in astro.config.mjs.
  *
  * Both URLs derive from PUBLIC_PHOTO_BASE_URL, so pointing this at a CloudFront
- * distribution or a different bucket is a one-line change. Unset it to serve
- * from public/speakers/ locally instead, which is what `npm run dev` does when
- * you have not copied .env.example.
+ * distribution or a different bucket is a one-line change. When it is unset,
+ * `npm run dev` falls back to public/speakers/ so the site runs without a .env;
+ * that is a dev convenience, not a hosting option. See AGENTS.md.
  */
 const configured = import.meta.env.PUBLIC_PHOTO_BASE_URL?.trim();
 

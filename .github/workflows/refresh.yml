@@ -44,7 +44,7 @@ jobs:
           # A deck published on noti.st but not yet synced to the bucket is
           # skipped rather than linked, so this job can never propose a dead
           # download link.
-          PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com
+          PUBLIC_DECK_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks
           DECKS_METADATA_ONLY: '1'
 
       - name: Stop early if nothing changed
