@@ -10,6 +10,11 @@ ground, a headline in Inter extrabold with words sitting in rotated pink / orang
 / cyan / yellow chips, scattered confetti dots, the violet squiggle, and one of
 the cartoon mascots carrying the hero's hard yellow offset shadow.
 
+This skill is for covers: share images, OG images, banners and thumbnails.
+LinkedIn explainers, such as slides, carousels, charts and short animations that
+explain a point, are a separate skill with their own rules. It is `explainer`
+in the content repo (`~/kaspernissen/content/.claude/skills/explainer/`).
+
 ## Render one
 
 ```bash
