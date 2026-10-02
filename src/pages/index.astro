@@ -5,6 +5,7 @@ import Hero from '../components/Hero.astro';
 import GitHubHeatmap from '../components/GitHubHeatmap.astro';
 import TalkCard from '../components/TalkCard.astro';
 import WritingRow from '../components/WritingRow.astro';
+import PostRow from '../components/PostRow.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
 import PhotoCarousel from '../components/PhotoCarousel.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
@@ -13,6 +14,8 @@ import { sortPhotos } from '../lib/sortPhotos';
 import { assignPhotos } from '../lib/photoJoin';
 import { isDelivered, isScheduled, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
+import { published } from '../lib/blog';
+import { writingFeed } from '../lib/writingFeed';
 
 // One collection now holds both the schedule and the archive; which section an
 // entry appears in is decided by its date. See src/lib/engagement.ts.
@@ -20,9 +23,11 @@ const engagements = visible(await getCollection('talks'));
 
 const talks = sortTalks(engagements.filter((t) => isDelivered(t))).slice(0, 3);
 
-const writing = (await getCollection('writing'))
-  .sort((a, b) => +b.data.date - +a.data.date)
-  .slice(0, 5);
+// Posts written here sit in the same list as writing published elsewhere.
+const writing = writingFeed(
+  await getCollection('writing'),
+  published(await getCollection('blog')),
+).slice(0, 5);
 
 // The map plots every upcoming stop; the list below it shows only the next few.
 const allUpcoming = engagements
@@ -77,7 +82,7 @@ const galleries = assignPhotos(talks, photos);
     {writing.length === 0 ? (
       <p class="text-stone-500 text-sm py-4">Nothing yet.</p>
     ) : (
-      <div>{writing.map((w) => <WritingRow entry={w} />)}</div>
+      <div>{writing.map((w) => (w.type === 'post' ? <PostRow entry={w.entry} /> : <WritingRow entry={w.entry} />))}</div>
     )}
   </section>
 
