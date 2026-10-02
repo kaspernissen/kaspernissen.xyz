@@ -20,7 +20,7 @@ Not as much as the vendors say. Sam Newman opened "Dark modules, cobots, and arc
 <figcaption>Not 10x.</figcaption>
 </figure>
 
-If you watch one talk for the data, make it Nathan Harvey's "AI as an amplifier". He leads DORA, and the 2025 State of AI-assisted Software Development report behind the talk has nearly 5,000 survey responses. Its headline finding is that AI is an amplifier. It turns up the good things in a team and the bad things too. In DORA's data, developers feel more effective, but that doesn't automatically translate into better delivery. Instability goes up too: more rollbacks and more hotfixes. Harvey's version of the payoff was optionality. In the time it took to argue about two options, you can build seven prototypes and put them in front of users.
+If you watch one talk for the data, make it Nathen Harvey's "AI as an amplifier". He leads DORA, and the 2025 State of AI-assisted Software Development report behind the talk has nearly 5,000 survey responses. Its headline finding is that AI is an amplifier. It turns up the good things in a team and the bad things too. In DORA's data, developers feel more effective, but that doesn't automatically translate into better delivery. Instability goes up too: more rollbacks and more hotfixes. Harvey's version of the payoff was optionality. In the time it took to argue about two options, you can build seven prototypes and put them in front of users.
 
 For a second data point, read Faros's [AI Engineering Report 2026, The Acceleration Whiplash](https://www.faros.ai/research/ai-acceleration-whiplash), which Tornhill also quoted. It's built on two years of telemetry from 22,000 developers instead of surveys. Throughput is up: task completion by 34% and epics completed per developer by 66%. So is everything downstream. Bugs per developer are up 54%, the incidents-to-PR ratio has more than tripled, median review time is up five times, and 31% more PRs are merging without any review. It also pushes back on DORA. Faros found that teams with strong engineering foundations see the same quality drop as everyone else, and argues that surveys capture how developers feel while telemetry shows what happens after the merge. Their answer is to fix it at the source, during code generation.
 
@@ -56,7 +56,7 @@ Gojko Adzic started "Keeping humans in the loop with AI coding agents" from the 
 Harvey also had a guess about where the bottleneck goes after review: deciding what to build. If something has sat on your backlog for two years and the business was fine, building it now probably doesn't matter. Clear the backlog, and if an item is important, your customers will ask for it again.
 
 <figure>
-<img src="/blog-images/goto-copenhagen-2026-18.jpg" alt="Nathan Harvey on stage under a slide reading Burn the backlog, shift left from Let code die">
+<img src="/blog-images/goto-copenhagen-2026-18.jpg" alt="Nathen Harvey on stage under a slide reading Burn the backlog, shift left from Let code die">
 <figcaption>Let code die, shifted left.</figcaption>
 </figure>
 
@@ -155,7 +155,7 @@ Build the system for humans first. Give them paved paths, clear boundaries and g
 
 I had to leave right after my talk to catch a train, so that was my GOTO. When the recordings start appearing on YouTube, these are the ones I'd look out for:
 
-- **Nathan Harvey, "AI as an amplifier".** The best data of the week on whether AI actually makes us faster, and why it amplifies whatever system you already have.
+- **Nathen Harvey, "AI as an amplifier".** The best data of the week on whether AI actually makes us faster, and why it amplifies whatever system you already have.
 - **Adam Tornhill, "AI-friendly code".** Hard numbers on how healthy code has to be before an agent can work in it, and a code quality MCP server that gets it there.
 - **Sam Newman, "Dark modules, cobots, and architecting for AI".** Why code review doesn't survive AI volume, and what to do with modules instead.
 - **Gojko Adzic, "Keeping humans in the loop with AI coding agents".** A path from vibe coding to deterministic guardrails, with numbers.
