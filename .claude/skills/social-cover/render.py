@@ -73,6 +73,8 @@ DECOR_JS = """(opts) => {
   range.selectNodeContents(h1);
   for (const r of range.getClientRects()) if (r.width) keep.push(r);
   if (kicker) keep.push(kicker.getBoundingClientRect());
+  const logo = document.getElementById('logo');
+  if (logo) keep.push(logo.getBoundingClientRect());
   // The banner's reserved corner: LinkedIn lays the profile photo over it, so
   // confetti placed there is simply covered up, and the cover renders sparser
   // than it looks here.
@@ -247,6 +249,14 @@ def build_html(args, p):
         "__DECOR__": decor(rng, w, h, pad),
         "__HEADLINE__": parse_headline(args.headline),
         "__KICKERHTML__": f'<div id="kicker">{html.escape(args.kicker)}</div>' if args.kicker else "",
+        # Sized off the kicker so it reads as part of the credit line above
+        # the headline, not as a second headline.
+        "__LOGOHTML__": f'<img id="logo" src="{data_uri(args.logo)}" alt="" />' if args.logo and args.logo_pos == "copy" else "",
+        # Top-right corner, opposite the copy: frees the headline column and
+        # sits above the mascot, which is anchored to the bottom edge.
+        "__CORNERLOGO__": f'<img id="logo" class="corner" src="{data_uri(args.logo)}" alt="" />' if args.logo and args.logo_pos == "corner" else "",
+        "__PADR__": pad,
+        "__LOGOH__": round(p["kicker"] * 2.4 * args.logo_scale),
         "__MASCOTHTML__": mascot_html,
     }
     for k, v in subs.items():
@@ -266,6 +276,12 @@ def main():
     # the figure; the type auto-fits to whatever is left.
     ap.add_argument("--mascot-scale", type=float, default=1.0,
                     help="multiply the preset's mascot width, e.g. 1.4 for a bigger figure")
+    ap.add_argument("--logo", type=Path,
+                    help="event or partner logo (SVG or PNG), shown white above the kicker")
+    ap.add_argument("--logo-scale", type=float, default=1.0,
+                    help="multiply the logo height, e.g. 2 to make the event the focus")
+    ap.add_argument("--logo-pos", choices=["copy", "corner"], default="copy",
+                    help="above the kicker, or in the top-right corner")
     ap.add_argument("--seed", help="fix the confetti")
     ap.add_argument("--out", required=True, type=Path)
     args = ap.parse_args()

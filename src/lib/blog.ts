@@ -10,9 +10,14 @@ type Post = CollectionEntry<'blog'>;
  */
 export const blogSlug = (post: Post) => post.id.replace(/^\d{4}-\d{2}-\d{2}-/, '');
 
-/** Drafts are kept out of every listing and never get a page. */
+/**
+ * Drafts are kept out of every listing and never get a page in a build. `npm
+ * run dev` shows them, so a draft can be read in place before it goes live.
+ */
 export const published = (posts: Post[]) =>
-  posts.filter((p) => !p.data.draft).sort((a, b) => +b.data.date - +a.data.date);
+  posts
+    .filter((p) => !p.data.draft || import.meta.env.DEV)
+    .sort((a, b) => +b.data.date - +a.data.date);
 
 /** Posts per listing page. */
 export const PAGE_SIZE = 6;
