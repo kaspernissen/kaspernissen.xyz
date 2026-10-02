@@ -54,6 +54,21 @@
   #stage.stack #copy { align-items: flex-start; flex: 0 1 auto; }
   #copyinner { width: 100%; }
 
+  /* Event logos come in their own colours; flattened to the ink colour so
+     they sit on the dark ground like the rest of the type. */
+  #logo {
+    display: block;
+    height: __LOGOH__px; width: auto;
+    filter: brightness(0) invert(1);
+    margin-bottom: __KICKGAP__px;
+  }
+
+  #logo.corner {
+    position: absolute; z-index: 2;
+    top: __PAD__px; right: __PADR__px;
+    margin: 0;
+  }
+
   #kicker {
     font-size: __KICKER__px;
     font-weight: 800;
@@ -110,8 +125,10 @@
 </style>
 <body>
   <div id="decor">__DECOR__</div>
+  __CORNERLOGO__
   <div id="stage" class="__STAGECLASS__">
     <div id="copy"><div id="copyinner">
+      __LOGOHTML__
       __KICKERHTML__
       <h1>__HEADLINE__</h1>
     </div></div>
