@@ -14,10 +14,11 @@ abstract: |-
 youtube_id: WEvcuNG4A6E
 deck_file: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.pdf
 deck_size_mb: 9.1
-deck_cover: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.jpg
 notist_url: https://noti.st/kasperborgnissen/E2MWI7/beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability
 tags: []
 featured: false
 sources:
   sessionize: containerdays-hamburg-2026
   notist: https://noti.st/kasperborgnissen/E2MWI7/beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability
+  youtube: WEvcuNG4A6E
+deck_cover: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-09.jpg
