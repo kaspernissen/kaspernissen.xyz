@@ -1,10 +1,12 @@
-title: null
+title: Hosting the main stage
 event: Cloud Native Denmark 2025
 event_url: https://cloudnativedenmark.dk
-date: 2025-10-31
+date: 2025-10-07
 location: Århus, Denmark
-role: speaker
+role: organiser
 tags: []
 featured: false
 sources:
   sessionize: cloud-native-denmark-2025
+end_date: 2025-10-08
+slug: cloud-native-denmark-2025-2025-10-31

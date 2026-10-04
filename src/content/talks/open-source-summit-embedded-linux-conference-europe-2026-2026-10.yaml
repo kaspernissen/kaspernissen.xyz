@@ -2,7 +2,7 @@ title: Your Agent Did What? Forensic Observability for Systems That Don't Leave 
 event: Open Source Summit + Embedded Linux Conference Europe 2026
 event_url: https://events.linuxfoundation.org/open-source-summit-europe/
 session_url: https://events.linuxfoundation.org/open-source-summit-europe/program/schedule/
-date: 2026-10-07
+date: 2026-10-08
 end_date: 2026-10-09
 location: Prague, Czechia
 role: speaker
@@ -12,3 +12,10 @@ tags: []
 featured: false
 sources:
   sessionize: open-source-summit-embedded-linux-conference-europe-2026
+abstract: |-
+  The GenAI observability space is fragmented right now. OpenInference, OpenLLMetry, framework-specific conventions are all solving the same problems with incompatible attribute names. That made sense when OTel’s GenAI support was thin. It makes less sense today.
+
+  OTel is where this converges. Getting there from where most teams actually are isn’t obvious. Kasper and Adriana cover the current landscape, how the genainormalizer processor bridges the gap at the collector layer, and what a realistic path to OTel-native GenAI observability looks like.
+
+  Then the harder question: your agent just deleted a database. What does your telemetry actually tell you? Non-deterministic systems don’t leave obvious footprints, and most teams discover that at the worst possible time.
+slug: your-agent-did-what-forensic-observability-for-systems-that-don-t-leave-obvious-footprints-2026-10-07

@@ -1,7 +1,7 @@
 title: "Agents on the Platform: Four Perspectives on the Conversation We're Already Having in Private"
 event: KubeCon + CloudNativeCon North America 2026
 event_url: https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/
-date: 2026-11-09
+date: 2026-11-10
 end_date: 2026-11-12
 location: Salt Lake City, Utah, United States
 role: moderator
@@ -9,3 +9,11 @@ tags: []
 featured: false
 sources:
   sessionize: kubecon-cloudnativecon-north-america-2026
+abstract: |-
+  AI and agentic systems are becoming production workloads on cloud-native platforms, and the hard questions land with platform teams. How do agents identify themselves? What can they access? How fast can they act? What can they cost? How are their actions audited? What evidence does the platform need when something goes wrong?
+
+  This panel brings together four perspectives that usually handle these separately: an end-user platform practitioner, an OpenTelemetry maintainer, a security practitioner, and an AI infrastructure engineer. Together they examine what shared infrastructure must guarantee as AI systems become governable workloads: identity for non-human callers, observability beyond human dashboards, policy and blast-radius controls, inference and routing demands, build-versus-buy, and accountability across application, model, and vendor.
+
+  Attendees leave with a practical frame: what today's CNCF substrate can support, where standards emerge, and what platform teams must own.
+session_url: https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/program/schedule/?id=1248218
+slug: agents-on-the-platform-four-perspectives-on-the-conversation-we-re-already-having-in-private-2026-11-09

@@ -1,7 +1,7 @@
 title: Rethinking Observability as a Platform Capability
 event: Tech Hub Aarhus Day
 date: 2026-03-12
-location: null
+location: Aarhus, Denmark
 role: speaker
 youtube_id: null
 deck_file: rethinking-observability-as-a-platform-capability-2026-03.pdf
@@ -12,3 +12,12 @@ tags: []
 featured: false
 sources:
   notist: https://noti.st/kasperborgnissen/eK8Qus/rethinking-observability-as-a-platform-capability
+abstract: |-
+  Kubernetes has become the default platform for modern applications - but observability hasn’t kept pace. Many teams still rely on disconnected tools and partial signals: metrics without context, logs without structure, and traces that are hard to reason about. The result is slower incident response, higher cognitive load, and unnecessary friction for developers.
+
+  This talk explores the shift from observability as a collection of tools to observability as a platform capability. We’ll look at why correlation across signals is essential for understanding complex systems, how platform teams can reduce developer toil through paved paths, and what it means to offer observability as a shared service on Kubernetes.
+
+  Using real-world platform patterns, we’ll discuss how consistent, structured telemetry enables faster debugging, better decisions, and lays the groundwork for the next evolution of observability - including AI-assisted workflows and more natural ways of interacting with production systems.
+
+  We’ll close with a live demo showing how Kubernetes-native automation and open standards enable auto-instrumentation and correlated signals out of the box, giving teams immediate visibility without requiring code changes.
+session_url: https://www.techhubaarhus.com/tech-hub-aarhus-day-speakers/kasper-borg-nissen

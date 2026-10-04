@@ -1,10 +1,16 @@
 title: Cloud Native Nordics Stories - a virtual Cloud Native sharing session
 event: Cloud Native Nordics virtual event
 date: 2020-03-26
-abstract: |
+abstract: |-
   a virtual Cloud Native Nordics sharing session.
 
   Join us for a relaxed panel conversation about what Cloud Native means for us, and stories about how to do it in practice.
+
+  Moderating will be Lucas Käldström, sharing stories will be;
+  Hans Duedal (Unity)
+  Kasper Nissen (Lunar)
+  Jessica Andersson (Meltwater)
+  Laszlo Fogas (laszlo.cloud)
 youtube_id: J0f28fq4aS0
 tags: []
 featured: false

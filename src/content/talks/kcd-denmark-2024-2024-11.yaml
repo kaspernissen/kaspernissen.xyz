@@ -1,10 +1,12 @@
-title: null
+title: Hosting the main stage
 event: KCD Denmark 2024
 event_url: https://kcddenmark.dk
-date: 2024-11-30
+date: 2024-11-19
 location: Copenhagen, Denmark
-role: speaker
+role: organiser
 tags: []
 featured: false
 sources:
   sessionize: kcd-denmark-2024
+end_date: 2024-11-20
+slug: kcd-denmark-2024-2024-11-30

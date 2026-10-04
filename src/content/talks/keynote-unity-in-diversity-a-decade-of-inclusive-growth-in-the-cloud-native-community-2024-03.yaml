@@ -3,10 +3,9 @@ event: "KubeCon + CloudNativeCon Europe 2024"
 event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe-2024/"
 date: 2024-03-22
 location: "Paris, France"
-abstract: |
-  Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon North America in Salt Lake City from November 12 - 15, 2024. Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
-
-   Keynote Panel Discussion: Unity in Diversity: A Decade of Inclusive Growth in the Cloud Native Community - Kasper Borg Nissen, Lunar; Jinhong Brejnholt, Saxo Bank; Andrea Giardini, Independent; Anastasiia Gubska, BT Group; Stéphane Este-Gracias, ITQ
+abstract: |-
+  Join this intriguing panel of community members while we celebrate a decade of inclusive evolution in the Cloud Native community. Explore the diverse contributions that extend beyond code, recognizing the vital roles of local ambassadors, glossary translations, and events like Kubernetes Community Days (KCDs) in making the Cloud Native experience accessible globally. Discover how we've worked to remove barriers for individuals with disabilities, or in an underrepresented group ensuring everyone, regardless of background or ability, has a place in our community.
+  Vive la diversité as we continue shaping the future together.
 youtube_id: vwZANXuYdRI
 tags: []
 featured: false
@@ -19,3 +18,4 @@ co_speakers:
   - "Andrea Giardini"
   - "Anastasiia Gubska"
   - "Stéphane Este-Gracias"
+session_url: https://kccnceu2024.sched.com/event/1YhKV/keynote-panel-discussion-unity-in-diversity-a-decade-of-inclusive-growth-in-the-cloud-native-community-kasper-borg-nissen-lunar-jinhong-brejnholt-saxo-bank-andrea-giardini-independent-anastasiia-gubska-bt-group-stephane-este-gracias-itq

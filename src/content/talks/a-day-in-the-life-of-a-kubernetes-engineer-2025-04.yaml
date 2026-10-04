@@ -1,12 +1,20 @@
 title: A Day in the Life of a Kubernetes Engineer
 event: "KubeCon + CloudNativeCon Europe 2025"
 event_url: "https://events.linuxfoundation.org/kubecon-cloudnativecon-europe/"
-date: 2025-04-01
+date: 2025-04-03
 location: "London, United Kingdom"
-abstract: |
-  Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Hong Kong, China (June 10-11); Tokyo, Japan (June 16-17); Hyderabad, India (August 6-7); Atlanta, US (November 10-13). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
+abstract: |-
+  In the cloud native universe, Kubernetes engineers are the unsung heroes--who wrangle YAML, tame logs and brave production crises. While AI steals the spotlight, challenges of managing Kubernetes remain in the shadows. Platform engineers, often grappling with relentless war room calls rarely get the stage they deserve.
+  For the first time, we’ll dive into the untold stories of platform engineers: triumphs and the grit it takes to navigate the complexities of Kubernetes. This is a celebration of the human side of cloud native, told through anecdotes, technical insights and lessons learned from the trenches.
 
-  A Day in the Life of a Kubernetes Engineer - Rajas Kakodkar & Nikhita Raghunath, Broadcom; Micah Hausler, AWS; Shane Lawrence, Shopify; Kasper Borg Nissen, Dash0
+  Join industry experts as they explore:
+  - Critical skills for resolving production issues
+  - Successes & failures that define their journeys
+  - Balancing ecosystem health
+  - Secure practices for AI workloads
+  - Reducing Kubernetes complexity
+
+  Join us for unfiltered insights, empowering stories and actionable takeaways to inspire your Kubernetes journey—you, too, deserve to be heard.
 youtube_id: QhTlZs4m59w
 tags: []
 featured: false
@@ -16,5 +24,8 @@ sources:
 co_speakers:
   - "Rajas Kakodkar"
   - "Nikhita Raghunath"
-  - "Amine Hilaly"
+  - "Micah Hausler"
   - "Shane Lawrence"
+slug: a-day-in-the-life-of-a-kubernetes-engineer-2025-04-01
+role: panelist
+session_url: https://kccnceu2025.sched.com/event/1txB6

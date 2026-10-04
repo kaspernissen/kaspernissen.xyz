@@ -7,3 +7,5 @@ featured: false
 sources:
   github: tech-talks-mettles-journey-towards-throw-away-clusters-with-steve-wade-host-2020-06
   youtube: zSKCHZ3wpFM
+abstract: |-
+  When Steve arrived at Mettle he was greeted by manually provisioned clusters with nodes that were multiple years old and people were scared to change them. This talk will show you the journey Mettle is on to go from this setup to how they now see clusters as being totally ephemeral. Steve will talk about the lessons learnt along the way, the tools being leveraged and what’s left to do to complete this journey.

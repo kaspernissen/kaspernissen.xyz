@@ -14,3 +14,9 @@ featured: false
 sources:
   sessionize: container-days-london
   notist: https://noti.st/kasperborgnissen/A7IQ7b/golden-paths-for-async-workflows-dapr-meets-opentelemetry
+abstract: |-
+  Async workflows power modern microservices, but they can be notoriously hard to observe. In this talk, we show how two CNCF projects - Dapr, for developer-friendly building blocks, and OpenTelemetry, for unified observability - create a golden path that bridges developer productivity and platform reliability.
+
+  We’ll start by using Dapr Workflows and Pub/Sub to connect and orchestrate services without boilerplate. Then we’ll add the OpenTelemetry Operator for no-touch instrumentation, instantly delivering traces, metrics, and logs - even across asynchronous boundaries.
+
+  You’ll see current OpenTelemetry capabilities for tracking async requests end-to-end, where the gaps are today, and practical ways to correlate events in complex workflows. Through a live demo, we’ll prove that with the right abstractions, shipping features fast and observing systems deeply can go hand in hand.

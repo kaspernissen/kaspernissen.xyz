@@ -5,10 +5,10 @@ date: 2026-03-23
 end_date: 2026-03-26
 location: Amsterdam, The Netherlands
 role: speaker
-abstract: |
-  Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
-
-  Taming Complexity: Building Observable Workflows With Dapr and OpenTelemetry - Mauricio &quot;Salaboy&quot; Salatino, Diagrid &amp; Kasper Borg Nissen, Dash0
+abstract: |-
+  Today’s cloud-native applications are complex and constantly evolving, with new requirements for infrastructure - including emerging services such as LLMs. The challenge is clear: how do we build resilient, observable systems without making life harder for developers?
+  In this session, we’ll explore event-driven orchestration with Dapr Workflows, and how it pairs with OpenTelemetry to reveal the interactions between application and infrastructure components. By combining the OpenTelemetry Operator with Dapr observability, we can enable no-touch instrumentation that delivers traces, metrics, and logs - even across asynchronous boundaries.
+  Through a live demo, we’ll illustrate these concepts, highlight common pitfalls and current gaps, and showcase the work being done to align Dapr with the OpenTelemetry specification. The result is observability that is portable across vendors and, more importantly, easy for developers to adopt.
 youtube_id: XVEPKb0aCx8
 tags: []
 featured: false

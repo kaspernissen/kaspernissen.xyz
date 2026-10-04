@@ -3,12 +3,12 @@ event: Cloud Native Bergen
 date: 2025-10-27
 location: null
 role: speaker
-abstract: "by Kasper Borg Nissen
+abstract: |-
+  Observability should feel invisible - but never be absent. Yet for many teams, it's a constant source of friction: developers reinvent telemetry pipelines, traces break across services, and platform engineers scramble to maintain consistency.
 
+  This talk introduces a better approach: platform-led observability. By embracing open standards like OpenTelemetry and treating observability as a built-in feature, platform engineers can reduce complexity while empowering developers.
 
-  Cloud Native Day Bergen 2025 brought together developers, engineers, and tech leaders to explore the latest in cloud-native technologies. Watch the talks, get inspired, and join us next year in Bergen!
-
-  \ "
+  We’ll explore the dual observability role platform engineers now play - ensuring insight into infrastructure health and giving developers the tools they need to understand their services. With auto-instrumentation, semantic conventions, and self-service tooling, observability can become a paved path, not a pain point.
 youtube_id: Pa7fZ6dz6r4
 deck_file: the-paved-path-to-observability-2025-10.pdf
 deck_size_mb: 7

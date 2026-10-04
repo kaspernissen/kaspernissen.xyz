@@ -2,10 +2,8 @@ title: Building a Scalable, Compliant, Multi-Cloud Bank with a Service Mesh
 event: ServiceMeshCon North America 2022, Detroit
 date: 2022-10-25
 location: USA
-abstract: |
-  Don’t miss out! Join us at our upcoming event: KubeCon + CloudNativeCon Europe 2023 in Amsterdam, The Netherlands from April 17-21. Learn more at https://kubecon.io​. The conference features presentations from developers and end users of Kubernetes, Prometheus, Envoy, and all of the other CNCF-hosted projects.
-
-  Building a Scalable, Compliant, Multi-Cloud Bank with a Service Mesh - Kasper Nissen, Lunar
+abstract: |-
+  Kasper Nissen, Lead Platform Architect at Lunar, will share how Lunar built a scalable, multi-cloud bank with cloud native tech, allowing for rapid product iteration while simplifying compliance with strict regulatory requirements. The flexible technical setup also allows them to rapidly absorb newly acquired startups, ensuring they start generating value for the bank quickly. Lunar started by centralizing its log and release management tooling in a single cluster connected to multiple Kubernetes clusters across GCP, Azure, and AWS — all connected through a service mesh. This allowed them to remove state and complexity from edge clusters and manage infra services centrally while exposing these central services to edge clusters. This transformation is part of a strategy to treat the platform as a product and provide the same set of platform features across cloud providers. Attendees will learn how Lunar implemented multi-cluster communication across clouds and how it all fits together with GitOps as a multi-cloud management layer to comply with regulations on the audit trail of all changes, following the principles of least privilege, and the ability to perform cluster failovers.
 youtube_id: JcBBHKHpOyU
 tags: []
 featured: false
@@ -13,3 +11,4 @@ playlist_position: 42
 sources:
   github: building-a-scalable-compliant-multi-cloud-bank-with-a-service-mesh-2022-10
   youtube: JcBBHKHpOyU
+session_url: https://servicemeshconna22.sched.com/event/1AzsN/building-a-scalable-compliant-multi-cloud-bank-with-a-service-mesh-kasper-nissen-lunar

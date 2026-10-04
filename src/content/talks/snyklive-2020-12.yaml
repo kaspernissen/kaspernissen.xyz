@@ -1,5 +1,5 @@
-title: SnykLIVE
-event: Introducing the Prometheus Exporter for Snyk
+title: Introducing the Prometheus Exporter for Snyk
+event: SnykLIVE
 date: 2020-12-09
 youtube_id: zJsxAx7MKKk
 tags: []
@@ -7,3 +7,10 @@ featured: false
 playlist_position: 47
 sources:
   youtube: zJsxAx7MKKk
+abstract: |-
+  Join the awesome Lunar team - Kasper Nissen and Bjørn Hald Sørensen, alongside Snyk's Matt Jarvis to talk about their open source project - a Prometheus Exporter for Snyk.
+
+  If you are looking for a quick and easy way to export your Snyk scans into Prometheus, check out the snyk_exporter project by the Lunar team.
+
+  The Prometheus exporter for Snyk is written in Go and allows for exporting scanning data into Prometheus by scraping the Snyk HTTP API, and then you can visualize your Snyk scans with Prometheus quickly and easily.
+slug: snyklive-2020-12-09
