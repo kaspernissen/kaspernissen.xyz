@@ -1,13 +1,14 @@
 ---
 const { current } = Astro.props as { current?: string };
 const links = [
-  { href: '/talks', label: 'Talks' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/writing', label: 'Writing' },
-  { href: '/podcasts', label: 'Podcasts' },
-  { href: '/conferences', label: 'Conferences' },
-  { href: '/speaker-kit', label: 'Speaker kit' },
-  { href: '/badges', label: 'Badges' },
+  { href: '/talks/', label: 'Talks' },
+  { href: '/blog/', label: 'Blog' },
+  { href: '/writing/', label: 'Writing' },
+  { href: '/podcasts/', label: 'Podcasts' },
+  { href: '/conferences/', label: 'Conferences' },
+  { href: '/speaker-kit/', label: 'Speaker kit' },
+  { href: '/badges/', label: 'Badges' },
+  { href: '/about/', label: 'About' },
 ];
 
 const linkClass = (href: string) =>

@@ -97,7 +97,7 @@ The funniest version of what happens when nothing checks the agents came from Ra
 <figcaption>Kyle, the AI CEO, joining the talk live.</figcaption>
 </figure>
 
-It's the point Adriana and I made at SREday the week before, that [a successful tool call is not a verdict](/blog/sreday-london-a-successful-tool-call-is-not-a-verdict). What an agent reports about its own work is not a verdict.
+It's the point Adriana and I made at SREday the week before, that [a successful tool call is not a verdict](/blog/sreday-london-a-successful-tool-call-is-not-a-verdict/). What an agent reports about its own work is not a verdict.
 
 ## Build the platform for humans first
 
@@ -112,7 +112,7 @@ In "Building composable platforms", Daniel Bryant argued for three layers, appli
 
 We had talked about shift down that morning, pushing concerns into the platform instead of left onto developers, and he brought it up in both the talk and the Q&A. Thanks for the shoutout, Daniel. Make it work for humans, then scale it for agents.
 
-That was the core of my own talk on day three, "[Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-09-30)". A lot of organizations still treat observability as a tooling decision. You pick a vendor, deploy the agents and wait for insight to show up. What's missing is a shared foundation and a product experience around it, with clear users, sane defaults and a plan for how it evolves. OpenTelemetry is that foundation. It decouples instrumentation from the backend and gives you correlation by default, and the same structured telemetry is what lets an agent debug production or answer questions about it in plain language.
+That was the core of my own talk on day three, "[Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-09-30/)". A lot of organizations still treat observability as a tooling decision. You pick a vendor, deploy the agents and wait for insight to show up. What's missing is a shared foundation and a product experience around it, with clear users, sane defaults and a plan for how it evolves. OpenTelemetry is that foundation. It decouples instrumentation from the backend and gives you correlation by default, and the same structured telemetry is what lets an agent debug production or answer questions about it in plain language.
 
 <figure>
 <img src="/blog-images/goto-copenhagen-2026-38.jpg" alt="The view from the stage before the talk, with a laptop showing the title slide Rethinking Observability as a Platform Product in front of a seated audience">

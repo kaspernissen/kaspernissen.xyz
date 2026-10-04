@@ -71,13 +71,18 @@ if (vw < MIN_W) { vx -= (MIN_W - vw) / 2; vw = MIN_W; }
 if (vh < MIN_H) { vy -= (MIN_H - vh) / 2; vh = MIN_H; }
 vx = Math.max(0, Math.min(vx, 360 - vw));
 vy = Math.max(0, Math.min(vy, 180 - vh));
-const viewBox = `${vx} ${vy} ${vw} ${vh}`;
+// Two decimals is far below a pixel at this size; the raw floats ran to
+// sixteen digits on every pin.
+const r2 = (n: number) => Math.round(n * 100) / 100;
+const viewBox = [vx, vy, vw, vh].map(r2).join(' ');
 
 // Radii and strokes are in viewBox units, so they must scale with the crop or
 // a zoomed-in map renders comically fat pins. 360 is the un-cropped width.
 const scale = vw / 360;
 const pinR = 2 * scale;
-const stroke = 0.4 * scale;
+const hitR = r2(pinR * 2.4);
+const pastR = r2(pinR * 0.62);
+const stroke = r2(0.4 * scale);
 ---
 {placed.length > 0 && (
   <div class="bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] p-4 overflow-hidden">
@@ -128,8 +133,8 @@ const stroke = 0.4 * scale;
             data-events={JSON.stringify(p.events)}
           >
             {/* Generous invisible hit area — the visible dot is ~1px at this scale. */}
-            <circle cx={p.x} cy={p.y} r={pinR * 2.4} fill="transparent" />
-            <circle cx={p.x} cy={p.y} r={pinR * 0.62} fill="#a8a29e" opacity="0.55" />
+            <circle cx={p.x} cy={p.y} r={hitR} fill="transparent" />
+            <circle cx={p.x} cy={p.y} r={pastR} fill="#a8a29e" opacity="0.55" />
             <title>{p.label}</title>
           </g>
         ))}
@@ -141,8 +146,8 @@ const stroke = 0.4 * scale;
             data-kind="upcoming"
             data-events={JSON.stringify(p.events)}
           >
-            <circle cx={p.x} cy={p.y} r={pinR * 2.4} fill="#fb923c" opacity="0.22" />
-            <circle cx={p.x} cy={p.y} r={pinR} fill="#fb923c" />
+            <circle cx={p.x} cy={p.y} r={hitR} fill="#fb923c" opacity="0.22" />
+            <circle cx={p.x} cy={p.y} r={r2(pinR)} fill="#fb923c" />
             <title>{p.label}</title>
           </g>
         ))}

@@ -49,6 +49,9 @@ data/*
 # there; the build no longer fetches anything, so an uncommitted copy means CI
 # renders "GitHub activity unavailable". The nightly refresh updates it.
 !data/github.json
+# Measured from the bucket by scripts/blog-image-sizes.mjs and committed so the
+# build stays offline; astro.config.mjs reads it to size blog <img> tags.
+!data/blog-image-sizes.json
 
 # Deck PDFs are mirrored from noti.st at ~8MB each and grow with every talk;
 # they are hosted rather than versioned. See src/lib/deckHost.ts.

@@ -30,10 +30,10 @@ const byIssue = (a, b) =>
   b.data.title.localeCompare(a.data.title, undefined, { numeric: true });
 const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(byIssue);
 ---
-<BaseLayout title="Writing — Kasper Nissen" current="/writing">
+<BaseLayout title="Writing — Kasper Nissen" current="/writing/">
   <PageHeader chip="Writing" chipClass="bg-pink-500 text-white">
       A book, a course, and {articles.length} posts and guides, newest first —
-      podcast appearances are on <a href="/podcasts" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the podcasts page</a>.
+      podcast appearances are on <a href="/podcasts/" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the podcasts page</a>.
     </PageHeader>
   {featured.length > 0 && (
     <section class="mt-8">

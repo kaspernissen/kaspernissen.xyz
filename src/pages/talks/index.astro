@@ -24,7 +24,7 @@ const withSlides = talks.filter((t) => t.data.deck_file).length;
 // for search engines.
 const years = [...new Set(talks.map((t) => t.data.date.getFullYear()))].sort((a, b) => b - a);
 ---
-<BaseLayout title="Talks — Kasper Nissen" current="/talks">
+<BaseLayout title="Talks — Kasper Nissen" current="/talks/">
   <PageHeader chip="Talks" chipClass="bg-orange-400 text-stone-950">
       Conference, meetup, and podcast appearances. {talks.length} given —
       {withVideo} with a recording, {withSlides} with slides.

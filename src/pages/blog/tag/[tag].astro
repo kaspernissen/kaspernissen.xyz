@@ -44,13 +44,13 @@ const jsonLd = [{
 <BaseLayout
   title={`${tag} — Blog — Kasper Nissen`}
   description={`${posts.length} post${posts.length === 1 ? '' : 's'} tagged ${tag}, by Kasper Nissen.`}
-  current="/blog"
+  current="/blog/"
   jsonLd={jsonLd}
   noindex={posts.length < 2}
 >
   <PageHeader chip={tag} chipClass={tagColour(tag)}>
     {posts.length} post{posts.length === 1 ? '' : 's'} tagged <strong class="text-stone-200">{tag}</strong>.
-    {' '}<a href="/blog" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">All posts</a>.
+    {' '}<a href="/blog/" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">All posts</a>.
   </PageHeader>
 
   {/* One page per tag: the archive is small enough that paging inside a tag

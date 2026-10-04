@@ -29,11 +29,11 @@ const { posts, allTags, page, totalPages } = Astro.props;
 <BaseLayout
   title={`Blog — page ${page} — Kasper Nissen`}
   description={`Page ${page} of posts on Kubernetes, observability, and platform engineering.`}
-  current="/blog"
+  current="/blog/"
 >
   <PageHeader chip="Blog">
     Page {page} of {totalPages}.
-    {' '}<a href="/blog" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">Back to the newest</a>.
+    {' '}<a href="/blog/" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">Back to the newest</a>.
   </PageHeader>
 
   <BlogListing

@@ -7,11 +7,11 @@ hero: "sreday-london-2026-01.jpg"
 ---
 A successful tool call tells you that an operation completed. It doesn't tell you whether it was the right operation to run.
 
-That gap is what Adriana Villela and I spent our session on at SREday London on Thursday, and it kept coming back for the rest of the trip, at both dinners and in the conversations after the talk. I made a version of the same point about goose last month, when a small model [half-finished a task and reported success](/blog/observing-goose-on-ollama-with-opentelemetry): `result=success` means the tool returned without raising, not that it did anything useful. This time we built a rogue agent to show it.
+That gap is what Adriana Villela and I spent our session on at SREday London on Thursday, and it kept coming back for the rest of the trip, at both dinners and in the conversations after the talk. I made a version of the same point about goose last month, when a small model [half-finished a task and reported success](/blog/observing-goose-on-ollama-with-opentelemetry/): `result=success` means the tool returned without raising, not that it did anything useful. This time we built a rogue agent to show it.
 
 ## Your agent did what?
 
-Thursday was the debut of [Your Agent Did What? Forensic Observability for Systems That Don't Leave Obvious Footprints](/talks/your-agent-did-what-forensic-observability-for-systems-that-don-t-leave-obvious-footprints-2026-09-24). It was also the first time Adriana and I have presented together. We had spent a lot of time experimenting with frameworks and instrumentation approaches, so it was good to finally put the work in front of people. Several of them caught us afterwards, and throughout the rest of the event, to keep the conversation going.
+Thursday was the debut of [Your Agent Did What? Forensic Observability for Systems That Don't Leave Obvious Footprints](/talks/your-agent-did-what-forensic-observability-for-systems-that-don-t-leave-obvious-footprints-2026-09-24/). It was also the first time Adriana and I have presented together. We had spent a lot of time experimenting with frameworks and instrumentation approaches, so it was good to finally put the work in front of people. Several of them caught us afterwards, and throughout the rest of the event, to keep the conversation going.
 
 <figure class="portrait">
 <img src="/blog-images/sreday-london-2026-03.jpg" alt="Kasper and Adriana taking a selfie in front of the audience in the cinema seats">
@@ -65,13 +65,13 @@ I keep coming back to this topic because it's familiar from my eight years at Lu
 
 Observability needs the same treatment. An SDK, a Collector and access to a backend leave a lot of decisions for every team to make on its own: instrumentation, naming, correlation, sampling, routing. When each team solves those differently, whoever investigates the incident ends up joining the pieces by hand.
 
-The contract I proposed at dinner was simple. The platform owns the plumbing. Product teams own the meaning. It's the same split I argued for in [In Search of Observability's Rails Moment](/blog/in-search-of-observabilitys-rails-moment), now with a room of people to push back on it.
+The contract I proposed at dinner was simple. The platform owns the plumbing. Product teams own the meaning. It's the same split I argued for in [In Search of Observability's Rails Moment](/blog/in-search-of-observabilitys-rails-moment/), now with a room of people to push back on it.
 
 The platform should deliver correctly instrumented, correlated telemetry by default, with consistent service identity and shared conventions. Teams build on that without assembling the plumbing themselves, and keep ownership of the business context: which events matter and what their service promises its users. OpenTelemetry is the foundation. Turning it into a product means designing for the people who use it, down to the defaults they inherit, the documentation they need and the way their feedback comes back.
 
 That investment helps engineers today, and it matters more as we point AI systems at our telemetry and ask them to investigate incidents. If the evidence is fragmented or missing context, a more capable model still has to work around the gaps. Which is the afternoon's talk again: a judge can only weigh the evidence it's handed.
 
-I'll go deeper on this at GOTO Copenhagen next week, in [Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-09-30). If you're there, come and join the conversation.
+I'll go deeper on this at GOTO Copenhagen next week, in [Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-09-30/). If you're there, come and join the conversation.
 
 ## Competitors with a standard in common
 

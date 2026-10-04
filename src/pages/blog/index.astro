@@ -33,12 +33,12 @@ const jsonLd = {
 <BaseLayout
   title="Blog — Kasper Nissen"
   description={`${all.length} posts on Kubernetes, observability, and platform engineering, written by Kasper Nissen between ${Math.min(...years)} and ${Math.max(...years)}.`}
-  current="/blog"
+  current="/blog/"
   jsonLd={jsonLd}
 >
   <PageHeader chip="Blog">
     Pieces published on other people's sites are on
-    {' '}<a href="/writing" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the writing page</a>.
+    {' '}<a href="/writing/" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the writing page</a>.
   </PageHeader>
 
   <BlogListing

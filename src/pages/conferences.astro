@@ -25,7 +25,7 @@ const past = all
   .filter((e) => isDelivered(e) && isMappable(e.data.location, e.data.event))
   .sort((a, b) => +b.data.date - +a.data.date);
 ---
-<BaseLayout title="Conferences — Kasper Nissen" current="/conferences">
+<BaseLayout title="Conferences — Kasper Nissen" current="/conferences/">
   <PageHeader chip="Conferences" chipClass="bg-yellow-400 text-stone-950">
       Where I'll be next, and where I've been.
     </PageHeader>

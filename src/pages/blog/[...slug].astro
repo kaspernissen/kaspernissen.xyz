@@ -6,6 +6,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { blogImageUrl } from '../../lib/blogHost';
 import { published, blogSlug, readingMinutes, tagColour, tagSlug } from '../../lib/blog';
 import { abs, breadcrumbs, PERSON_ID } from '../../lib/person';
+import imageSizes from '../../../data/blog-image-sizes.json';
 
 export async function getStaticPaths() {
   const posts = published(await getCollection('blog'));
@@ -18,6 +19,9 @@ export async function getStaticPaths() {
 
 const { entry, newer, older } = Astro.props;
 const { title, date, updated, summary, tags, hero, canonical, source } = entry.data;
+// Width and height so the hero's space is reserved before it loads; see
+// scripts/blog-image-sizes.mjs.
+const heroSize = hero ? (imageSizes as Record<string, [number, number]>)[hero.replace(/^.*\//, '')] : undefined;
 const { Content } = await render(entry);
 const mins = readingMinutes(entry.body ?? '');
 const site = Astro.site ?? new URL('https://kaspernissen.xyz');
@@ -64,7 +68,7 @@ const jsonLd = [
 <BaseLayout
   title={`${title} — Kasper Nissen`}
   description={summary ?? undefined}
-  current="/blog"
+  current="/blog/"
   canonical={canonical}
   image={share}
   imageAlt={title}
@@ -75,7 +79,7 @@ const jsonLd = [
 >
   <article class="pt-6 pb-16 max-w-3xl">
     <nav class="text-xs text-stone-500 mb-6" aria-label="Breadcrumb">
-      <a href="/blog" class="hover:text-stone-300">Blog</a>
+      <a href="/blog/" class="hover:text-stone-300">Blog</a>
       <span class="text-orange-400 px-1">/</span>
       <span class="text-stone-400">{title}</span>
     </nav>
@@ -93,7 +97,7 @@ const jsonLd = [
       <div class="mt-5 flex flex-wrap gap-1.5">
         {tags.map((t) => (
           <a
-            href={`/blog/tag/${tagSlug(t)}`}
+            href={`/blog/tag/${tagSlug(t)}/`}
             class={`text-[10px] font-bold uppercase tracking-wider rounded-full px-2 py-0.5 ${tagColour(t)} hover:-translate-y-0.5 transition inline-block`}
           >{t}</a>
         ))}
@@ -101,7 +105,7 @@ const jsonLd = [
     )}
 
     {hero && (
-      <img src={blogImageUrl(hero)} alt="" fetchpriority="high" class="w-full rounded-xl mt-8 bg-stone-900" />
+      <img src={blogImageUrl(hero)} alt="" fetchpriority="high" width={heroSize?.[0]} height={heroSize?.[1]} class="w-full rounded-xl mt-8 bg-stone-900" />
     )}
 
     {/* Markdown ships as bare HTML, so the whole body is styled from here
@@ -120,13 +124,13 @@ const jsonLd = [
 
     <nav class="mt-10 grid gap-3 sm:grid-cols-2 border-t border-stone-800 pt-6">
       {newer ? (
-        <a href={`/blog/${blogSlug(newer)}`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition">
+        <a href={`/blog/${blogSlug(newer)}/`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition">
           <div class="text-[10px] uppercase tracking-wider text-stone-500">← Newer</div>
           <div class="text-sm font-bold text-stone-300 group-hover:text-stone-50 mt-1">{newer.data.title}</div>
         </a>
       ) : <span></span>}
       {older && (
-        <a href={`/blog/${blogSlug(older)}`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition sm:text-right">
+        <a href={`/blog/${blogSlug(older)}/`} class="group rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition sm:text-right">
           <div class="text-[10px] uppercase tracking-wider text-stone-500">Older →</div>
           <div class="text-sm font-bold text-stone-300 group-hover:text-stone-50 mt-1">{older.data.title}</div>
         </a>

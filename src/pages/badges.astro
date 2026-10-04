@@ -6,7 +6,7 @@ import BadgeCard from '../components/BadgeCard.astro';
 
 const badges = (await getCollection('badges')).sort((a, b) => +b.data.issued - +a.data.issued);
 ---
-<BaseLayout title="Badges — Kasper Nissen" current="/badges">
+<BaseLayout title="Badges — Kasper Nissen" current="/badges/">
   <PageHeader chip="Badges" chipClass="bg-pink-500 text-white">
       Verified credentials from <a href="https://www.credly.com/users/kasper-nissen" class="underline decoration-orange-400 underline-offset-2">Credly</a>.
     </PageHeader>

@@ -33,7 +33,7 @@ const roleColors: Record<string, string> = {
 // upcoming one links out to the session or the event site.
 const delivered = isDelivered(entry);
 const href = delivered
-  ? `/talks/${d.slug ?? talkSlug(d.title ?? d.event, d.date)}`
+  ? `/talks/${d.slug ?? talkSlug(d.title ?? d.event, d.date)}/`
   : d.session_url ?? d.event_url ?? '#';
 ---
 <a
