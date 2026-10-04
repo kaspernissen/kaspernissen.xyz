@@ -3,6 +3,7 @@ import '../styles/global.css';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
 import Dash0Web from '../components/Dash0Web.astro';
+import WebMcp from '../components/WebMcp.astro';
 import { person, website } from '../lib/person';
 const {
   title,
@@ -120,6 +121,13 @@ const graph = {
     )}
     {/* Dash0 website monitoring, only when both values are set; see Dash0Web.astro. */}
     {import.meta.env.PUBLIC_DASH0_ENDPOINT && import.meta.env.PUBLIC_DASH0_AUTH_TOKEN && <Dash0Web />}
+    {/* WebMCP origin-trial tokens (Chrome and Edge each issue their own),
+        space-separated. Each browser ignores the tokens it did not issue.
+        Without one, only browsers with WebMCP on by flag see the tools. */}
+    {(import.meta.env.PUBLIC_WEBMCP_ORIGIN_TRIALS ?? '').split(/\s+/).filter(Boolean).map((token: string) => (
+      <meta http-equiv="origin-trial" content={token} />
+    ))}
+    <WebMcp />
   </head>
   <body class="min-h-screen">
     <NavBar current={current} />
