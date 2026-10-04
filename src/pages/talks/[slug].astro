@@ -6,7 +6,9 @@ import PhotoGallery from '../../components/PhotoGallery.astro';
 import { talkSlug } from '../../lib/slug';
 import { assignPhotos } from '../../lib/photoJoin';
 import { deckCoverUrl, deckUrl } from '../../lib/deckHost';
-import { displayTitle, isDelivered, visible } from '../../lib/engagement';
+import { displayTitle, isDelivered, isCancelled, visible } from '../../lib/engagement';
+import { cleanAbstract, metaDescription } from '../../lib/talkText';
+import { abs, breadcrumbs, PERSON_ID } from '../../lib/person';
 
 export async function getStaticPaths() {
   const talks = visible(await getCollection('talks'));
@@ -27,8 +29,102 @@ const d = entry.data;
 const title = displayTitle(d);
 const dateStr = d.date.toISOString().slice(0, 10);
 const delivered = isDelivered(entry);
+const abstract = cleanAbstract(d.abstract);
+const slug = Astro.params.slug;
+const path = `/talks/${slug}`;
+const url = abs(path);
+
+// Twenty-odd talks have no abstract yet. An empty description is worse than a
+// plain factual one: the engine then writes its own from whatever text it
+// finds first on the page.
+const lead = d.role === 'co-chair' || d.role === 'organiser' || d.role === 'mc' || d.role === 'attendee'
+  ? `Kasper Borg Nissen at ${d.event}`
+  : `${title}: ${d.role === 'keynote' ? 'keynote' : 'talk'} by Kasper Borg Nissen at ${d.event}`;
+const material = [d.youtube_id && 'Recording', d.deck_file && (d.youtube_id ? 'slides' : 'Slides')].filter(Boolean);
+const description = metaDescription(
+  abstract ??
+    `${lead}${d.location ? `, ${d.location}` : ''}, ${dateStr}.` +
+      (material.length ? ` ${material.join(' and ')} available.` : ''),
+);
+
+// The title slide when there is one, else the recording's thumbnail, so a share
+// shows this talk rather than the site-wide card.
+const youtubeThumb = d.youtube_id ? `https://i.ytimg.com/vi/${d.youtube_id}/hqdefault.jpg` : null;
+const shareImage = d.deck_cover ? deckCoverUrl(d.deck_cover) : youtubeThumb;
+
+// Event for the session itself, with the recording and the deck hung off it.
+// Speaking roles are performers; running the event is organising it.
+const speaking = ['speaker', 'keynote', 'moderator', 'panelist', 'mc'].includes(d.role);
+const organising = d.role === 'co-chair' || d.role === 'organiser';
+const jsonLd: Record<string, unknown>[] = [];
+if (d.role !== 'attendee') {
+  jsonLd.push({
+    '@type': 'Event',
+    '@id': `${url}#event`,
+    name: title,
+    description: abstract ? metaDescription(abstract, 500) : description,
+    startDate: dateStr,
+    ...(d.end_date ? { endDate: d.end_date.toISOString().slice(0, 10) } : {}),
+    eventStatus: isCancelled(entry) ? 'https://schema.org/EventCancelled' : 'https://schema.org/EventScheduled',
+    ...(d.location ? { location: { '@type': 'Place', name: d.location, address: d.location } } : {}),
+    url,
+    ...(d.session_url ? { sameAs: d.session_url } : {}),
+    superEvent: { '@type': 'Event', name: d.event, ...(d.event_url ? { url: d.event_url } : {}) },
+    ...(speaking
+      ? { performer: [{ '@id': PERSON_ID }, ...d.co_speakers.map((name) => ({ '@type': 'Person', name }))] }
+      : {}),
+    ...(organising ? { organizer: { '@id': PERSON_ID } } : {}),
+    ...(shareImage ? { image: shareImage } : {}),
+    ...(d.tags.length ? { keywords: d.tags } : {}),
+    ...(d.youtube_id || d.deck_file
+      ? {
+          subjectOf: [
+            ...(d.youtube_id ? [{ '@id': `${url}#video` }] : []),
+            ...(d.deck_file ? [{ '@id': `${url}#slides` }] : []),
+          ],
+        }
+      : {}),
+  });
+}
+if (d.youtube_id) {
+  jsonLd.push({
+    '@type': 'VideoObject',
+    '@id': `${url}#video`,
+    name: title,
+    description: abstract ? metaDescription(abstract, 500) : description,
+    thumbnailUrl: youtubeThumb,
+    // The session date stands in for the upload date, which the YouTube import
+    // does not keep. Recordings go up within days of the talk.
+    uploadDate: dateStr,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${d.youtube_id}`,
+    contentUrl: `https://www.youtube.com/watch?v=${d.youtube_id}`,
+    actor: { '@id': PERSON_ID },
+    ...(d.role !== 'attendee' ? { recordedAt: { '@id': `${url}#event` } } : {}),
+  });
+}
+if (d.deck_file) {
+  jsonLd.push({
+    '@type': 'PresentationDigitalDocument',
+    '@id': `${url}#slides`,
+    name: `${title} (slides)`,
+    url: deckUrl(d.deck_file),
+    encodingFormat: 'application/pdf',
+    ...(d.deck_cover ? { thumbnailUrl: deckCoverUrl(d.deck_cover) } : {}),
+    author: { '@id': PERSON_ID },
+    datePublished: dateStr,
+    ...(d.notist_url ? { sameAs: d.notist_url } : {}),
+  });
+}
+jsonLd.push(breadcrumbs([['Home', '/'], ['Talks', '/talks'], [title, path]]));
 ---
-<BaseLayout title={`${title} — Kasper Nissen`} description={d.abstract ?? ''} current="/talks">
+<BaseLayout
+  title={`${title} — Kasper Nissen`}
+  description={description}
+  current="/talks"
+  image={shareImage}
+  imageAlt={d.deck_cover ? `Title slide of ${title}` : title}
+  jsonLd={jsonLd}
+>
   <article class="pt-6 max-w-3xl">
     <div class="text-[11px] uppercase tracking-wider text-stone-500">
       {d.event} · {dateStr}{d.location ? ` · ${d.location}` : ''}
@@ -62,7 +158,7 @@ const delivered = isDelivered(entry);
       </a>
     ) : null}
 
-    {d.abstract && <div class="mt-6 prose prose-stone max-w-none whitespace-pre-line">{d.abstract}</div>}
+    {abstract && <div class="mt-6 prose prose-stone max-w-none whitespace-pre-line">{abstract}</div>}
 
     {/* With a recording on top, the cover still earns a place as a preview of
         what the download is. */}

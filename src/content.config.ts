@@ -93,6 +93,10 @@ const blog = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    // Set when a post is revised in substance, not for typo fixes. Becomes
+    // dateModified, which is how search engines and assistants judge whether
+    // a post is current.
+    updated: z.coerce.date().nullable().default(null),
     summary: z.string().nullable().default(null),
     tags: z.array(z.string()).default([]),
     // Bare file name under the blog image prefix; see src/lib/blogHost.ts.

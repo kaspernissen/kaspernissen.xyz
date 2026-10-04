@@ -1,0 +1,5 @@
+# Every crawler is welcome here, AI search and assistants included.
+User-agent: *
+Allow: /
+
+Sitemap: https://kaspernissen.xyz/sitemap-index.xml

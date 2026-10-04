@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
+import { person, website } from '../lib/person';
 const {
   title,
   description,
@@ -38,6 +39,20 @@ const url = new URL(Astro.url.pathname, SITE).href;
 const canonicalUrl = canonical ?? url;
 const ogImage = image ? new URL(image, SITE).href : new URL('/og-default.png', SITE).href;
 const desc = description ?? 'Cloud native, observability, and platform engineering — talks, writing, and conferences from Kasper Nissen.';
+// The default card and the per-post cards in public/og/ are all rendered at
+// 1200x627. Anything else (a deck's title slide) is whatever size it is, and a
+// wrong size hint is worse than none.
+const knownCardSize = !image || image.startsWith('/og/');
+
+// Every page carries the site and the person it is about, so an assistant
+// landing anywhere can tell which Kasper Nissen this is. Pages add their own
+// nodes (a post, a talk, a profile page) to the same graph, pointing back at
+// these by @id rather than repeating them.
+const pageNodes = (jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : []) as Record<string, unknown>[];
+const graph = {
+  '@context': 'https://schema.org',
+  '@graph': [website, person, ...pageNodes.map(({ '@context': _, ...node }) => node)],
+};
 ---
 <!doctype html>
 <html lang="en">
@@ -58,8 +73,8 @@ const desc = description ?? 'Cloud native, observability, and platform engineeri
     <meta property="og:description" content={desc} />
     <meta property="og:url" content={url} />
     <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="627" />
+    {knownCardSize && <meta property="og:image:width" content="1200" />}
+    {knownCardSize && <meta property="og:image:height" content="627" />}
     <meta property="og:image:alt" content={imageAlt ?? title} />
     <meta property="og:locale" content="en_US" />
     {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
@@ -77,7 +92,7 @@ const desc = description ?? 'Cloud native, observability, and platform engineeri
 
     {/* Structured data. Assistants and search engines lift author, date and
         section from this rather than guessing at the markup. */}
-    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <script type="application/ld+json" set:html={JSON.stringify(graph)} />
 
     <link rel="alternate" type="application/rss+xml" title="Kasper Nissen — Blog" href={new URL('/rss.xml', SITE).href} />
     <link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
