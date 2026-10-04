@@ -75,6 +75,56 @@ function iso(year, month, day) {
   return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 }
 
+// Featured-article bullets in the README mostly carry no date, and they used
+// to fall back to 2024-01-01: eleven pieces from 2021 and 2022 all showing the
+// same made-up day. A bullet without a date now takes it from the article.
+//
+// First choice is the page's own publication date. Only published dates count:
+// a modified or updated time (the Humio case study reports one from 2024) says
+// when someone last touched the page, not when the piece came out.
+async function publishedDate(url) {
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (kaspernissen.xyz fetcher)' },
+      signal: AbortSignal.timeout(20_000),
+    });
+    if (!r.ok) return null;
+    const html = await r.text();
+    const raw =
+      html.match(/<meta[^>]+property="article:published_time"[^>]+content="([^"]+)"/i)?.[1] ??
+      html.match(/"datePublished"\s*:\s*"([^"]+)"/)?.[1] ??
+      html.match(/itemprop="datePublished"[^>]+(?:content|datetime)="([^"]+)"/i)?.[1];
+    return raw?.match(/^\d{4}-\d{2}-\d{2}/)?.[0] ?? null;
+  } catch {
+    return null;
+  }
+}
+
+// Pages that expose no date, or no longer exist. Dates come from Lunar's own
+// press list (https://tech.lunar.app/media) unless noted. A replacement URL
+// is used where the original is dead or hijacked.
+const ARTICLES = {
+  // Weaveworks shut down and weave.works now redirects to a spam site.
+  'https://www.weave.works/blog/lunar-bank-uses-gitops-to-standardize-workflows-and-enhance-the-developer-experience': {
+    date: '2022-05-23',
+    url: 'https://web.archive.org/web/20220524203529/https://weave.works/blog/lunar-bank-uses-gitops-to-standardize-workflows-and-enhance-the-developer-experience',
+  },
+  // getambassador.io redirects every old path to a Gravitee landing page.
+  'https://www.getambassador.io/developer-control-plane/dcp-insights-kasper-nissen-from-lunar/': {
+    date: '2021-08-06',
+    url: 'https://web.archive.org/web/20210805170811/https://www.getambassador.io/developer-control-plane/dcp-insights-kasper-nissen-from-lunar/',
+  },
+  // Humio was bought by CrowdStrike, which republished the case study.
+  'https://www.humio.com/customers/humio-at-lunar/': {
+    date: '2021-08-10',
+    url: 'https://www.crowdstrike.com/en-us/blog/humio-at-lunar-log-management-for-a-kubernetes-and-cloud-native-environment/',
+  },
+  'https://roadie.io/case-studies/lunar-backstage-adoption/': { date: '2021-06-21' },
+  // No publication date anywhere. This is the Wayback Machine's first capture,
+  // so the case study existed by then; it may be a little older.
+  'https://snyk.io/case-studies/lunar/': { date: '2021-04-11' },
+};
+
 // Section dispatch: which kind of parser the H2 heading triggers.
 const SECTION_TYPES = [
   { test: /^speaking/i,           type: 'talks' },
@@ -197,9 +247,15 @@ async function writeBulletItem(line, sectionType) {
   const linkRe = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
   const links = [...line.matchAll(linkRe)];
   if (links.length === 0) return;
-  const [, title, url] = links[0];
+  const [, title, readmeUrl] = links[0];
+  const known = ARTICLES[readmeUrl];
+  const url = known?.url ?? readmeUrl;
 
-  const date = parseDate(line) ?? '2024-01-01';
+  let date = parseDate(line) ?? known?.date ?? (await publishedDate(url));
+  if (!date) {
+    console.warn(`[github-readme] no date for "${title}" (${url}): add it to the README or to ARTICLES`);
+    date = '2024-01-01';
+  }
   // Publication = the parenthesised text after the link, or italics.
   //
   // The bullets are bold: `- **[Title](url)** (TechTarget)`. The first pattern
