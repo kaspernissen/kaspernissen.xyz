@@ -1,10 +1,8 @@
 title: Breaking the Multi-Cloud Barrier in a regulated industry
 event: DevOpsDays Aarhus
 date: 2022-04-27
-abstract: |
-  This presentation was recorded at DevOpsDays Aarhus 2022.
-
-  https://devopsdays.org/events/2022-aa...
+abstract: |-
+  In this session, I will present some of the experiences we’ve had so far in implementing a service mesh across multiple clouds. I will touch on the reasoning behind, and provide a detailed overview that the audience can go home and implement themselves afterwards.
 youtube_id: nos6rJsLLZI
 tags: []
 featured: false

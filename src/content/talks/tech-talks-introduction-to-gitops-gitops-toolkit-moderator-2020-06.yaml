@@ -7,3 +7,11 @@ featured: false
 sources:
   github: tech-talks-introduction-to-gitops-gitops-toolkit-moderator-2020-06
   youtube: qQBtSkgl7tI
+abstract: |-
+  Tech talks are short virtual events streamed directly to Cloud Native Nordics YouTube channel.
+
+  TALK #1: Introduction to GitOps by Alexis Richardson
+  Alexis will give us an introduction to GitOps and why we should care about it.
+
+  TALK #2: GitOps Toolkit by Stefan Prodan
+  Stefan is currently working on a new exciting project, GitOps Toolkit (https://github.com/fluxcd/toolkit), which is an experimental toolkit for assembling CD pipelines the GitOps way.

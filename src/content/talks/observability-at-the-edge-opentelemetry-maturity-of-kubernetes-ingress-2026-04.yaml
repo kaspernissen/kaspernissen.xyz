@@ -1,10 +1,14 @@
 title: "Observability at the edge: OpenTelemetry maturity of Kubernetes Ingress"
 event: Platform Engineering
 date: 2026-04-10
-abstract: |
+abstract: |-
   Ingress controllers are the front door to Kubernetes, yet observability at the edge is often overlooked. As ingress-nginx approaches deprecation, platform teams must reassess ingress choices and their OpenTelemetry support. This session introduces a draft OpenTelemetry maturity framework and applies it to popular ingress controllers to reveal strengths, gaps, and trade-offs.
 
   This webinar will explore:
+
+  - How to evaluate OpenTelemetry support beyond “does it emit telemetry” using a draft, multi-dimensional maturity framework covering integration surface, semantics, trace modeling, multi-signal correlation, and stability.
+  - Why ingress observability is critical for platform teams, and how missing or incorrect edge telemetry breaks distributed traces, latency attribution, and root-cause analysis.
+  - What today’s ingress controllers get right - and wrong through real-world evaluations of widely used controllers, highlighting practical implications for platform design, migration decisions, and future observability architectures.
 youtube_id: -SXg48o_SJw
 tags: []
 featured: false

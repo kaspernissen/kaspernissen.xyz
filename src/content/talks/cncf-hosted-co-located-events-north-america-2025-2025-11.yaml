@@ -4,10 +4,10 @@ event_url: https://events.linuxfoundation.org/kubecon-cloudnativecon-north-ameri
 date: 2025-11-10
 location: Atlanta, Georgia, United States
 role: speaker
-abstract: |
-  Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Amsterdam, The Netherlands (23-26 March, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
+abstract: |-
+  Platform engineers have a dual responsibility: keeping the infrastructure reliable and making observability effortless for developers. OpenTelemetry offers powerful, open-source standards that simplify these tasks - but knowing how to best leverage them can feel overwhelming. In this talk, we’ll demystify OpenTelemetry, with a practical focus on the Collector component, and explore how platform teams can build intuitive abstractions and automation.
 
-  OpenTelemetry for Platform Engineers: Paving the Road To Self-Service Observability - Kasper Borg Nissen, Dash0
+  You’ll learn how to deploy and configure the OpenTelemetry Collector, use it to provide centralized and scalable telemetry pipelines, and discover best practices for creating developer-friendly auto-instrumentation experiences. Through practical examples and lessons learned, you’ll leave empowered to provide your developers a frictionless path to comprehensive observability.
 youtube_id: 0rKdQ-e5RQQ
 tags: []
 featured: false

@@ -4,12 +4,12 @@ event_url: https://kcdhelsinki.fi/
 date: 2025-05-20
 location: Helsinki, Finland
 role: "keynote"
-abstract: "KCD Helsinki 2025 - Kasper Borg Nissen: Breaking Free with Open Standards: OpenTelemetry and Perses for Observability
+abstract: |-
+  Observability is the backbone of modern cloud-native applications, but many organizations find themselves locked into proprietary tools with rising costs, rigid ecosystems, and limited flexibility. In this talk, we’ll explore how open observability standards like OpenTelemetry for instrumentation and Perses for monitoring-as-code are transforming the landscape by enabling vendor-neutral, scalable, and future-proof observability stacks.
 
+  We’ll start with an introduction to OpenTelemetry, covering how to get started, instrument applications, and provide developer-friendly abstractions for seamless auto-instrumentation. From there, we’ll dive into Perses, a CNCF Sandbox project that brings open, declarative, and portable dashboards to observability. By building on these open standards, organizations gain the freedom to mix and match storage, visualization, and analytics tools without being tied to a single vendor.
 
-  This is a recording of Kasper's keynote in Room 1 of KCD Helsinki 2025.
-
-  \ "
+  Join this session to learn how OpenTelemetry and Perses can help you scale observability, stay in control of your data, and ensure developers get the insights they need exactly when they need them.
 youtube_id: r1gpPpNhT_4
 tags: []
 featured: false

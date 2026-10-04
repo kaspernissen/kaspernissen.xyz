@@ -7,3 +7,5 @@ featured: false
 sources:
   github: tech-talks-prometheus-the-current-state-and-the-road-ahead-with-julius-volz-moderator-2020-06
   youtube: bH78UXb1aVE
+abstract: |-
+  Prometheus is a popular open-source monitoring system that has become a de-facto standard in the cloud-native metrics world. In this talk, Prometheus co-founder Julius Volz will give an overview of the current state of the Prometheus ecosystem, highlight some of the challenges and limitations that the project is currently facing, and describe current work being done to address them. The talk will touch on the adoption of Prometheus across the ecosystem, scalability and long-term storage woes, as well as usability issues. To address the latter, Julius will demo PromLens, a new PromLabs tool that aims to make the Prometheus query language PromQL more accessible and debuggable.

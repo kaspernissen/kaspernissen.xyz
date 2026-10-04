@@ -5,10 +5,10 @@ date: 2026-03-23
 end_date: 2026-03-24
 location: Amsterdam, The Netherlands
 role: speaker
-abstract: |
-  Don't miss out! Join us at our next KubeCon + CloudNativeCon events in Mumbai, India (18-19 June, 2026), Yokohama, Japan (29-30 July, 2026), and Shanghai, China (8-9 September, 2026). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
+abstract: |-
+  Ingress controllers are the front door to your Kubernetes cluster, but for many they remain a blind spot. Every request passes through ingress, making it the natural starting point of distributed traces. If you only instrument downstream services, you miss the first span: TLS negotiation, routing decisions, or middleware delays. Without these, your observability story is incomplete.
 
-  Observability at the Edge: State of OpenTelemetry in Kubernetes Ingress Controllers - Kasper Borg Nissen, Dash0
+  We'll explore the current state of observability across the most widely adopted ingress controllers, showing where OpenTelemetry support is strong, and where gaps remain. We will cover why tracing at the edge is critical, how to combine it with metrics and logs, and how to achieve correlation across signals, e.g. by using the OpenTelemetry Collector to enrich and link telemetry. Through practical insights and live demos, We’ll compare controllers, show how to turn ingress from a black box into the root of your distributed traces, and highlight what this means for the future of observability in Kubernetes.
 youtube_id: Nlx8jSfe8UQ
 tags: []
 featured: false

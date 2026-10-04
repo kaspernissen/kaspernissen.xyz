@@ -5,10 +5,12 @@ date: 2025-04-01
 end_date: 2025-04-04
 location: London, United Kingdom
 role: "keynote"
-abstract: |
-  Click here to watch the KubeCon + CloudNativeCon Europe 2025 - Keynote (International Sign Language) https://youtube.com/playlist?list=PLj6h78yzYM2Of6psbKjeZxZIHjycSYoYF&amp;si=dRDK3EQXbo2gT7Yb 
+abstract: |-
+  Observability is often an afterthought in platform engineering and many organizations settle for a "good enough" approach, leading to fragmented data, complex query languages, and vendor lock-in. But a cohesive observability strategy is critical, not just for applications running on the platform, but also for the platform itself and the services it depends on.
 
-  Don't miss out! Join us at our next Flagship Conference: KubeCon + CloudNativeCon events in Hong Kong, China (June 10-11); Tokyo, Japan (June 16-17); Hyderabad, India (August 6-7); Atlanta, US (November 10-13). Connect with our current graduated, incubating, and sandbox projects as the community gathers to further the education and advancement of cloud native computing. Learn more at https://kubecon.io
+  Enter OpenTelemetry, a CNCF project that unifies observability data across traces, logs, and metrics, reducing metadata fragmentation and vendor-specific lock-in. With zero-code instrumentation, developers can collect insights effortlessly, while platform engineers can enforce observability as code, enabling scalable, repeatable monitoring.
+
+  This session explores how platform engineers can bridge the gap between developers, operators, and observability by integrating OpenTelemetry into cloud-native stacks. You'll learn how to simplify instrumentation, leverage monitoring as code with OpenTelemetry Operator and Perses (CNCF Sandbox project), and optimize observability across multiple layers of your platform. By embracing open standards, you can enhance visibility, reduce complexity, and build a more resilient, insight-driven platform.
 youtube_id: tSBfDzStoYE
 tags: []
 featured: false
@@ -16,3 +18,4 @@ playlist_position: 21
 sources:
   sessionize: kubecon-cloudnativecon-europe-2025
   youtube: tSBfDzStoYE
+session_url: https://kccnceu2025.sched.com/event/1txBd
