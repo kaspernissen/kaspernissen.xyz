@@ -50,10 +50,12 @@ export const awards = [
 /**
  * Every profile that is his, for `sameAs`. Wider than the icon row in
  * SocialLinks.astro, which only shows the ones worth a click from the hero.
- * Each of these was checked to resolve to his own page; add a Wikidata item
- * here once one exists.
+ * Each of these was checked to resolve to his own page. The Wikidata item is
+ * first: it is the identifier engines use to tell him apart from the
+ * footballer and the actor of the same name.
  */
 export const profiles = [
+  'https://www.wikidata.org/wiki/Q141640942',
   'https://www.linkedin.com/in/kaspernissen/',
   'https://github.com/kaspernissen',
   'https://bsky.app/profile/kaspernissen.xyz',
