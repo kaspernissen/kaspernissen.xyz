@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import { loadEnv } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
+import { parse as parseYaml } from 'yaml';
+import { talkSlug } from './src/lib/slug.ts';
 
 // This file runs outside Vite's env handling, so `.env` has not been read yet
 // and process.env holds only what the shell exported. Components get the same
@@ -108,6 +110,47 @@ const IMPORTED_POSTS = new Set(
     .map((f) => `https://kaspernissen.xyz/blog/${f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')}/`),
 );
 
+// Talk pages, for the sitemap: when each happened (its <lastmod>) and which
+// URLs are only redirects left behind by a title change (old_slugs), which do
+// not belong in a sitemap at all. Read from the YAML for the same reason as
+// IMPORTED_POSTS: astro:content is not available here.
+const SITE = 'https://kaspernissen.xyz';
+const TALK_DATES = new Map();
+const TALK_REDIRECTS = new Set();
+for (const f of fs.readdirSync('src/content/talks').filter((f) => f.endsWith('.yaml'))) {
+  const t = parseYaml(fs.readFileSync(`src/content/talks/${f}`, 'utf8'));
+  if (!t || t.hidden) continue;
+  const date = new Date(t.date);
+  const slug = t.slug ?? talkSlug(t.title?.trim() || t.event, date);
+  TALK_DATES.set(`${SITE}/talks/${slug}/`, date);
+  for (const old of t.old_slugs ?? []) TALK_REDIRECTS.add(`${SITE}/talks/${old}/`);
+}
+
+// Own posts' last change, `updated` falling back to the publish date.
+const POST_DATES = new Map(
+  fs
+    .readdirSync('src/content/blog')
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => {
+      const front = fs.readFileSync(`src/content/blog/${f}`, 'utf8').split('---')[1] ?? '';
+      const field = (k) => front.match(new RegExp(`^${k}:\\s*"?([0-9-]{10})`, 'm'))?.[1];
+      const date = field('updated') ?? field('date');
+      return [`${SITE}/blog/${f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')}/`, date && new Date(date)];
+    })
+    .filter(([, d]) => d),
+);
+
+// A listing changes when its newest entry does; never later than today, so a
+// scheduled talk does not stamp the sitemap with a future date.
+const now = new Date();
+const newest = (dates) => new Date(Math.min(+now, Math.max(...[...dates].filter((d) => d <= now).map(Number))));
+const LISTING_DATES = new Map([
+  [`${SITE}/`, newest([...TALK_DATES.values(), ...POST_DATES.values()])],
+  [`${SITE}/talks/`, newest(TALK_DATES.values())],
+  [`${SITE}/conferences/`, newest(TALK_DATES.values())],
+  [`${SITE}/blog/`, newest(POST_DATES.values())],
+]);
+
 export default defineConfig({
   site: 'https://kaspernissen.xyz',
   vite: { plugins: [tailwindcss()] },
@@ -120,7 +163,18 @@ export default defineConfig({
       // Medium or dash0.com. Listing a URL whose canonical says "index the
       // other one" asks a search engine to do two contradictory things.
       filter: (page) =>
-        !/\/blog\/(tag|page)\//.test(page) && !/\/404\/?$/.test(page) && !IMPORTED_POSTS.has(page),
+        !/\/blog\/(tag|page)\//.test(page) &&
+        !/\/404\/?$/.test(page) &&
+        !IMPORTED_POSTS.has(page) &&
+        !TALK_REDIRECTS.has(page),
+      // <lastmod> where there is an honest date to give. Pages without one
+      // (speaker kit, badges) are left without rather than stamped with the
+      // build time, which would claim every page changes on every deploy.
+      serialize(item) {
+        const d = TALK_DATES.get(item.url) ?? POST_DATES.get(item.url) ?? LISTING_DATES.get(item.url);
+        if (d && d <= now) item.lastmod = d.toISOString();
+        return item;
+      },
     }),
   ],
   image: {

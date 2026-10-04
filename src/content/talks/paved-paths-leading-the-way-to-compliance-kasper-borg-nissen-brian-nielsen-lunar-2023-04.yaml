@@ -1,4 +1,4 @@
-title: Paved Paths Leading the Way to Compliance - Kasper Borg Nissen & Brian Nielsen, Lunar
+title: Paved Paths Leading the Way to Compliance
 event: CloudNativeCon+KubeCon, Europe 2023
 date: 2023-04-21
 location: Amsterdam
@@ -13,3 +13,7 @@ playlist_position: 40
 sources:
   github: paved-paths-leading-the-way-to-compliance-kasper-borg-nissen-brian-nielsen-lunar-2023-04
   youtube: 6T3Mf6pdg7E
+co_speakers:
+  - Brian Nielsen
+old_slugs:
+  - paved-paths-leading-the-way-to-compliance-kasper-borg-nissen-brian-nielsen-lunar-2023-04-21

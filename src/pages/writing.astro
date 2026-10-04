@@ -8,6 +8,8 @@ import FeaturedWork from '../components/FeaturedWork.astro';
 import { isPodcast, isNewsletter } from '../lib/writingKinds';
 import { published } from '../lib/blog';
 import { writingFeed } from '../lib/writingFeed';
+import { abs, collectionPage, PERSON_ID } from '../lib/person';
+import { blogSlug } from '../lib/blog';
 
 // Podcast and interview appearances live on /podcasts — they are talking, not
 // writing, and 13 of them buried the blog posts here.
@@ -29,8 +31,29 @@ const articles = writingFeed(
 const byIssue = (a, b) =>
   b.data.title.localeCompare(a.data.title, undefined, { numeric: true });
 const newsletters = all.filter((w) => isNewsletter(w.data.kind)).sort(byIssue);
+
+// The book and the course as what they are, then every piece in page order.
+const SCHEMA_TYPE = { book: 'Book', course: 'Course' };
+const jsonLd = collectionPage('/writing/', 'Writing by Kasper Borg Nissen', [
+  ...featured.map((w) => ({
+    name: w.data.title,
+    url: w.data.url,
+    type: SCHEMA_TYPE[w.data.kind],
+    extra: { author: { '@id': PERSON_ID }, ...(w.data.kind === 'course' ? { provider: { '@type': 'Organization', name: w.data.publication } } : { publisher: { '@type': 'Organization', name: w.data.publication } }) },
+  })),
+  ...articles.map((w) =>
+    w.type === 'post'
+      ? { name: w.entry.data.title, url: abs(`/blog/${blogSlug(w.entry)}`) }
+      : { name: w.entry.data.title, url: w.entry.data.url },
+  ),
+]);
 ---
-<BaseLayout title="Writing — Kasper Nissen" current="/writing/">
+<BaseLayout
+  title="Writing — Kasper Nissen"
+  description="Articles, guides, the Code RED newsletter, a book and a course by Kasper Borg Nissen on observability, OpenTelemetry and platform engineering."
+  current="/writing/"
+  jsonLd={jsonLd}
+>
   <PageHeader chip="Writing" chipClass="bg-pink-500 text-white">
       A book, a course, and {articles.length} posts and guides, newest first —
       podcast appearances are on <a href="/podcasts/" class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">the podcasts page</a>.

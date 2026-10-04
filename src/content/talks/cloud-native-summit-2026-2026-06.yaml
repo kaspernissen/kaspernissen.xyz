@@ -1,4 +1,5 @@
-title: "Beyond “Supports OpenTelemetry”: A Maturity Model for Cloud-Native Observability -Kasper Borg Nissen"
+title: "Beyond “Supports OpenTelemetry”: A Maturity Model for Cloud-Native
+  Observability"
 event: Cloud Native Summit 2026
 event_url: https://cloudnativesummit.de/
 date: 2026-06-30
@@ -9,7 +10,8 @@ abstract: |
 
   This talk introduces a community-driven OpenTelemetry Support Maturity Model that moves beyond checkboxes and helps evaluate how well OpenTelemetry is integrated and evolved. The model breaks maturity down across seven dimensions, providing a structured way to reason about real-world OpenTelemetry support.
 youtube_id: q_Ffw2P_31Q
-deck_file: "beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-06.pdf"
+deck_file: "beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-obs\
+  ervability-2026-06.pdf"
 deck_size_mb: 10.4
 deck_cover: beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-2026-06.jpg
 tags: []
@@ -18,3 +20,5 @@ playlist_position: 8
 sources:
   sessionize: cloud-native-summit-2026
   youtube: q_Ffw2P_31Q
+old_slugs:
+  - beyond-supports-opentelemetry-a-maturity-model-for-cloud-native-observability-kasper-borg-nissen-2026-06-30

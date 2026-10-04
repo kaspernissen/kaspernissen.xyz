@@ -9,6 +9,7 @@ import { deckCoverUrl, deckUrl } from '../../lib/deckHost';
 import { displayTitle, isDelivered, isCancelled, visible } from '../../lib/engagement';
 import { cleanAbstract, metaDescription } from '../../lib/talkText';
 import { abs, breadcrumbs, PERSON_ID } from '../../lib/person';
+import { published, blogSlug } from '../../lib/blog';
 
 export async function getStaticPaths() {
   const talks = visible(await getCollection('talks'));
@@ -18,21 +19,47 @@ export async function getStaticPaths() {
   // can't — see src/lib/photoJoin.ts for why the date alone isn't enough.
   const galleries = assignPhotos(talks, photos);
 
-  return talks.map((entry) => {
+  return talks.flatMap((entry) => {
     const slug = entry.data.slug ?? talkSlug(displayTitle(entry.data), entry.data.date);
-    return { params: { slug }, props: { entry, gallery: galleries.get(entry) ?? [] } };
+    const props = { entry, gallery: galleries.get(entry) ?? [] };
+    return [
+      { params: { slug }, props },
+      // Former URLs, as redirects to this one (see old_slugs in content.config.ts).
+      ...entry.data.old_slugs.map((old) => ({ params: { slug: old }, props: { ...props, redirectTo: slug } })),
+    ];
   });
 }
 
-const { entry, gallery } = Astro.props;
+const { entry, gallery, redirectTo } = Astro.props as { entry: any; gallery: any[]; redirectTo?: string };
+if (redirectTo) return Astro.redirect(`/talks/${redirectTo}/`, 301);
 const d = entry.data;
 const title = displayTitle(d);
 const dateStr = d.date.toISOString().slice(0, 10);
 const delivered = isDelivered(entry);
 const abstract = cleanAbstract(d.abstract);
 const slug = Astro.params.slug;
+// The event goes in the <title>: the same talk is given at several events, and
+// eight pages all called "Rethinking Observability as a Platform Product" read
+// as duplicates. The name suffix is dropped once the title is long enough to
+// be cut off in results anyway.
+const named = title === d.event ? title : `${title} at ${d.event}`;
+const pageTitle = named.length <= 55 ? `${named} — Kasper Nissen` : named;
 const path = `/talks/${slug}`;
 const url = abs(path);
+
+// Posts written about this talk, found by their link to it: a recap links to
+// its talk page, and the talk page should link back. Derived rather than kept
+// in a field, so a new recap shows up here without touching the YAML. A link
+// alone is not enough (a post can mention an upcoming talk in passing), so the
+// post must also come out within a month after the talk.
+const WRITEUP_WINDOW_DAYS = 31;
+const writeups = published(await getCollection('blog'))
+  .filter((p) => p.body?.includes(`/talks/${slug}/`) || p.body?.includes(`/talks/${slug})`))
+  .filter((p) => {
+    const days = (+p.data.date - +d.date) / 86_400_000;
+    return days >= -1 && days <= WRITEUP_WINDOW_DAYS;
+  })
+  .map((p) => ({ title: p.data.title, url: abs(`/blog/${blogSlug(p)}`) }));
 
 // Twenty-odd talks have no abstract yet. An empty description is worse than a
 // plain factual one: the engine then writes its own from whatever text it
@@ -76,11 +103,13 @@ if (d.role !== 'attendee') {
     ...(organising ? { organizer: { '@id': PERSON_ID } } : {}),
     ...(shareImage ? { image: shareImage } : {}),
     ...(d.tags.length ? { keywords: d.tags } : {}),
-    ...(d.youtube_id || d.deck_file
+    // The recording, the slides and any write-up are all "about" this event.
+    ...(d.youtube_id || d.deck_file || writeups.length
       ? {
           subjectOf: [
             ...(d.youtube_id ? [{ '@id': `${url}#video` }] : []),
             ...(d.deck_file ? [{ '@id': `${url}#slides` }] : []),
+            ...writeups.map((w) => ({ '@id': `${w.url}#article` })),
           ],
         }
       : {}),
@@ -118,7 +147,7 @@ if (d.deck_file) {
 jsonLd.push(breadcrumbs([['Home', '/'], ['Talks', '/talks'], [title, path]]));
 ---
 <BaseLayout
-  title={`${title} — Kasper Nissen`}
+  title={pageTitle}
   description={description}
   current="/talks/"
   image={shareImage}
@@ -210,6 +239,17 @@ jsonLd.push(breadcrumbs([['Home', '/'], ['Talks', '/talks'], [title, path]]));
         <span class="bg-amber-400 text-stone-950 rounded-full px-3 py-1 text-xs font-medium">{t}</span>
       ))}
     </div>
+
+    {writeups.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-stone-500">Write-up</h2>
+        <ul class="mt-2 space-y-1">
+          {writeups.map((w) => (
+            <li><a href={w.url} class="text-stone-100 underline decoration-cyan-400 decoration-2 underline-offset-4 hover:decoration-orange-400">{w.title}</a></li>
+          ))}
+        </ul>
+      </section>
+    )}
 
   </article>
 

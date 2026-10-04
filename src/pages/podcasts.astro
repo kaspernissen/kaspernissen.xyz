@@ -7,15 +7,31 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import PodcastCard from '../components/PodcastCard.astro';
 import { PODCAST_KINDS } from '../lib/writingKinds';
+import { collectionPage } from '../lib/person';
 
 const items = (await getCollection('writing'))
   .filter((w) => PODCAST_KINDS.includes(w.data.kind))
   .sort((a, b) => +b.data.date - +a.data.date);
+
+const jsonLd = collectionPage(
+  '/podcasts/',
+  'Podcasts with Kasper Borg Nissen',
+  items.map((w) => ({
+    name: w.data.title,
+    url: w.data.url,
+    type: 'PodcastEpisode',
+    extra: {
+      datePublished: w.data.date.toISOString().slice(0, 10),
+      partOfSeries: { '@type': 'PodcastSeries', name: w.data.publication },
+    },
+  })),
+);
 ---
 <BaseLayout
   title="Podcasts — Kasper Nissen"
   description="Podcast guest spots and interviews with Kasper Nissen on cloud native, observability, and platform engineering."
   current="/podcasts/"
+  jsonLd={jsonLd}
 >
   <PageHeader chip="Podcasts" chipClass="bg-violet-600 text-white">
       Guest spots and interviews. {items.length} total.

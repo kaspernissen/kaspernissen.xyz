@@ -118,3 +118,32 @@ export const breadcrumbs = (items: [name: string, path: string][]) => ({
     item: abs(path),
   })),
 });
+
+/**
+ * A listing page as a CollectionPage whose main entity is an ItemList of what
+ * it lists. Without it the page's graph is only the site and the Person, and
+ * nothing says what the page is a list of.
+ */
+export const collectionPage = (
+  path: string,
+  name: string,
+  items: { url: string; name: string; type?: string; extra?: Record<string, unknown> }[],
+) => ({
+  '@type': 'CollectionPage',
+  '@id': `${abs(path)}#webpage`,
+  url: abs(path),
+  name,
+  isPartOf: { '@id': WEBSITE_ID },
+  about: { '@id': PERSON_ID },
+  mainEntity: {
+    '@type': 'ItemList',
+    numberOfItems: items.length,
+    itemListElement: items.map((it, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      ...(it.type
+        ? { item: { '@type': it.type, name: it.name, url: it.url, ...it.extra } }
+        : { url: it.url, name: it.name }),
+    })),
+  },
+});
