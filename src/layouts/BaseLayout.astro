@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import NavBar from '../components/NavBar.astro';
 import Footer from '../components/Footer.astro';
+import Dash0Web from '../components/Dash0Web.astro';
 import { person, website } from '../lib/person';
 const {
   title,
@@ -117,6 +118,8 @@ const graph = {
         </script>
       </>
     )}
+    {/* Dash0 website monitoring, only when both values are set; see Dash0Web.astro. */}
+    {import.meta.env.PUBLIC_DASH0_ENDPOINT && import.meta.env.PUBLIC_DASH0_AUTH_TOKEN && <Dash0Web />}
   </head>
   <body class="min-h-screen">
     <NavBar current={current} />

@@ -46,6 +46,12 @@ jobs:
           PUBLIC_PHOTO_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/photos
           PUBLIC_BADGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/badges
           PUBLIC_BLOG_IMAGE_BASE_URL: https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/blog
+          # Dash0 website monitoring. Both must be set or the SDK is left out of
+          # the build. The token ends up in the page, so it is an ingest-only
+          # token scoped to its own dataset; a secret only to keep it out of git.
+          PUBLIC_DASH0_ENDPOINT: ${{ vars.DASH0_ENDPOINT }}
+          PUBLIC_DASH0_AUTH_TOKEN: ${{ secrets.DASH0_WEB_AUTH_TOKEN }}
+          PUBLIC_GIT_SHA: ${{ github.sha }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
