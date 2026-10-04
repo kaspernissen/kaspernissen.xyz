@@ -1,6 +1,10 @@
 // Imports a folder of speaker photos into the site.
 //
-//   node scripts/import-photos.mjs <source-dir> [--out-full <dir>] [--dry]
+//   node scripts/import-photos.mjs <source-dir> [--out-full <dir>] [--date YYYY-MM-DD] [--dry]
+//
+// --date stamps photos that carry no EXIF date at all. Photos saved from
+// LinkedIn and most chat apps arrive stripped, so a folder of them would
+// otherwise all come out as "unsorted".
 //
 // For each image it produces two things:
 //
@@ -40,8 +44,9 @@ const FULL_PX = 3200;
 
 const args = process.argv.slice(2);
 const dry = args.includes('--dry');
-const sourceDir = args.find((a) => !a.startsWith('--'));
+const sourceDir = args.find((a, i) => !a.startsWith('--') && !['--out-full', '--date'].includes(args[i - 1]));
 const outFull = args.includes('--out-full') ? args[args.indexOf('--out-full') + 1] : 'photos-fullres';
+const fallbackDate = args.includes('--date') ? args[args.indexOf('--date') + 1] : null;
 
 if (!sourceDir) {
   console.error('usage: node scripts/import-photos.mjs <source-dir> [--out-full <dir>] [--dry]');
@@ -88,6 +93,7 @@ const KNOWN_EVENTS = [
   { from: '2025-04-01', to: '2025-04-05', name: 'KubeCon + CloudNativeCon Europe 2025', location: 'London, UK' },
   { from: '2026-09-01', to: '2026-09-05', name: 'ContainerDays Hamburg 2026', location: 'Hamburg, Germany' },
   { from: '2026-09-23', to: '2026-09-25', name: 'SREday London 2026 Q3', location: 'London, UK' },
+  { from: '2026-09-30', to: '2026-10-02', name: 'GOTO Copenhagen 2026', location: 'Copenhagen, Denmark' },
 ];
 
 function eventFor(date) {
@@ -145,7 +151,7 @@ let inferred = 0;
 let undated = 0;
 for (const r of records) {
   if (r.date) continue;
-  const guess = homogeneous.get(r.dir);
+  const guess = homogeneous.get(r.dir) ?? fallbackDate;
   if (!guess) { undated++; continue; }
   r.date = guess;
   r.dateInferred = true;
