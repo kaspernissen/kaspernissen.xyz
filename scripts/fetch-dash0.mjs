@@ -61,6 +61,18 @@ function decodeEntities(s) {
 const metaContent = (html, property) =>
   html.match(new RegExp(`<meta\\s+property="${property}"\\s+content="([^"]*)"`, 'i'))?.[1] ?? null;
 
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
+  'august', 'september', 'october', 'november', 'december'];
+
+// Parsed by hand and built in UTC: `new Date('September 25, 2026')` is local
+// midnight, which toISOString() turns into the 24th anywhere east of UTC.
+function parseLastUpdated(html) {
+  const m = html.match(/Last updated:(?:\s|<!-- -->)*([A-Z][a-z]+) (\d{1,2}), (\d{4})/);
+  const month = m && MONTHS.indexOf(m[1].toLowerCase());
+  if (!m || month < 0) return null;
+  return new Date(Date.UTC(Number(m[3]), month, Number(m[2]))).toISOString();
+}
+
 async function mapWithLimit(arr, limit, fn) {
   const out = new Array(arr.length);
   let i = 0;
@@ -112,10 +124,14 @@ async function fetchPage(url, { requireAuthor }) {
       .replace(/\s*[·|]\s*(Podcast|Blog|Guides?|Knowledge)?\s*[·|]?\s*Dash0\s*$/i, '')
       .trim();
 
+    // Newsletter issues carry no article:* time meta, only a visible
+    // "Last updated: September 25, 2026" line above the title.
+    const updated = parseLastUpdated(html);
+
     const published =
       metaContent(html, 'article:published_time') ??
       metaContent(html, 'article:modified_time') ??
-      null;
+      updated;
 
     const summary = metaContent(html, 'og:description');
 
@@ -127,7 +143,7 @@ async function fetchPage(url, { requireAuthor }) {
       try { image = new URL(decodeEntities(rawImage), url).href; } catch { image = null; }
     }
 
-    return { url, title, published, summary, image, authors };
+    return { url, title, published, updated, summary, image, authors };
   } catch {
     return undefined;
   }
@@ -166,10 +182,11 @@ for (const section of SECTIONS) {
   // `null` is a meaningful cached result ("checked, not Kasper's"), so the
   // cache stores it explicitly rather than treating it as a miss.
   const results = await mapWithLimit(urls, FETCH_CONCURRENCY, async (u) => {
-    // A cached page from before og:image was collected has no `image` key at
-    // all, which is different from having no image. Re-fetch those once so the
-    // field backfills instead of staying empty until the cache is cleared.
-    if (Object.hasOwn(cache, u) && (cache[u] === null || 'image' in cache[u])) {
+    // A cached page from before og:image or the "Last updated" date was
+    // collected has no `image` / `updated` key at all, which is different from
+    // having none. Re-fetch those once so the fields backfill instead of
+    // staying empty until the cache is cleared.
+    if (Object.hasOwn(cache, u) && (cache[u] === null || ('image' in cache[u] && 'updated' in cache[u]))) {
       cached++;
       nextCache[u] = cache[u];
       return cache[u];
