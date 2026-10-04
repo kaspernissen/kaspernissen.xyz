@@ -38,6 +38,10 @@ PRESETS = {
     # headline is sized to survive that: a narrower mascot and a tighter pad
     # buy the copy the width it needs to hold a larger face.
     "card":   dict(w=1200, h=627, pad=64, font=96, kicker=24, mascot=0.30, gap=36, stack=False),
+    # Instagram/LinkedIn story, 9:16. The pad is deep because the app lays its
+    # progress bar and profile row over the top ~220px and the reply bar over
+    # the bottom, so type placed there is covered.
+    "story":  dict(w=1080, h=1920, pad=150, font=128, kicker=32, mascot=0.80, gap=40, stack=True),
 }
 
 
