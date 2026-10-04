@@ -1,0 +1,33 @@
+---
+// Dash0 website monitoring (https://github.com/dash0hq/dash0-sdk-web): page
+// views, navigation timing, JavaScript errors and fetch calls, sent to Dash0.
+//
+// Rendered by BaseLayout only when the endpoint and token are both set, so a
+// build without them (npm run dev with no .env, a fork) ships none of the SDK.
+// The token is public in the page by design: it must be one that can only
+// ingest, into a dataset of its own.
+---
+<script>
+  import { init } from '@dash0/sdk-web';
+
+  init({
+    serviceName: 'kaspernissen.xyz',
+    // The commit the deploy was built from, so an error can be traced to the
+    // change that shipped it. Empty outside CI.
+    serviceVersion: import.meta.env.PUBLIC_GIT_SHA || undefined,
+    environment: import.meta.env.PROD ? 'production' : 'development',
+    endpoint: {
+      url: import.meta.env.PUBLIC_DASH0_ENDPOINT,
+      authToken: import.meta.env.PUBLIC_DASH0_AUTH_TOKEN,
+      // Also limit the token itself to this dataset in Dash0.
+      dataset: 'kaspernissenxyz',
+    },
+    vcs: {
+      providerName: 'github',
+      ownerName: 'kaspernissen',
+      repositoryName: 'kaspernissen.xyz',
+      repositoryUrlFull: 'https://github.com/kaspernissen/kaspernissen.xyz',
+      refHeadRevision: import.meta.env.PUBLIC_GIT_SHA || undefined,
+    },
+  });
+</script>
