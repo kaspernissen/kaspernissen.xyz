@@ -55,17 +55,27 @@ globalThis.fetch = async function retryingFetch(input, init) {
  * their imported size. One re:Invent post carries thirteen of them; without
  * `loading="lazy"` every one is fetched before the page settles.
  *
+ * Width and height come from data/blog-image-sizes.json (see
+ * scripts/blog-image-sizes.mjs), so the browser reserves each image's space
+ * before it loads instead of shifting the text down when it arrives. The CSS
+ * caps the width; `height: auto` keeps the ratio.
+ *
  * The walk is hand-rolled rather than pulling in unist-util-visit: it is only
  * a tree of {children}, and this is the one plugin the site has.
  */
+const BLOG_IMAGE_SIZES = JSON.parse(fs.readFileSync('data/blog-image-sizes.json', 'utf8'));
+
 function rehypeBlogImages() {
   const base = env.PUBLIC_BLOG_IMAGE_BASE_URL?.trim().replace(/\/+$/, '');
   const PREFIX = '/blog-images/';
   return (tree) => {
     const walk = (node) => {
       if (node.tagName === 'img' && typeof node.properties?.src === 'string') {
-        if (base && node.properties.src.startsWith(PREFIX)) {
-          node.properties.src = `${base}/${node.properties.src.slice(PREFIX.length)}`;
+        if (node.properties.src.startsWith(PREFIX)) {
+          const file = node.properties.src.slice(PREFIX.length);
+          const size = BLOG_IMAGE_SIZES[file];
+          if (size) [node.properties.width, node.properties.height] = size;
+          if (base) node.properties.src = `${base}/${file}`;
         }
         node.properties.loading ??= 'lazy';
         node.properties.decoding ??= 'async';
@@ -74,7 +84,11 @@ function rehypeBlogImages() {
       // arrives as one opaque raw node rather than parsed elements — so it has
       // to be patched as text or those images keep the placeholder path.
       if (node.type === 'raw' && typeof node.value === 'string' && node.value.includes('<img')) {
-        if (base) node.value = node.value.split(`src="${PREFIX}`).join(`src="${base}/`);
+        node.value = node.value.replace(/<img ([^>]*?)src="\/blog-images\/([^"]+)"/g, (tag, before, file) => {
+          const size = BLOG_IMAGE_SIZES[file];
+          const dims = size && !/\bwidth=/.test(tag) ? ` width="${size[0]}" height="${size[1]}"` : '';
+          return `<img ${before}src="${base ? `${base}/` : PREFIX}${file}"${dims}`;
+        });
         node.value = node.value.replace(/<img (?![^>]*\bloading=)/g, '<img loading="lazy" decoding="async" ');
       }
       node.children?.forEach(walk);

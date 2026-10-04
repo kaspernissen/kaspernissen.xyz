@@ -18,6 +18,7 @@
     "decks:covers": "node scripts/render-deck-covers.mjs",
     "photos:import": "node scripts/import-photos.mjs",
     "photos:sync": "DECKS_SRC=public/speakers DECKS_PREFIX=photos node scripts/sync-decks.mjs",
+    "blog:image-sizes": "node scripts/blog-image-sizes.mjs",
     "astro": "astro"
   },
   "dependencies": {

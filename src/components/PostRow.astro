@@ -10,7 +10,7 @@ const { title, date } = entry.data;
 const mins = readingMinutes(entry.body ?? '');
 ---
 <a
-  href={`/blog/${blogSlug(entry)}`}
+  href={`/blog/${blogSlug(entry)}/`}
   class="flex flex-wrap items-baseline gap-3 py-3 border-b border-stone-800 border-l-2 border-l-orange-400 bg-orange-400/5 hover:bg-stone-800 -mx-2 px-2 rounded"
 >
   <span class="text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full font-semibold bg-stone-50 text-stone-950">on this site</span>

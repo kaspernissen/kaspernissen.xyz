@@ -30,7 +30,7 @@ const dateStr = entry.data.date.toISOString().slice(0, 10);
 const missing = entry.data.deck_file ? 'slides only' : 'no recording';
 ---
 <a
-  href={`/talks/${slug}`}
+  href={`/talks/${slug}/`}
   class="block bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] hover:-translate-y-0.5 hover:shadow-[5px_5px_0_0_#44403c] transition group overflow-hidden"
 >
   {thumb ? (

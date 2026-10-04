@@ -13,7 +13,7 @@ export async function GET(context: APIContext) {
       title: p.data.title,
       pubDate: p.data.date,
       description: p.data.summary ?? undefined,
-      link: `/blog/${blogSlug(p)}`,
+      link: `/blog/${blogSlug(p)}/`,
       categories: p.data.tags,
       author: 'Kasper Nissen',
     })),

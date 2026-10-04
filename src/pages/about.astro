@@ -1,0 +1,56 @@
+---
+// Who Kasper is, in prose. The home page shows the latest work and the speaker
+// kit is written for organisers; neither answers "who is Kasper Borg Nissen"
+// in a few plain paragraphs, which is the question search engines and
+// assistants come here with.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { abs, about, breadcrumbs, PERSON_ID, WEBSITE_ID } from '../lib/person';
+
+const elsewhere = [
+  { href: '/talks/', label: 'Talks', note: 'slides and recordings' },
+  { href: '/writing/', label: 'Writing', note: 'articles, the book and the course' },
+  { href: '/podcasts/', label: 'Podcasts', note: 'Code RED and guest appearances' },
+  { href: '/badges/', label: 'Badges', note: 'ambassador terms, roles, certifications' },
+];
+---
+<BaseLayout
+  title="About Kasper Borg Nissen"
+  description="Kasper Borg Nissen is Director of Developer Relations at Dash0, a CNCF Ambassador, Golden Kubestronaut and former KubeCon + CloudNativeCon Co-Chair."
+  current="/about/"
+  type="profile"
+  jsonLd={[
+    {
+      '@type': 'AboutPage',
+      '@id': `${abs('/about')}#webpage`,
+      url: abs('/about'),
+      name: 'About Kasper Borg Nissen',
+      mainEntity: { '@id': PERSON_ID },
+      isPartOf: { '@id': WEBSITE_ID },
+    },
+    breadcrumbs([['Home', '/'], ['About', '/about']]),
+  ]}
+>
+  <PageHeader chip="About" chipClass="bg-yellow-400 text-stone-950">
+    Developer relations, observability and the cloud native community.
+  </PageHeader>
+
+  <article class="mt-10 max-w-2xl">
+    <h2 class="text-2xl font-bold">Kasper Borg Nissen</h2>
+    <p class="text-sm text-stone-400 mt-1">Director of Developer Relations at Dash0 · Denmark</p>
+    <div class="mt-6 space-y-4 leading-relaxed text-stone-300">
+      {about.map((p) => <p>{p}</p>)}
+    </div>
+  </article>
+
+  <ul class="mt-12 mb-16 grid gap-3 sm:grid-cols-2 max-w-2xl">
+    {elsewhere.map((l) => (
+      <li>
+        <a href={l.href} class="block rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition">
+          <div class="font-bold text-stone-100">{l.label}</div>
+          <div class="text-sm text-stone-500">{l.note}</div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

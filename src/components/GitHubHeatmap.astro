@@ -29,6 +29,9 @@ if (data && data.days.length > 0) {
 }
 const width = cols.length * (cellSize + gap);
 const height = 7 * (cellSize + gap);
+const cells = cols.flatMap((col, ci) =>
+  col.flatMap((d, ri) => (d ? [{ d, x: ci * (cellSize + gap), y: ri * (cellSize + gap) }] : [])),
+);
 ---
 {data && data.days.length > 0 ? (
   <div class="bg-stone-900 rounded-xl shadow-[3px_3px_0_0_#44403c] p-4">
@@ -47,22 +50,22 @@ const height = 7 * (cellSize + gap);
       role="img"
       aria-label="GitHub contribution heatmap"
     >
-      {cols.map((col, ci) =>
-        col.map((d, ri) =>
-          d ? (
-            <rect
-              x={ci * (cellSize + gap)}
-              y={ri * (cellSize + gap)}
-              width={cellSize}
-              height={cellSize}
-              rx="2"
-              fill={colors[d.level]}
-            >
-              <title>{d.date}: {d.count} contribution{d.count === 1 ? '' : 's'}</title>
-            </rect>
-          ) : null,
-        ),
-      )}
+      {/* One shared cell, placed with <use> and coloured by its level's group:
+          spelling out width, height, rx and fill on 365 rects made this the
+          heaviest thing on the home page after the map. Empty days get no
+          tooltip; "0 contributions" told nobody anything. */}
+      <defs><rect id="hm-cell" width={cellSize} height={cellSize} rx="2" /></defs>
+      {colors.map((fill, level) => (
+        <g fill={fill}>
+          {cells.filter((c) => c.d.level === level).map(({ d, x, y }) =>
+            d.count > 0 ? (
+              <use href="#hm-cell" x={x} y={y}><title>{d.date}: {d.count} contribution{d.count === 1 ? '' : 's'}</title></use>
+            ) : (
+              <use href="#hm-cell" x={x} y={y} />
+            ),
+          )}
+        </g>
+      ))}
     </svg>
   </div>
 ) : (

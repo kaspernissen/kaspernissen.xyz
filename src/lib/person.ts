@@ -21,6 +21,33 @@ export const bio =
   'Kasper is a CNCF, MergeForward, and AAIF Ambassador, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, KCD Organizer and CNCG Group Organizer. He co-founded Cloud Native Nordics to unite meetups across the region. At Dash0, he helps make observability easy for developers by advocating for better tooling, best practices, and seamless integrations. Bridging observability, AI, and platform engineering, he ensures developers stay productive and gain actionable insights exactly when needed.';
 
 /**
+ * The long-form bio on /about, taken from his Dash0 author page
+ * (dash0.com/authors/kasper-borg-nissen) so the two say the same thing.
+ * Update both together.
+ */
+export const about = [
+  'Kasper Borg Nissen is Director of Developer Relations at Dash0, where he leads the Developer Relations team focused on helping developers adopt OpenTelemetry, observability, AI, and platform engineering through technical content, open source contributions, conference talks, training, and community engagement. His team works closely with developer communities around the world to build trust through education, technical leadership, and meaningful contributions.',
+  'Kasper is a CNCF Ambassador, MergeForward Ambassador, and AAIF Ambassador, with a strong focus on the emerging Agentic Software Development Lifecycle (SDLC) and how OpenTelemetry provides the telemetry foundation for AI-powered engineering and autonomous software systems. He is a former KubeCon + CloudNativeCon Co-Chair for Europe and North America (2024–2025), a Golden Kubestronaut, organizer of Cloud Native Denmark (formerly KCD Denmark), CNCG organizer, and co-founder of Cloud Native Nordics, an initiative that connects cloud native communities across the Nordic region.',
+  "Before joining Dash0, Kasper spent eight years as a Staff Platform Engineer at Lunar, one of the Nordic region's leading digital challenger banks. As one of the company's early engineering hires, he helped build the foundation of Lunar's Kubernetes platform and drove the adoption of cloud native practices such as Kubernetes, GitOps, and platform engineering, while introducing AI capabilities as part of the internal platform. His experience as a practitioner continues to shape his work today, where he advocates for observability as a platform product that empowers developers, platform teams, and AI systems with the insights they need to build, operate, and continuously improve modern software.",
+  'An active contributor to the OpenTelemetry project and the broader CNCF ecosystem, Kasper is the co-author of OpenTelemetry for Dummies and co-author and instructor of the Observability for Platform Engineering course on PlatformEngineering.org. He also co-hosts the Code RED Podcast with Dash0 founder and CEO Mirko Novakovic and writes the bi-weekly Code RED Newsletter, where he explores the intersection of observability, platform engineering, AI, and cloud native technologies. Through his writing, speaking, open source work, and community leadership, he is passionate about helping organizations build the foundation for the next generation of intelligent, autonomous software delivery.',
+];
+
+/**
+ * Honours, for the Person's `award`. Each one has a badge on /badges.
+ * Certifications are left out: they are exams passed, not recognition given.
+ */
+export const awards = [
+  'Golden Kubestronaut (CNCF, 2025)',
+  'CNCF Ambassador (2023–2028)',
+  'Agentic AI Foundation Ambassador (2026)',
+  'Linkerd Ambassador (2022)',
+  'Co-Chair, KubeCon + CloudNativeCon Europe 2024 and 2025',
+  'Co-Chair, KubeCon + CloudNativeCon North America 2024',
+  'Keynote speaker, KubeCon + CloudNativeCon Europe 2023, 2024 and 2025',
+  'Keynote speaker, KubeCon + CloudNativeCon North America 2024',
+];
+
+/**
  * Every profile that is his, for `sameAs`. Wider than the icon row in
  * SocialLinks.astro, which only shows the ones worth a click from the hero.
  * Each of these was checked to resolve to his own page; add a Wikidata item
@@ -59,6 +86,7 @@ export const person = {
     'Cloud native',
     'Observability for AI agents',
   ],
+  award: awards,
   sameAs: profiles,
 };
 

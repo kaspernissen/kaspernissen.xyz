@@ -14,19 +14,19 @@ const { posts, allTags, activeTag = null, page, totalPages, baseHref } = Astro.p
   baseHref: string;
 };
 
-const pageHref = (n: number) => (n === 1 ? baseHref : `${baseHref.replace(/\/$/, '')}/page/${n}`);
+const pageHref = (n: number) => `${baseHref.replace(/\/$/, '')}${n === 1 ? '' : `/page/${n}`}/`;
 ---
 {allTags.length > 0 && (
   <nav class="mt-8 flex flex-wrap items-center gap-2" aria-label="Filter posts by tag">
     <a
-      href="/blog"
+      href="/blog/"
       class={`text-[11px] font-bold uppercase tracking-wider rounded-full px-3 py-1 transition ${
         activeTag ? 'bg-stone-900 text-stone-400 hover:text-stone-100' : 'bg-stone-50 text-stone-950'
       }`}
     >All</a>
     {allTags.map(({ tag, count }) => (
       <a
-        href={`/blog/tag/${tagSlug(tag)}`}
+        href={`/blog/tag/${tagSlug(tag)}/`}
         class={`text-[11px] font-bold uppercase tracking-wider rounded-full px-3 py-1 transition hover:-translate-y-0.5 inline-block ${
           activeTag === tag ? tagColour(tag) : 'bg-stone-900 text-stone-400 hover:text-stone-100'
         }`}

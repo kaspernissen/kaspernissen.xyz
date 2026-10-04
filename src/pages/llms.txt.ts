@@ -62,6 +62,7 @@ This site is his talks archive (slides and recordings), blog, and speaker kit. P
 ## About
 
 - [Home](${abs('/')}): Current role, latest talks and writing, upcoming conferences
+- [About](${abs('/about')}): Who Kasper is: role at Dash0, community work, background at Lunar
 - [Speaker kit](${abs('/speaker-kit')}): Official bio, headshots, and talk topics for event organisers
 - [Badges and roles](${abs('/badges')}): CNCF Ambassador terms, KubeCon roles, certifications
 - [Conferences](${abs('/conferences')}): Past and upcoming speaking engagements
