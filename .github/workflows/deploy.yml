@@ -52,6 +52,9 @@ jobs:
           PUBLIC_DASH0_ENDPOINT: ${{ vars.DASH0_ENDPOINT }}
           PUBLIC_DASH0_AUTH_TOKEN: ${{ secrets.DASH0_WEB_AUTH_TOKEN }}
           PUBLIC_GIT_SHA: ${{ github.sha }}
+          # WebMCP origin-trial tokens for Chrome and Edge, space-separated.
+          # Public by nature (they sit in a <meta> tag), so a variable.
+          PUBLIC_WEBMCP_ORIGIN_TRIALS: ${{ vars.WEBMCP_ORIGIN_TRIALS }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,0 +1,172 @@
+---
+// WebMCP tools (https://github.com/webmachinelearning/webmcp): lets an AI agent
+// in the visitor's browser (Chrome and Edge origin trials, ChatGPT Desktop)
+// ask this site about Kasper's talks, writing and upcoming events directly,
+// instead of scraping pages.
+//
+// An experiment. In a browser without document.modelContext the script stops
+// at the feature check: no tools, no fetch. The tools answer from
+// /agent-index.json, fetched on the first call.
+//
+// With Dash0 monitoring on, registrations and calls are sent as events, so the
+// experiment can be measured: how many visitors' browsers offered the tools at
+// all, and which ones agents actually used.
+---
+<script>
+  type Json = Record<string, any>;
+
+  const mc = (document as any).modelContext;
+  const dash0 = Boolean(import.meta.env.PUBLIC_DASH0_ENDPOINT && import.meta.env.PUBLIC_DASH0_AUTH_TOKEN);
+
+  // Imported only when monitoring is on, so a build without it does not ship
+  // the SDK just for this. Same module instance Dash0Web.astro initialised.
+  const track = (name: string, attributes: Json) => {
+    if (!dash0) return;
+    import('@dash0/sdk-web').then(({ sendEvent }) => sendEvent(name, { attributes })).catch(() => {});
+  };
+
+  let index: Promise<Json> | undefined;
+  const load = () =>
+    (index ??= fetch('/agent-index.json').then((r) => {
+      if (!r.ok) throw new Error(`agent-index.json: HTTP ${r.status}`);
+      return r.json();
+    }));
+
+  const text = (value: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(value) }] });
+
+  // Every query word counts once, weighted by where it matched; results with no
+  // match drop out, ties go to the newer item.
+  function search<T extends Json>(items: T[], query: string | undefined, fields: [keyof T, number][]): T[] {
+    const words = (query ?? '').toLowerCase().split(/\W+/).filter((w) => w.length > 1);
+    if (words.length === 0) return items;
+    return items
+      .map((item) => {
+        let score = 0;
+        for (const w of words) {
+          for (const [field, weight] of fields) {
+            const v = item[field];
+            const hay = Array.isArray(v) ? v.join(' ') : String(v ?? '');
+            if (hay.toLowerCase().includes(w)) { score += weight; break; }
+          }
+        }
+        return { item, score };
+      })
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score || String(b.item.date).localeCompare(String(a.item.date)))
+      .map((r) => r.item);
+  }
+
+  const limitOf = (n: unknown, fallback = 10) => Math.min(Math.max(Number(n) || fallback, 1), 50);
+
+  const tools = [
+    {
+      name: 'get_profile',
+      title: 'Who Kasper Borg Nissen is',
+      description:
+        "Kasper Borg Nissen's current role, bio, areas of expertise, awards and profile links. Use it for questions about who he is or how to reach or book him.",
+      inputSchema: { type: 'object', properties: {} },
+      annotations: { readOnlyHint: true },
+      execute: async () => text((await load()).profile),
+    },
+    {
+      name: 'search_talks',
+      title: 'Search talks',
+      description:
+        'Search the talks Kasper has given, newest first. Matches the title, event, location and abstract. Each result links to the talk page and, where they exist, the recording and slides.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Words to match, e.g. "OpenTelemetry platform". Leave empty to list the latest talks.' },
+          year: { type: 'integer', description: 'Only talks given in this year.' },
+          has_recording: { type: 'boolean', description: 'Only talks with a video recording.' },
+          has_slides: { type: 'boolean', description: 'Only talks with downloadable slides.' },
+          limit: { type: 'integer', description: 'Maximum results, 1-50. Default 10.' },
+        },
+      },
+      annotations: { readOnlyHint: true },
+      execute: async ({ query, year, has_recording, has_slides, limit }: Json) => {
+        let talks: Json[] = (await load()).talks;
+        if (year) talks = talks.filter((t) => t.date.startsWith(String(year)));
+        if (has_recording) talks = talks.filter((t) => t.recording);
+        if (has_slides) talks = talks.filter((t) => t.slides);
+        const hits = search(talks, query, [['title', 3], ['event', 2], ['location', 2], ['abstract', 1]]);
+        return text({ total: hits.length, talks: hits.slice(0, limitOf(limit)) });
+      },
+    },
+    {
+      name: 'list_upcoming_events',
+      title: 'Upcoming events',
+      description: 'Conferences and meetups where Kasper is scheduled to speak or host, soonest first.',
+      inputSchema: { type: 'object', properties: {} },
+      annotations: { readOnlyHint: true },
+      execute: async () => text((await load()).upcoming),
+    },
+    {
+      name: 'search_writing',
+      title: 'Search writing',
+      description:
+        "Search Kasper's blog posts on this site and the articles, guides, newsletters, book and course he has published elsewhere, newest first.",
+      inputSchema: {
+        type: 'object',
+        properties: {
+          query: { type: 'string', description: 'Words to match in the title, summary, tags or publication. Leave empty for the latest.' },
+          limit: { type: 'integer', description: 'Maximum results, 1-50. Default 10.' },
+        },
+      },
+      annotations: { readOnlyHint: true },
+      execute: async ({ query, limit }: Json) => {
+        const hits = search((await load()).writing, query, [['title', 3], ['tags', 2], ['summary', 1], ['publication', 1]]);
+        return text({ total: hits.length, writing: hits.slice(0, limitOf(limit)) });
+      },
+    },
+    {
+      name: 'open_page',
+      title: 'Open a page on this site',
+      description:
+        'Show the user a page on kaspernissen.xyz in this tab, such as a talk page returned by search_talks. Only URLs on this site are accepted.',
+      inputSchema: {
+        type: 'object',
+        properties: { url: { type: 'string', description: 'A kaspernissen.xyz URL or a path such as /talks/.' } },
+        required: ['url'],
+      },
+      execute: async ({ url }: Json) => {
+        const target = new URL(String(url), location.origin);
+        if (target.origin !== location.origin) return text({ error: 'Only pages on this site can be opened.' });
+        // Answer first: navigating unloads this page and its tools.
+        setTimeout(() => location.assign(target.href), 50);
+        return text({ opened: target.pathname });
+      },
+    },
+  ];
+
+  if (mc && typeof mc.registerTool === 'function') {
+    for (const tool of tools) {
+      const execute = tool.execute as (input: Json) => Promise<unknown>;
+      mc.registerTool({
+        ...tool,
+        async execute(input: Json = {}) {
+          const started = performance.now();
+          try {
+            const result = await execute(input);
+            track('webmcp.tool_call', {
+              'webmcp.tool.name': tool.name,
+              'webmcp.tool.input': JSON.stringify(input),
+              'webmcp.tool.duration_ms': Math.round(performance.now() - started),
+              'webmcp.tool.outcome': 'success',
+            });
+            return result;
+          } catch (err) {
+            track('webmcp.tool_call', {
+              'webmcp.tool.name': tool.name,
+              'webmcp.tool.input': JSON.stringify(input),
+              'webmcp.tool.outcome': 'error',
+              'webmcp.tool.error': String(err),
+            });
+            throw err;
+          }
+        },
+      }).catch((err: unknown) => track('webmcp.register_failed', { 'webmcp.tool.name': tool.name, 'webmcp.error': String(err) }));
+    }
+    track('webmcp.tools_registered', { 'webmcp.tool.count': tools.length });
+  }
+</script>
