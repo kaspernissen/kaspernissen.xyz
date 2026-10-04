@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import fs from 'node:fs';
 import { loadEnv } from 'vite';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
@@ -82,11 +83,32 @@ function rehypeBlogImages() {
   };
 }
 
+// Blog posts that are copies of something first published elsewhere: any post
+// whose frontmatter carries a `canonical`. Read straight from the files because
+// astro:content is not available in the config.
+const IMPORTED_POSTS = new Set(
+  fs
+    .readdirSync('src/content/blog')
+    .filter((f) => f.endsWith('.md'))
+    .filter((f) => /^canonical:\s*\S/m.test(fs.readFileSync(`src/content/blog/${f}`, 'utf8').split('---')[1] ?? ''))
+    .map((f) => `https://kaspernissen.xyz/blog/${f.replace(/\.md$/, '').replace(/^\d{4}-\d{2}-\d{2}-/, '')}/`),
+);
+
 export default defineConfig({
   site: 'https://kaspernissen.xyz',
   vite: { plugins: [tailwindcss()] },
   markdown: { rehypePlugins: [rehypeBlogImages] },
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      // The sitemap is the list of pages this site wants indexed as its own.
+      // Left out: tag listings and pagination (crawlers still reach them by
+      // link), the 404 page, and imported posts, whose canonical points at
+      // Medium or dash0.com. Listing a URL whose canonical says "index the
+      // other one" asks a search engine to do two contradictory things.
+      filter: (page) =>
+        !/\/blog\/(tag|page)\//.test(page) && !/\/404\/?$/.test(page) && !IMPORTED_POSTS.has(page),
+    }),
+  ],
   image: {
     // Photos and badge art live in S3 rather than the repo
     // (see src/lib/photoHost.ts and src/lib/badgeHost.ts).

@@ -42,8 +42,8 @@ We can already collect a lot of evidence. Depending on the instrumentation and w
 Someone still has to put that evidence together and judge whether the outcome was expected. Each deletion was, as far as the tool was concerned, a success. And an agent's own explanation is not a complete account of why it behaved the way it did.
 
 <figure class="portrait">
-<img src="/blog-images/sreday-london-2026-05.jpg" alt="Adriana smiling at the lectern next to the projected slide">
-<figcaption>Adriana at the lectern, with the "without guardrails" slide still on screen.</figcaption>
+<img src="/blog-images/sreday-london-2026-05.jpg" alt="Adriana smiling mid-talk next to the projected slide">
+<figcaption>Adriana mid-talk, with the "without guardrails" slide still on screen.</figcaption>
 </figure>
 
 This is where we touched on LLM-as-judge. In the demo, a judge reads the incident prompt, the ordered tool calls and the investigator's report, then returns a score with an explanation. That gives you a second mechanism for assessing the outcome of an agent workflow.

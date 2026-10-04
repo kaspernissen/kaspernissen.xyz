@@ -1,0 +1,30 @@
+---
+// GitHub Pages serves dist/404.html, with a 404 status, for any path that has
+// no file. Without this page that was GitHub's own "Site not found" screen: no
+// navigation, no way back, and the wrong site's branding.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+
+const links = [
+  { href: '/talks/', label: 'Talks', note: 'slides, recordings and photos' },
+  { href: '/blog/', label: 'Blog', note: 'posts written here' },
+  { href: '/writing/', label: 'Writing', note: 'everything published elsewhere' },
+  { href: '/speaker-kit/', label: 'Speaker kit', note: 'bio and headshots' },
+];
+---
+<BaseLayout title="Page not found — Kasper Nissen" description="This page does not exist." noindex>
+  <PageHeader chip="404" chipClass="bg-orange-400 text-stone-950">
+    Nothing lives at this address. It may have moved when the site was rebuilt.
+  </PageHeader>
+
+  <ul class="mt-10 mb-16 grid gap-3 sm:grid-cols-2 max-w-2xl">
+    {links.map((l) => (
+      <li>
+        <a href={l.href} class="block rounded-lg border border-stone-800 p-4 hover:border-stone-700 transition">
+          <div class="font-bold text-stone-100">{l.label}</div>
+          <div class="text-sm text-stone-500">{l.note}</div>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

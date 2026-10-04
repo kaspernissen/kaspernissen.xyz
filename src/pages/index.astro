@@ -16,6 +16,7 @@ import { isDelivered, isScheduled, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
 import { published } from '../lib/blog';
 import { writingFeed } from '../lib/writingFeed';
+import { abs, PERSON_ID, WEBSITE_ID } from '../lib/person';
 
 // One collection now holds both the schedule and the archive; which section an
 // entry appears in is decided by its date. See src/lib/engagement.ts.
@@ -50,6 +51,15 @@ const galleries = assignPhotos(talks, photos);
   title="Kasper Nissen — kaspernissen.xyz"
   description="Cloud native, observability, and the people who run it. Talks, writing, and conferences from Kasper Nissen."
   current="/"
+  type="profile"
+  jsonLd={{
+    '@type': 'ProfilePage',
+    '@id': `${abs('/')}#webpage`,
+    url: abs('/'),
+    name: 'Kasper Borg Nissen',
+    mainEntity: { '@id': PERSON_ID },
+    isPartOf: { '@id': WEBSITE_ID },
+  }}
 >
   {/* The cartoon lives inside Hero, anchored to its bottom edge, and overflows
       downward; the heatmap card (opaque, z-20) crops it. */}

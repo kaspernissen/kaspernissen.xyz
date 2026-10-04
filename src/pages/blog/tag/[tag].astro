@@ -4,6 +4,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHeader from "../../../components/PageHeader.astro";
 import BlogListing from '../../../components/BlogListing.astro';
 import { published, tagCounts, tagSlug, tagColour, blogSlug } from '../../../lib/blog';
+import { abs, breadcrumbs } from '../../../lib/person';
 
 export async function getStaticPaths() {
   const all = published(await getCollection('blog'));
@@ -18,14 +19,15 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts, allTags } = Astro.props;
-const site = Astro.site ?? new URL('https://kaspernissen.xyz');
 
-const jsonLd = {
-  '@context': 'https://schema.org',
+// A tag with a single post is a near-empty page that duplicates the post's own
+// card. Crawlers still follow its links but leave it out of the index.
+const path = `/blog/tag/${tagSlug(tag)}`;
+const jsonLd = [{
   '@type': 'CollectionPage',
   name: `Posts tagged ${tag}`,
-  url: new URL(`/blog/tag/${tagSlug(tag)}`, site).href,
-  isPartOf: { '@type': 'Blog', name: 'Kasper Nissen — Blog', url: new URL('/blog', site).href },
+  url: abs(path),
+  isPartOf: { '@id': `${abs('/blog')}#blog` },
   about: { '@type': 'Thing', name: tag },
   mainEntity: {
     '@type': 'ItemList',
@@ -33,17 +35,18 @@ const jsonLd = {
     itemListElement: posts.map((p, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      url: new URL(`/blog/${blogSlug(p)}`, site).href,
+      url: abs(`/blog/${blogSlug(p)}`),
       name: p.data.title,
     })),
   },
-};
+}, breadcrumbs([['Home', '/'], ['Blog', '/blog'], [tag, path]])];
 ---
 <BaseLayout
   title={`${tag} — Blog — Kasper Nissen`}
   description={`${posts.length} post${posts.length === 1 ? '' : 's'} tagged ${tag}, by Kasper Nissen.`}
   current="/blog"
   jsonLd={jsonLd}
+  noindex={posts.length < 2}
 >
   <PageHeader chip={tag} chipClass={tagColour(tag)}>
     {posts.length} post{posts.length === 1 ? '' : 's'} tagged <strong class="text-stone-200">{tag}</strong>.
