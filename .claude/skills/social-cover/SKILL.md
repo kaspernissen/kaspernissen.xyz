@@ -28,7 +28,7 @@ compositions, and a headline one word longer can change how it balances.
 
 | Flag | Meaning |
 |---|---|
-| `--size` | `square` 1024×1024 · `wide` 1920×1080 · `banner` 1584×396 (LinkedIn profile) · `card` 1200×627 (link preview / `og:image`) |
+| `--size` | `square` 1024×1024 · `wide` 1920×1080 · `banner` 1584×396 (LinkedIn profile) · `card` 1200×627 (link preview / `og:image`) · `story` 1080×1920 (Instagram/LinkedIn story, 9:16) |
 | `--mascot` | Name from `assets/mascots/`, or `--mascot random`. Omit for none. |
 | `--headline` | The line. `{...}` marks a chip. |
 | `--kicker` | Small uppercase line above the headline. Optional. Shrunk to fit one line, so keep it to a short credit — a long one just renders small. |
