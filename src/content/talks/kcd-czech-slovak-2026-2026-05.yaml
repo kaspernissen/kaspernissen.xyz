@@ -1,4 +1,4 @@
-title: Keynote Rethinking Observability as a Platform Product   Kasper Borg Nissen
+title: "Keynote: Rethinking Observability as a Platform Product"
 event: KCD Czech & Slovak 2026
 event_url: https://community.cncf.io/kcd-czech-slovak/
 date: 2026-05-21
@@ -16,3 +16,5 @@ playlist_position: 5
 sources:
   sessionize: kcd-czech-slovak-2026
   youtube: B29H8cx6UyM
+old_slugs:
+  - keynote-rethinking-observability-as-a-platform-product-kasper-borg-nissen-2026-05-21

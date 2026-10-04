@@ -47,6 +47,10 @@ const talks = defineCollection({
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     slug: z.string().optional(),
+    // URLs this talk used to live at, before its title was cleaned up. Each
+    // becomes a redirect page to the current URL, so old links and search
+    // results still land. Kept out of the sitemap (astro.config.mjs).
+    old_slugs: z.array(z.string()).default([]),
     // Position in the YouTube playlist; 0 = most recently added. Null for
     // entries that don't come from the playlist.
     playlist_position: z.number().nullable().default(null),

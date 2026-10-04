@@ -118,13 +118,73 @@ const topics = [
 
   <section class="mt-12">
     <h2 class="text-xl font-bold mb-1">Photos</h2>
-    <p class="text-stone-400 text-sm mb-4">Click any photo to download the original.</p>
+    <p class="text-stone-400 text-sm mb-4">
+      {photos.length} photos from stages and conferences. Scroll for more, and click any photo to download the original.
+    </p>
     {photos.length === 0 ? (
       <p class="text-stone-500 text-sm">No photos uploaded yet.</p>
     ) : (
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-        {photos.map((p, i) => <PhotoCard entry={p} index={i} />)}
+      /* One scrolling row rather than a grid of every photo: four across on a
+         wide screen, the rest a swipe away. Images are lazy, so the ones off
+         to the side load only when scrolled to. */
+      <div class="relative">
+        <div
+          id="photo-strip"
+          class="grid grid-flow-col auto-cols-[45%] sm:auto-cols-[31%] md:auto-cols-[calc((100%-2.25rem)/4)] gap-3 overflow-x-auto snap-x snap-mandatory pt-1 pb-3 pr-6"
+          style="scrollbar-color: #fb923c #1c1917;"
+        >
+          {photos.map((p, i) => (
+            <div class="snap-start"><PhotoCard entry={p} index={i} /></div>
+          ))}
+        </div>
+        {/* Arrows page the row four photos at a time. Each fades out at its
+            end of the row; swiping and the scrollbar still work without them. */}
+        {[
+          { dir: -1, side: 'left-0 -translate-x-1/2', label: 'Previous photos', path: 'M15 18l-6-6 6-6' },
+          { dir: 1, side: 'right-0 translate-x-1/2', label: 'Next photos', path: 'M9 18l6-6-6-6' },
+        ].map((a) => (
+          <button
+            type="button"
+            data-strip-dir={a.dir}
+            aria-label={a.label}
+            aria-controls="photo-strip"
+            class={`absolute top-[calc(50%-0.5rem)] -translate-y-1/2 ${a.side} z-10 flex h-11 w-11 items-center justify-center rounded-full bg-stone-50 text-stone-950 shadow-[3px_3px_0_0_#44403c] transition hover:bg-orange-400 disabled:pointer-events-none disabled:opacity-0`}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={a.path} /></svg>
+          </button>
+        ))}
       </div>
     )}
+    {/* A different four up front on every visit: shuffle the tiles before
+        they are laid out. Without JavaScript the row keeps the build order. */}
+    <script is:inline>
+      (() => {
+        const strip = document.getElementById('photo-strip');
+        if (!strip) return;
+        const tiles = [...strip.children];
+        for (let i = tiles.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+        }
+        strip.append(...tiles);
+
+        // Page by the visible width; snap-start lands each page on a tile.
+        const buttons = document.querySelectorAll('[data-strip-dir]');
+        const update = () => {
+          const max = strip.scrollWidth - strip.clientWidth - 2;
+          buttons.forEach((b) => {
+            b.disabled = b.dataset.stripDir === '-1' ? strip.scrollLeft <= 2 : strip.scrollLeft >= max;
+          });
+        };
+        buttons.forEach((b) =>
+          b.addEventListener('click', () =>
+            strip.scrollBy({ left: Number(b.dataset.stripDir) * strip.clientWidth, behavior: 'smooth' }),
+          ),
+        );
+        strip.addEventListener('scroll', update, { passive: true });
+        addEventListener('resize', update);
+        update();
+      })();
+    </script>
   </section>
 </BaseLayout>

@@ -4,7 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import TalkCard from '../../components/TalkCard.astro';
 import { sortTalks } from '../../lib/sortTalks';
-import { isDelivered, visible } from '../../lib/engagement';
+import { displayTitle, isDelivered, visible } from '../../lib/engagement';
+import { talkSlug } from '../../lib/slug';
+import { abs, collectionPage } from '../../lib/person';
 import { sortPhotos } from '../../lib/sortPhotos';
 import { assignPhotos } from '../../lib/photoJoin';
 
@@ -22,9 +24,23 @@ const withSlides = talks.filter((t) => t.data.deck_file).length;
 // archive is ~90 entries, so shipping them all and hiding some is far simpler
 // than building a route per facet, and it keeps every talk in the static HTML
 // for search engines.
+const jsonLd = collectionPage(
+  '/talks/',
+  'Talks by Kasper Borg Nissen',
+  talks.map((t) => ({
+    name: displayTitle(t.data),
+    url: abs(`/talks/${t.data.slug ?? talkSlug(displayTitle(t.data), t.data.date)}`),
+  })),
+);
+
 const years = [...new Set(talks.map((t) => t.data.date.getFullYear()))].sort((a, b) => b - a);
 ---
-<BaseLayout title="Talks — Kasper Nissen" current="/talks/">
+<BaseLayout
+  title="Talks — Kasper Nissen"
+  description={`${talks.length} talks by Kasper Borg Nissen on observability, OpenTelemetry and platform engineering, ${withVideo} with recordings and ${withSlides} with slides.`}
+  current="/talks/"
+  jsonLd={jsonLd}
+>
   <PageHeader chip="Talks" chipClass="bg-orange-400 text-stone-950">
       Conference, meetup, and podcast appearances. {talks.length} given —
       {withVideo} with a recording, {withSlides} with slides.

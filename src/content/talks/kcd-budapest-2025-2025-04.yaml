@@ -1,4 +1,4 @@
-title: "From Signals to Standards: Unifying Platform Engineering and Observability (Kasper B. Nissen, Dash0)"
+title: "From Signals to Standards: Unifying Platform Engineering and Observability"
 event: KCD Budapest 2025
 event_url: https://kcdbudapest.hu
 date: 2025-04-30
@@ -15,3 +15,5 @@ playlist_position: 19
 sources:
   sessionize: kcd-budapest-2025
   youtube: fye9gTQFdhY
+old_slugs:
+  - from-signals-to-standards-unifying-platform-engineering-and-observability-kasper-b-nissen-dash0-2025-04-30

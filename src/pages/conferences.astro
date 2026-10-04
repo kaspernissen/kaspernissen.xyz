@@ -7,8 +7,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import ConferenceRow from '../components/ConferenceRow.astro';
 import UpcomingMap from '../components/UpcomingMap.astro';
-import { isScheduled, isDelivered, visible } from '../lib/engagement';
+import { displayTitle, isScheduled, isDelivered, visible } from '../lib/engagement';
 import { isMappable } from '../lib/cities';
+import { abs, collectionPage, PERSON_ID } from '../lib/person';
 
 const all = visible(await getCollection('talks'));
 
@@ -21,11 +22,35 @@ const upcoming = all
 // is whether the map can place it, not whether a location field was filled in:
 // most engagements have none, and "CloudNativeCon+KubeCon San Diego 2019" says
 // where it was perfectly well.
+// Upcoming engagements as Events: the one thing on this page no other page
+// says in structured form.
+const jsonLd = collectionPage(
+  '/conferences/',
+  'Where Kasper Borg Nissen is speaking',
+  upcoming.map((e) => ({
+    name: e.data.title ? `${displayTitle(e.data)} at ${e.data.event}` : e.data.event,
+    url: e.data.session_url ?? e.data.event_url ?? abs('/conferences/'),
+    type: 'Event',
+    extra: {
+      startDate: e.data.date.toISOString().slice(0, 10),
+      ...(e.data.location ? { location: { '@type': 'Place', name: e.data.location, address: e.data.location } } : {}),
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      eventStatus: 'https://schema.org/EventScheduled',
+      performer: { '@id': PERSON_ID },
+    },
+  })),
+);
+
 const past = all
   .filter((e) => isDelivered(e) && isMappable(e.data.location, e.data.event))
   .sort((a, b) => +b.data.date - +a.data.date);
 ---
-<BaseLayout title="Conferences — Kasper Nissen" current="/conferences/">
+<BaseLayout
+  title="Conferences — Kasper Nissen"
+  description="Where Kasper Borg Nissen is speaking next, and every conference and meetup he has spoken at, on a map."
+  current="/conferences/"
+  jsonLd={jsonLd}
+>
   <PageHeader chip="Conferences" chipClass="bg-yellow-400 text-stone-950">
       Where I'll be next, and where I've been.
     </PageHeader>

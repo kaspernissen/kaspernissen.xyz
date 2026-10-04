@@ -1,4 +1,4 @@
-title: "Linkerd End User Panel: Case Studies from Production - Catherine Paganini, Buoyant; Kasper Nissen, Lunar; Fredrik Klingenberg, Aurum AS; Eli Goldberg, Salt Security; Christian Hüning, Finleap Connect"
+title: "Linkerd End User Panel: Case Studies from Production"
 event: CloudNativeCon+KubeCon Europe 2022, Valencia
 date: 2022-05-20
 location: Spain
@@ -12,3 +12,10 @@ sources:
   github: linkerd-end-user-panel-case-studies-from-production-catherine-paganini-buoyant-kasper-nissen-lunar-fredrik-klingenberg-aurum-as-eli-goldberg-salt-security-christian-huning-finleap-connect-2022-05
   youtube: _DbZ6SFdY1g
 session_url: https://kccnceu2022.sched.com/event/ytsZ/linkerd-end-user-panel-case-studies-from-production-catherine-paganini-buoyant-kasper-nissen-lunar-fredrik-klingenberg-aurum-as-eli-goldberg-salt-security-christian-huning-finleap-connect
+co_speakers:
+  - Catherine Paganini
+  - Fredrik Klingenberg
+  - Eli Goldberg
+  - Christian Hüning
+old_slugs:
+  - linkerd-end-user-panel-case-studies-from-production-catherine-paganini-buoyant-kasper-nissen-lunar-fredrik-klingenberg-aurum-as-eli-goldberg-salt-security-christian-huning-finleap-connect-2022-05-20
