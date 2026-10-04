@@ -1,0 +1,7 @@
+kind: newsletter
+title: "Code RED Newsletter #38"
+publication: "Code RED Newsletter"
+date: 2024-01-01
+url: "https://www.dash0.com/newsletter/code-red-newsletter-38"
+summary: "This edition explores why AI observability needs evidence beyond an agent’s own explanation, with insights on monitoring, traces, telemetry pipelines, dependency analysis, and the realities of agentic engineering."
+image: "https://www.dash0.com/_content/newsletter/code-red-newsletter-38/code-red-newsletter-38-the-unreliable-narrator.png"
