@@ -1,0 +1,20 @@
+title: Verticalizing Platform Intelligence for Regulated Domains
+event: KubeCon + CloudNativeCon North America 2026
+event_url: https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/
+date: 2026-11-11
+session_url: https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/program/schedule/?id=1238630
+location: Salt Lake City, Utah, United States
+role: speaker
+co_speakers:
+  - William Rizzo
+tags: []
+featured: false
+sources: {}
+abstract: |-
+  Agentic workloads don't just add complexity, they change its nature. An agent that reasons, plans, and calls tools across services creates execution paths no traditional trace model was built to capture. In regulated domains like fintech, healthcare, or telco, "we don't know what the agent did" isn't acceptable.
+
+  The cloud-native community can solve this, because we've done it before: we built golden paths, guardrails, and observability stacks. Now we extend those patterns to agentic systems.
+
+  We'll show how platform teams can build governed, observable foundations for agentic workloads: agent runtimes, context layers, tool gateways, policy/eval pipelines, and multi-agent systems over shared context. Understanding protocols like MCP, A2A and skills matter too. We'll use OpenTelemetry to instrument reasoning chains, tool calls, and handoffs: if you can't trace it, you can't fix it.
+
+  Are you a platform engineer or a developer in a heavily regulated industry? This talk is for you.
