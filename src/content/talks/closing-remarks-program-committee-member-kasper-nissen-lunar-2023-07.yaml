@@ -1,12 +1,16 @@
+# Re-upload of the Linkerd Day 2023 closing remarks by a third-party channel
+# (OpenTechNation). The CNCF upload in
+# closing-remarks-program-committee-member-2023-05.yaml is the real entry; this
+# one is kept, hidden, so the nightly refresh matches the video here instead of
+# recreating it. Every field it would fill is set.
 title: Closing Remarks
-event: OpenTechNation
-date: 2023-07-01
-abstract: null
+event: Linkerd Day Europe 2023
+date: 2023-04-18
+abstract: Closing remarks for the first Linkerd Day, co-located with KubeCon + CloudNativeCon Europe 2023 in Amsterdam, as a member of the program committee.
 youtube_id: -pEQa9Mtkrk
 tags: []
 featured: false
 playlist_position: 27
 sources:
   youtube: -pEQa9Mtkrk
-old_slugs:
-  - closing-remarks-program-committee-member-kasper-nissen-lunar-2023-07-01
+hidden: true
