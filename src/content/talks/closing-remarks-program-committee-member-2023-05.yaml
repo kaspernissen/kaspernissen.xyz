@@ -1,10 +1,15 @@
-title: Closing Remarks, Program Committee Member
-event: Kasper Nissen, Lunar
-date: 2023-05-02
-abstract: Closing Remarks, Program Committee Member - Kasper Nissen, Lunar
+title: Closing Remarks
+event: Linkerd Day Europe 2023
+event_url: https://linkerd.io/2023/01/20/announcing-linkerd-day-2023/
+date: 2023-04-18
+location: Amsterdam, The Netherlands
+abstract: Closing remarks for the first Linkerd Day, co-located with KubeCon + CloudNativeCon Europe 2023 in Amsterdam, as a member of the program committee.
 youtube_id: On_x4xOn_Og
 tags: []
 featured: false
 playlist_position: 30
 sources:
   youtube: On_x4xOn_Og
+old_slugs:
+  - closing-remarks-program-committee-member-2023-05-02
+  - closing-remarks-program-committee-member-kasper-nissen-lunar-2023-07-01
