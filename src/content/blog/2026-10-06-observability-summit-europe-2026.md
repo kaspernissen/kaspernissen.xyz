@@ -183,21 +183,23 @@ The conversations between the talks are always one of my favourite parts of thes
 
 At the reception I finally met John Hayes. I've followed his [Observability 360](https://observability-360.com/) newsletter for a while, and we covered a lot of ground.
 
-After the reception, Adriana, Henrik, Severin, Andrej, Iris and I went for dinner and cocktails at a rather weird Harry Potter-themed place. Odd venue, but great company and interesting conversations.
+After the reception, Adriana, Henrik, Severin, Andrej, Iris and I went for dinner. Great company and interesting conversations.
+
+<figure>
+<img src="/blog-images/observability-summit-europe-2026-22.jpg" alt="The six of us taking a group selfie outside at night">
+<figcaption>Dinner with the whole group.</figcaption>
+</figure>
+
+After dinner we moved on to cocktails at a rather weird Harry Potter-themed place.
 
 <figure>
 <img src="/blog-images/observability-summit-europe-2026-21.jpg" alt="Five of us around a dark table under a Slytherin banner, holding the menus">
-<figcaption>Dinner under the Slytherin banner.</figcaption>
+<figcaption>Cocktails under the Slytherin banner.</figcaption>
 </figure>
 
 <figure class="portrait">
 <img src="/blog-images/observability-summit-europe-2026-23.jpg" alt="A cocktail served in a small pink bathtub with a rubber duck next to it">
 <figcaption>Yes, the cocktail came in a bathtub, with a duck.</figcaption>
-</figure>
-
-<figure>
-<img src="/blog-images/observability-summit-europe-2026-22.jpg" alt="The six of us taking a group selfie outside at night">
-<figcaption>The whole group, on the way out.</figcaption>
 </figure>
 
 ## Final thoughts
