@@ -187,7 +187,7 @@ After the reception, Adriana, Henrik, Severin, Andrej, Iris and I went for dinne
 
 <figure>
 <img src="/blog-images/observability-summit-europe-2026-21.jpg" alt="Five of us around a dark table under a Slytherin banner, holding the menus">
-<figcaption>Dinner under the Slytherin banner.</figcaption>
+<figcaption>Cocktails under the Slytherin banner.</figcaption>
 </figure>
 
 <figure class="portrait">
