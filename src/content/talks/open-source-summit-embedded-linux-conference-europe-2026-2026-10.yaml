@@ -19,3 +19,6 @@ abstract: |-
 
   Then the harder question: your agent just deleted a database. What does your telemetry actually tell you? Non-deterministic systems don’t leave obvious footprints, and most teams discover that at the worst possible time.
 slug: your-agent-did-what-forensic-observability-for-systems-that-don-t-leave-obvious-footprints-2026-10-07
+deck_file: your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-2026-10-08.pdf
+deck_size_mb: 7.6
+deck_cover: your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-2026-10-08.jpg
