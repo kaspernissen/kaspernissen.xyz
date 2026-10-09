@@ -1,7 +1,7 @@
 ---
 title: "Open Source Summit Europe 2026: No Sovereignty Without Participation"
 date: 2026-10-08
-summary: "Two days of Open Source Summit Europe in Prague. The keynotes kept returning to Europe's governance gap in open source and to defending maintainers when AI makes vulnerabilities cheap to find: a 20x jump in OpenStack advisories, curl's bug bounty noise, Akrites, and Kubernetes publishing SLSA verification summaries for its images. Plus agentgateway, the Kubernetes Agent Sandbox, a benchmark of agent memory backends, and our own talk."
+summary: "Two days of Open Source Summit Europe in Prague. Hot topics in the keynotes were Europe's governance gap in open source and how to defend maintainers when AI makes vulnerabilities cheap to find: a 20x jump in OpenStack advisories, curl's bug bounty noise, Akrites, and Kubernetes publishing SLSA verification summaries for its images. Plus agentgateway, the Kubernetes Agent Sandbox, a benchmark of agent memory backends, and our own talk."
 tags: ["open-source", "conferences", "ai", "security"]
 hero: "open-source-summit-europe-2026-03.jpg"
 ---
@@ -116,7 +116,7 @@ Trust isn't keeping up. 89% of developers say AI coding tools help them, while o
 <figcaption>A trust gap and a governance gap.</figcaption>
 </figure>
 
-Laura highlighted two projects. [Cedar](https://www.cedarpolicy.com/), a CNCF sandbox project, is a policy language and engine that keeps authorisation outside your application. You can let an agent `git push`, but only to branches other than `main`. [Dogwood](https://github.com/dogwood-policy) builds on Cedar with history: the agent can push only if the tests passed within the last 15 minutes. If it waits too long, it has to run them again.
+Laura pointed to two projects. [Cedar](https://www.cedarpolicy.com/), a CNCF sandbox project, is a policy language and engine that keeps authorisation outside your application. You can let an agent `git push`, but only to branches other than `main`. [Dogwood](https://github.com/dogwood-policy) builds on Cedar with history: the agent can push only if the tests passed within the last 15 minutes. If it waits too long, it has to run them again.
 
 <figure>
 <img src="/blog-images/open-source-summit-europe-2026-22.jpg" alt="Laura Tacho next to a Dogwood policy that lets an agent git push to a non-main branch only if tests passed in the last 15 minutes">
@@ -140,7 +140,7 @@ Decades of outsourcing left governments with capability gaps and lock-in, and ge
 
 Lin Sun, head of open source at Solo.io, gave "Agent Gateway: The One Decision That Eliminates AI Engineering Complexity". The slides hadn't saved, so it was all live demo.
 
-[agentgateway](https://agentgateway.dev/), one of the new projects in the Agentic AI Foundation, sits between your agents and the LLMs, MCP servers and other agents they talk to. Think API gateway or service mesh, but for agents.
+[agentgateway](https://agentgateway.dev/), one of the new projects in the Agentic AI Foundation, sits between your agents and the LLMs, MCP servers and other agents they talk to. Lin compared it to an API gateway or a service mesh.
 
 <figure>
 <img src="/blog-images/open-source-summit-europe-2026-41.jpg" alt="Lin Sun on stage in front of the agentgateway.dev homepage">
@@ -196,9 +196,9 @@ Wednesday evening's party was at Palác Žofín, and it went almost full James B
 
 On Thursday I came in partway through the keynotes and caught the last three. They picked up where Thierry's OpenStack chart left off.
 
-N. Harrison Ripps, Director of Engineering at Red Hat, had five minutes for "Red Hat Hardened Images: Zero CVEs, Zero Cost". Harrison told it through a side project: a companion web app for a science fiction role-playing game, written in Perl in 2010, hosted in a friend's basement, ported to Go in 2025, and quietly collecting CVEs most of that time. The first arrived less than a year after it went live, and Harrison didn't know.
+N. Harrison Ripps, Director of Engineering at Red Hat, had five minutes for "Red Hat Hardened Images: Zero CVEs, Zero Cost". Harrison told it through a side project: a companion web app for a science fiction role-playing game, written in Perl in 2010, hosted in a friend's basement, ported to Go in 2025, and collecting CVEs most of that time. The first arrived less than a year after it went live, and Harrison didn't know.
 
-Red Hat Hardened Images, built on Fedora Hummingbird Linux, watch upstream for fixes, rebuild and republish. The target is 80% of fixes within seven days, and the median today is around 17 hours. The images are distroless, so they're also smaller and faster to start. Harrison now pulls the `latest` tag daily and redeploys every 24 hours, which took two lines of code. They're at images.redhat.com, no account needed.
+Red Hat Hardened Images, built on Fedora Hummingbird Linux, watch upstream for fixes, rebuild and republish. The target is 80% of fixes within seven days, and the median today is around 17 hours. The images are distroless, so they're also smaller and faster to start. Harrison now pulls the `latest` tag daily and redeploys every 24 hours, which took two lines of code. They're at images.redhat.com, and you don't need an account.
 
 Xinwei Hu, chairman of the openEuler Technical Committee, followed with "Scaling with openEuler in AI Era". The idea I liked was agentic scaling: an agent forks, tries different solutions in isolation, and only keeps the ones that pass checks. An OS can't make a model's answer correct, Xinwei said, but it can give it controlled execution, isolation and the resources to check the results.
 
