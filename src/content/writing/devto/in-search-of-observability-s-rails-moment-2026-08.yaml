@@ -1,0 +1,8 @@
+kind: blog
+title: "In Search of Observability's Rails Moment"
+publication: "DEV Community"
+date: 2026-08-14
+url: "https://dev.to/kaspernissen/in-search-of-observabilitys-rails-moment-1h2"
+duration_min: 13
+summary: "Most organizations already have observability. Agents are deployed, dashboards exist, alerts fire,..."
+image: "https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2Fwx08279gabrgn0pqjz0i.png"
