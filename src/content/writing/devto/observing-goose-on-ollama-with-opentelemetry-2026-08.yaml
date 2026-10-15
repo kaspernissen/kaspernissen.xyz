@@ -1,0 +1,8 @@
+kind: blog
+title: "Observing Goose on Ollama with OpenTelemetry"
+publication: "DEV Community"
+date: 2026-08-27
+url: "https://dev.to/kaspernissen/observing-goose-on-ollama-with-opentelemetry-4nf2"
+duration_min: 13
+summary: "Disclosure: I work at Dash0, which is why the screenshots are from there. Nothing in this post..."
+image: "https://media2.dev.to/dynamic/image/width=1000,height=420,fit=cover,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.us-east-2.amazonaws.com%2Fuploads%2Farticles%2F1kzgs7mqq0pmlzucyc2x.png"
