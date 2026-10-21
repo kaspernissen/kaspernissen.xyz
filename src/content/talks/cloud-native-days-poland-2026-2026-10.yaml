@@ -17,3 +17,6 @@ abstract: |-
   We’ll look at how OpenTelemetry provides a vendor-neutral foundation for structured telemetry, decoupling instrumentation from backends and enabling correlation by default. This structured approach not only reduces cognitive load and improves reliability, it also lays the groundwork for AI-assisted debugging and natural language interaction with production systems.
 
   Observability isn’t just about collecting more data. It’s about designing a platform that makes understanding systems easier - for both humans and machines.
+deck_file: rethinking-observability-as-a-platform-product-2026-10.pdf
+deck_size_mb: 9
+deck_cover: rethinking-observability-as-a-platform-product-2026-10.jpg
