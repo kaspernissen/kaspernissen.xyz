@@ -32,6 +32,16 @@ export const isDelivered = (e: Engagement, now?: Date) => statusOf(e, now) === '
 export const isScheduled = (e: Engagement, now?: Date) => statusOf(e, now) === 'scheduled';
 export const isCancelled = (e: Engagement, now?: Date) => statusOf(e, now) === 'cancelled';
 
+/**
+ * Whether an engagement belongs on /talks. Delivered ones do, and so does an
+ * upcoming one whose deck is already up: the deck carries a QR code to the
+ * talk page, so the page has to be findable from the list before the talk.
+ */
+export function isListed(e: Engagement, now?: Date): boolean {
+  const status = statusOf(e, now);
+  return status === 'delivered' || (status === 'scheduled' && Boolean(e.data.deck_file));
+}
+
 /** A delivered engagement is worth its own page once it has something to show. */
 export function hasMaterial(e: Engagement): boolean {
   return Boolean(e.data.youtube_id || e.data.deck_file);
