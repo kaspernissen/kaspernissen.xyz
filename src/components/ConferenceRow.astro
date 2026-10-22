@@ -8,7 +8,7 @@
 // way to find one in the list.
 import type { CollectionEntry } from 'astro:content';
 import { talkSlug } from '../lib/slug';
-import { isDelivered } from '../lib/engagement';
+import { isListed } from '../lib/engagement';
 import EventLogo from './EventLogo.astro';
 
 const { entry } = Astro.props as { entry: CollectionEntry<'talks'> };
@@ -29,10 +29,10 @@ const roleColors: Record<string, string> = {
   attendee: 'bg-stone-700 text-stone-200',
 };
 
-// A delivered engagement links to its own page (video, slides, photos); an
-// upcoming one links out to the session or the event site.
-const delivered = isDelivered(entry);
-const href = delivered
+// An engagement listed on /talks links to its own page (video, slides,
+// photos); any other upcoming one links out to the session or the event site.
+const listed = isListed(entry);
+const href = listed
   ? `/talks/${d.slug ?? talkSlug(d.title ?? d.event, d.date)}/`
   : d.session_url ?? d.event_url ?? '#';
 ---
