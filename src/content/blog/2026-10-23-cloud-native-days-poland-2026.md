@@ -44,7 +44,7 @@ The same goes for shortcuts under pressure, like skipping tests, skipping stagin
 
 ## Kube-Oddities, again
 
-Marcus Noble from Monzo gave "Kube-Oddities - the quirks that keep Kubernetes interesting". His co-speaker Márk Sági-Kazár missed his connecting flight, so Marcus did it solo.
+Marcus Noble from Monzo gave "Kube-Oddities - the quirks that keep Kubernetes interesting". His co-speaker Márk Sági-Kazár couldn't make it, because the only flight option he had came with a connection too short to work, so Marcus did it solo.
 
 <figure>
 <img src="/blog-images/cnd-poland-2026-02.jpg" alt="Marcus Noble pointing at a slide titled DNS Policy, with ClusterFirst highlighted and the note: Obviously not the default">
