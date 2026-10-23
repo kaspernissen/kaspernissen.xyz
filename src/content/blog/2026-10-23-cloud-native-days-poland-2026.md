@@ -21,9 +21,9 @@ Alex Chircop, Principal Engineer at Google and a member of the CNCF Technical Ov
 <figcaption>Alex Chircop asking whether 230 projects means the mission is done.</figcaption>
 </figure>
 
-With the charter saying the mission is to make cloud native computing ubiquitous, Alex asked whether, for some definition of done, we're done. His answer was no, because the workloads keep changing. His argument was that most AI inference and model serving already runs on Kubernetes, or as he put it, if AI is the new application, Kubernetes is the new web server. That brings topology-aware scheduling for accelerators, sandboxes for agents and GPU sharing. At the same time, clusters keep getting bigger, and the EU Cyber Resilience Act puts supply chain security on everyone's list.
+With the charter saying the mission is to make cloud native computing ubiquitous, Alex asked whether, for some definition of done, we're done. His answer was no, because the workloads keep changing. Alex argued that most AI inference and model serving already run on Kubernetes, or as he put it, if AI is the new application, Kubernetes is the new web server. That brings topology-aware scheduling for accelerators, sandboxes for agents and GPU sharing. At the same time, clusters keep getting bigger, and the EU Cyber Resilience Act puts supply chain security on everyone's list.
 
-He finished with how to get involved: TAG meetings are open, and anyone can propose an initiative on the TOC GitHub board. It's always great to hear from someone who works this closely with the projects and the foundation.
+He finished with how to get involved: TAG meetings are open, and anyone can propose an initiative on the TOC GitHub board. It's always great to hear from someone who works this closely with the projects and the foundation. I've been part of the CNCF community for a number of years now, and it's interesting to hear where the foundation sees things going next. Kubernetes might be everywhere, but the problems we're asking it to solve aren't standing still.
 
 ## The bakery trap
 
@@ -38,7 +38,7 @@ He calls his approach "continuous struggling". In a day, learn something small. 
 
 My favourite part was the bakery trap. You've always wanted a bakery, so you buy an oven, shelves and a delivery van, and hire experienced bakers. Sometimes the bread is good, sometimes it isn't, and you have no idea why. Have you ever baked bread yourself? We do the same with Kubernetes. We pick it because it's popular and great, without understanding the containers, the infrastructure and the problem underneath. Switching languages or vendors is relatively easy. Working out why performance keeps dropping at 3 a.m. when you're alone on call is not.
 
-He also named the opposite problem: LLM overdose, where code, configuration, docs and designs are generated faster than anyone can review them. That one resonated with me. It came up again and again in the hallway in Edinburgh earlier in the week. We can generate code faster than ever, but that doesn't mean we understand what we've generated.
+He also talked about what he called LLM overdose, where code, configuration, docs and designs are generated faster than anyone can review them. That one resonated with me. It came up again and again in the hallway in Edinburgh earlier in the week. We can generate code faster than ever, but that doesn't mean we understand what we've generated.
 
 The same goes for shortcuts under pressure, like skipping tests, skipping staging or spawning clusters by hand. They feel faster until they aren't, so track what you postpone, or it comes back in a year, at 3 a.m. His team shipped the inference beta on an extremely tight deadline without skipping a single test stage.
 
@@ -78,7 +78,7 @@ In their setup, what limited Argo CD was the number of cached objects rather tha
 <figcaption>GitOps Gainz and Cloudtein.</figcaption>
 </figure>
 
-What I found interesting was how much they invested in testing this properly. It's one thing to say something scales, and another to put €230,000 into finding out where it breaks. And the deck had some great mascots, from a bear stuck in a bottle for the bottleneck to a weightlifting bear with GitOps Gainz bars for the load tests. I'm a big fan of mascots in decks, so this one landed.
+I thought this was a really interesting experiment. It's not often you hear about someone spending €230,000 just to find out how far they can push a GitOps setup. And the deck had some great mascots, from a bear stuck in a bottle for the bottleneck to a weightlifting bear with GitOps Gainz bars for the load tests. I'm a big fan of mascots in decks, so this one landed.
 
 ## Learning to live with AI slop
 
@@ -96,16 +96,16 @@ AI isn't going to take our jobs, but it is going to take our jobs. Adriana said 
 <figcaption>Babysit, delegate, abdicate.</figcaption>
 </figure>
 
-The best moment was when they disagreed on stage about whether code readability still matters when agents write the code. Adriana held on to human accountability, and I'm with her on that one. Someone still has to own what ends up in production.
+One of my favourite moments was when they disagreed on stage about whether code readability still matters when agents write the code. Adriana held on to human accountability, and I'm with her on that one. Someone still has to own what ends up in production.
 
 <figure>
 <img src="/blog-images/cnd-poland-2026-07.jpg" alt="Josh Lee and Adriana Villela in front of a slide titled Abdication survival tips, with an orange capybara holding a lasso">
 <figcaption>Abdication survival tips.</figcaption>
 </figure>
 
-On working with agents, they described LLMs as sycophantic interns. Give them sandboxed hands, and write prompts that generate deterministic code instead of doing markdown engineering.
+They described LLMs as sycophantic interns, which I thought was a pretty good comparison. Their advice was to give agents access to tools, but within clearly defined boundaries. And rather than spending your time on ever more complicated markdown instructions, use the model to generate deterministic code wherever you can.
 
-They also made a case for hiring juniors, because someone has to maintain these systems when the seniors retire. And their advice for staying sane: write your own content, make your own slide art, and take an AI holiday now and then.
+They also made a good point about junior developers. If AI changes how we build software, we still need to figure out how the next generation of engineers learns. Someone has to maintain these systems when the seniors retire, and we can't stop hiring juniors and expect experienced engineers to appear in ten years. Mentorship matters more than ever. And their advice for staying sane: write your own content, make your own slide art, and take an AI holiday now and then.
 
 ## A career, instrumented with OpenTelemetry
 
@@ -116,7 +116,7 @@ Then my colleague Julia Furst Morgado gave her keynote, "Uninstrumented". Julia 
 <figcaption>Julia Furst Morgado.</figcaption>
 </figure>
 
-So she asked the room. Raise your hand if your path into tech makes linear sense, from computer science degree to principal engineer. A few hands. Then raise your hand if your career looks like a plate of spaghetti. Clearly more. Most of us took some kind of non-linear path to end up in that room.
+So she asked the room. Raise your hand if your path into tech makes linear sense, from computer science degree to principal engineer. A few hands. Then raise your hand if your career looks like a plate of spaghetti. Clearly more. Most people in the room had taken some kind of non-linear path to get there.
 
 <figure>
 <img src="/blog-images/cnd-poland-2026-10.jpg" alt="Julia on stage with the audience in view, next to a slide asking people to raise their hand if their path into tech makes linear sense or if their resume looks like spaghetti">
@@ -130,7 +130,7 @@ Her reframe: she wasn't failing, she was just uninstrumented. She wrote a script
 <figcaption>A career as a distributed service map.</figcaption>
 </figure>
 
-From there, the tracing concepts kept fitting. The years cleaning houses and waiting tables became an unmonitored window, because a missing span isn't downtime. The bootcamp became an error span that didn't kill the trace, and imposter syndrome is just an `exception.type`. The retry was 30 Days of OpenTelemetry in December 2025, and span links are the people who helped along the way. She closed with a blameless postmortem playbook: notice what you carry, find your people, do it scared, answer the doubt in public, and keep a record of your wins. Her last slide: this is an active span.
+From there, the tracing concepts kept fitting. The years cleaning houses and waiting tables became an unmonitored window, because a missing span isn't downtime. The bootcamp, where she struggled with async programming, became an error span: something failed, but the trace kept going. And imposter syndrome is just an `exception.type`, an attribute on the error, not the end of the story. The retry was 30 Days of OpenTelemetry in December 2025, and span links are the people who helped along the way. She closed with a blameless postmortem playbook: notice what you carry, find your people, do it scared, answer the doubt in public, and keep a record of your wins. Her last slide: this is an active span.
 
 I'm biased, but it's also a really good explanation of why context propagation matters. Without the parent span, you have four unrelated stories. With it, you have one.
 
@@ -143,14 +143,14 @@ Later in the afternoon I gave "[Rethinking Observability as a Platform Product](
 <figcaption>Walking through a trace.</figcaption>
 </figure>
 
-The talk goes back to 2017, when I stood on stage and drew the line between developers and the platform in the wrong place. Since then, most things have moved down into the platform, but observability moved up and landed on developers. Observability promised a lot, from faster root cause analysis to lower MTTR, and the reality hasn't matched it. We don't have a metrics problem or a tracing problem, we have systems problems. In the survey I used, 58% of respondents named instrumentation skill gaps as a problem. My argument is that the platform should absorb that burden, so developers get telemetry by default, with OpenTelemetry as the shared foundation.
+The talk goes back to 2017, when I stood on stage and drew the line between developers and the platform in the wrong place. Shift left handed developers more of the operational work. Since then, most of it has moved back down into the platform, with Kubernetes, paved paths and managed services taking it off their plate. Observability went the other way, and instrumenting services is still largely the developer's job. Observability promised a lot, from faster root cause analysis to lower MTTR, and the reality hasn't matched it. We don't have a metrics problem or a tracing problem, we have systems problems. In the survey I used, 58% of respondents named instrumentation skill gaps as a problem. My argument is that the platform should absorb that burden, so developers get telemetry by default, with OpenTelemetry as the shared foundation.
 
 <figure>
 <img src="/blog-images/cnd-poland-2026-18.jpg" alt="Kasper pointing at a slide: We don't have a metrics problem, or a tracing problem. We have systems problems.">
 <figcaption>It isn't necessarily a tooling problem.</figcaption>
 </figure>
 
-One slide says that correlation is the superpower, and Julia had made the same case a couple of hours earlier with her career. The [slides are here](https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks/rethinking-observability-as-a-platform-product-2026-10.pdf) (PDF), and the demo is on [GitHub](https://github.com/dash0hq/otel-platform-demo).
+One slide says that correlation is the superpower, and Julia had demonstrated exactly that a couple of hours earlier with her career. The [slides are here](https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks/rethinking-observability-as-a-platform-product-2026-10.pdf) (PDF), and the demo is on [GitHub](https://github.com/dash0hq/otel-platform-demo).
 
 ## A few more talks
 
@@ -181,15 +181,15 @@ I also had a somewhat random opportunity to get a photo with Jerzy Dudek, who, I
 
 ## Wrapping up
 
-That's a wrap for Cloud Native Days Poland. Great talks, familiar faces, new people to meet, and a really well-organised event. And it's not every day you end up in a photo with a Champions League-winning goalkeeper.
+That's a wrap for Cloud Native Days Poland. Great talks, familiar faces, plenty of new people to meet, and a really well-organised event. And it's not every day you randomly end up in a photo with a Champions League-winning goalkeeper.
 
-I managed to squeeze in a morning run to Warsaw's Old Town before heading home today.
+I even managed to squeeze in a morning run to Warsaw's Old Town before heading home.
 
 <figure class="portrait">
 <img src="/blog-images/cnd-poland-2026-17.jpg" alt="Kasper in a running jacket taking a selfie in front of the Palace of Culture and Science and a fountain">
 <figcaption>Morning run past the Palace of Culture and Science.</figcaption>
 </figure>
 
-A big thank you to the organisers and volunteers for putting together such a great event, and to everyone I talked to throughout the day and at the after party. I hope to come back another time.
+Two conferences in one week, Edinburgh and Warsaw. What a week.
 
-Two conferences in one week, Edinburgh and Warsaw. Time to head home, recharge, and get ready for the next one.
+A big thank you to the organisers and volunteers for putting together such a great event, and to everyone I caught up with throughout the day and at the after party. I hope to be back another time.
