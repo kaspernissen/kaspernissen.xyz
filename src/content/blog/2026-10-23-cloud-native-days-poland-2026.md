@@ -58,7 +58,7 @@ I've seen this talk a few times now, and I still enjoy it. He keeps the energy h
 <figcaption>Marcus Noble, flying solo.</figcaption>
 </figure>
 
-He also opened with the most important question of the day: is it kube-c-t-l, kube-control or kube-cuddle? My own deck later that day had a slide saying I don't care, so I'll leave that discussion for another time.
+He also opened with the most important question of the day: is it kube-c-t-l, kube-control or kube-cuddle? My own deck later that day had a slide on exactly that question, with the point that developers don't care. It's only us platform engineers who argue about it.
 
 ## Scaling GitOps to 15,000 clusters
 
