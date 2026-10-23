@@ -69,7 +69,7 @@ How much would you spend to find out whether your GitOps setup can manage 15,000
 <figcaption>Finding the bottleneck.</figcaption>
 </figure>
 
-Their talk, "Predicting GitOps at 15,000+ Clusters: What Large-Scale Testing Taught Us", started with Kubara, a framework from STACKIT and iits for catalog-based platforms on Argo CD. One adopter needed it for 15,000 edge clusters with outbound-only access. When they asked the Argo CD maintainers, the answer was that their biggest customers run about 1,000 clusters, and could they please share what they found. So they tested it. The budget was agreed in a pub at €100,000, and it ended at €230,000 after around 30 iterations, using vCluster instead of real clusters.
+Their talk, "Predicting GitOps at 15,000+ Clusters: What Large-Scale Testing Taught Us", started with Kubara, a framework from STACKIT and iits for catalog-based platforms on Argo CD. Artem needed it to run 15,000 edge clusters with outbound-only access. When they asked the Argo CD maintainers, the answer was that their biggest customers run about 1,000 clusters, and could they please share what they found. So they tested it. The budget was agreed in a pub at €100,000, and it ended at €230,000 after around 30 iterations, using vCluster instead of real clusters.
 
 In their setup, what limited Argo CD was the number of cached objects rather than the number of applications. Tuned, it got to about 1,500 apps across 250 clusters. Sveltos in agent-based pull mode deployed 4,300 of 5,000 heavy apps in one go, and what stopped it was the pods-per-node limit and the budget. Pull mode also renders the Helm templates on the hub, so credentials stay central. Their advice: don't run 15,000 clusters from one hub.
 
