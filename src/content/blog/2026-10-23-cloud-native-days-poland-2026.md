@@ -97,7 +97,7 @@ Her reframe: she wasn't failing, she was just uninstrumented. She wrote a script
 
 ## My talk
 
-In the afternoon I gave "[Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-10-22/)". I only had 30 minutes this time, so I rushed a bit, but I got the points across: observability isn't a tooling decision, it's a platform product with users, defaults and paved paths, and OpenTelemetry gives you the shared foundation to build it on. People I spoke to at the after party had some nice feedback, which I appreciated. The deck is on the talk page.
+In the afternoon I gave "[Rethinking Observability as a Platform Product](/talks/rethinking-observability-as-a-platform-product-2026-10-22/)". I only had 30 minutes this time, so I rushed a bit, but I got the points across: observability isn't a tooling decision, it's a platform product with users, defaults and paved paths, and OpenTelemetry gives you the shared foundation to build it on. People I spoke to at the after party had some nice feedback, which I appreciated. The [slides are here](https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/decks/rethinking-observability-as-a-platform-product-2026-10.pdf) (PDF), and on the talk page.
 
 <figure>
 <img src="/blog-images/cnd-poland-2026-12.jpg" alt="Kasper on stage next to a slide showing a trace waterfall with a trace ID">
