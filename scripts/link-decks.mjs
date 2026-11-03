@@ -91,9 +91,16 @@ for (const file of await walk(ROOT)) {
   all.push(rec);
 }
 
-// Deck side = entries that carry a deck but no recording. Talk side = entries
-// with a recording. An entry that already has both is left alone.
-const deckSide = all.filter((r) => r.deck_file && !r.youtube_id);
+// Deck side = Notist deck entries that carry a deck but no recording. Talk
+// side = entries with a recording. An entry that already has both is left
+// alone.
+//
+// The deck side must be Notist-sourced (notist_url), the same test
+// assertIsDeckEntry applies before deleting. A hand-curated engagement with a
+// deck_file is a finished delivery, not half of one: without this filter the
+// KubeCon NA 2026 panel's deck was copied onto another talk at the same event,
+// and only the delete guard stopped the panel's own file from going too.
+const deckSide = all.filter((r) => r.deck_file && !r.youtube_id && r.notist_url);
 const talkSide = all.filter((r) => r.youtube_id && !r.deck_file);
 
 const { links, unlinkedDecks } = planDeckLinks(deckSide, talkSide);
