@@ -67,6 +67,9 @@ const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july',
 // Parsed by hand and built in UTC: `new Date('September 25, 2026')` is local
 // midnight, which toISOString() turns into the 24th anywhere east of UTC.
 function parseLastUpdated(html) {
+  // Newer pages wrap it: Last updated: <time dateTime="2026-10-09">October 9, 2026</time>
+  const t = html.match(/Last updated:(?:\s|<!-- -->)*<time[^>]*dateTime="(\d{4})-(\d{2})-(\d{2})"/i);
+  if (t) return new Date(Date.UTC(Number(t[1]), Number(t[2]) - 1, Number(t[3]))).toISOString();
   const m = html.match(/Last updated:(?:\s|<!-- -->)*([A-Z][a-z]+) (\d{1,2}), (\d{4})/);
   const month = m && MONTHS.indexOf(m[1].toLowerCase());
   if (!m || month < 0) return null;
@@ -151,17 +154,40 @@ async function fetchPage(url, { requireAuthor }) {
 
 // ---- collect candidate URLs from the sitemap -------------------------------
 
-let sitemap;
+const locs = (xml) => [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+
+async function fetchXml(url) {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+  return r.text();
+}
+
+// dash0.com moved from one flat sitemap to a <sitemapindex> pointing at
+// per-section sitemaps (blog.xml, guides.xml, pages.xml, ...). Follow the index
+// one level down so both shapes work.
+let allUrls;
 try {
-  const r = await fetch(SITEMAP);
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  sitemap = await r.text();
+  const root = await fetchXml(SITEMAP);
+  if (/<sitemapindex[\s>]/.test(root)) {
+    const children = await Promise.all(locs(root).map(fetchXml));
+    allUrls = children.flatMap(locs);
+  } else {
+    allUrls = locs(root);
+  }
 } catch (e) {
   console.warn(`[dash0] sitemap fetch failed: ${e.message} — keeping existing files`);
   process.exit(0);
 }
 
-const allUrls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
+// The files below are deleted and rewritten from scratch. If the sitemap
+// changes shape again and yields no candidate pages, that would silently wipe
+// every Dash0 entry, so bail out instead.
+const candidates = allUrls.filter((u) =>
+  SECTIONS.some((s) => u.startsWith(`https://www.dash0.com/${s.path}/`)));
+if (candidates.length === 0) {
+  console.warn(`[dash0] sitemap listed ${allUrls.length} URLs but none under ${SECTIONS.map((s) => s.path).join(', ')} — keeping existing files`);
+  process.exit(0);
+}
 
 await fs.mkdir(OUT_DIR, { recursive: true });
 for (const f of await fs.readdir(OUT_DIR)) {
