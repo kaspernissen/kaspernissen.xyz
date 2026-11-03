@@ -10,10 +10,12 @@ co_speakers:
 deck_file: your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-2026-10.pdf
 deck_size_mb: 7.5
 deck_cover: your-agent-did-what-forensic-observability-for-systems-that-dont-leave-obvious-footprints-2026-10.jpg
+youtube_id: O9NQEuW09Bk
 tags: []
 featured: false
 sources:
   sessionize: observability-summit-europe-2026
+  youtube: O9NQEuW09Bk
 abstract: |-
   The GenAI observability space is fragmented right now. OpenInference, OpenLLMetry, framework-specific conventions are all solving the same problems with incompatible attribute names. That made sense when OTel’s GenAI support was thin. It makes less sense today.
 
