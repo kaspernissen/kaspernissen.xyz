@@ -5,6 +5,14 @@ date: 2026-11-10
 end_date: 2026-11-12
 location: Salt Lake City, Utah, United States
 role: moderator
+co_speakers:
+  - Alexa Griffith
+  - Jed Salazar
+  - Joseph Sandoval
+  - Juraci Paixão Kröhling
+deck_file: agents-on-the-platform-four-perspectives-on-the-conversation-were-already-having-in-private-2026-11.pdf
+deck_size_mb: 0.3
+deck_cover: agents-on-the-platform-four-perspectives-on-the-conversation-were-already-having-in-private-2026-11.jpg
 tags: []
 featured: false
 sources:
