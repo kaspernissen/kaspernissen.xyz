@@ -42,6 +42,8 @@ PRESETS = {
     # progress bar and profile row over the top ~220px and the reply bar over
     # the bottom, so type placed there is covered.
     "story":  dict(w=1080, h=1920, pad=150, font=128, kicker=32, mascot=0.80, gap=40, stack=True),
+    # LinkedIn feed post, 4:5: the tallest image the feed shows uncropped.
+    "portrait": dict(w=1080, h=1350, pad=84, font=92, kicker=24, mascot=0.75, gap=44, stack=True),
 }
 
 
@@ -69,6 +71,7 @@ DECOR_JS = """(opts) => {
   const h1 = document.querySelector('h1');
   const kicker = document.getElementById('kicker');
   const mascot = document.querySelector('#mascot img');
+  const photo = document.querySelector('#photo img');
 
   // Per line box, not the h1's block box: a block box spans the full column
   // width, so short last lines would fence off empty space beside them.
@@ -83,6 +86,8 @@ DECOR_JS = """(opts) => {
   // confetti placed there is simply covered up, and the cover renders sparser
   // than it looks here.
   if (opts.reserve) keep.push(opts.reserve);
+  // A photo is opaque edge to edge, so unlike a mascot it gets no inset.
+  if (photo) keep.push(photo.getBoundingClientRect());
   if (mascot) {
     // Inset: a PNG's box includes its transparent margin, and decor sits
     // behind the figure anyway, so only the opaque core needs protecting.
@@ -158,8 +163,15 @@ def parse_headline(text):
             sys.exit(f"unknown chip colour {colour!r}; use one of {', '.join(sorted(COLOURS))}")
         colour = colour or CYCLE[n % len(CYCLE)]
         tilt = "a" if n % 2 == 0 else "b"
-        out.append(f'<span class="chip {colour} {tilt}">{html.escape(label)}</span>')
-        i, n = m.end(), n + 1
+        chip = f'<span class="chip {colour} {tilt}">{html.escape(label)}</span>'
+        # Punctuation right after a chip would otherwise wrap onto the next
+        # line on its own, since the chip is an inline-block.
+        punct = re.match(r"[.,;:!?'’]+", text[m.end():])
+        tail = punct.group(0) if punct else ""
+        if tail:
+            chip = f'<span style="white-space:nowrap">{chip}{html.escape(tail)}</span>'
+        out.append(chip)
+        i, n = m.end() + len(tail), n + 1
     out.append(html.escape(text[i:]))
     if n == 0:
         print("note: no {chips} in the headline — it will render as plain text", file=sys.stderr)
@@ -216,7 +228,14 @@ def build_html(args, p):
     rng = random.Random(args.seed if args.seed is not None else f"{args.headline}{args.size}")
 
     mascot_html, mascot_w = "", 0
-    if args.mascot:
+    if args.photo and args.mascot:
+        sys.exit("--photo and --mascot share a slot; pick one")
+    if args.photo:
+        if not args.photo.exists():
+            sys.exit(f"no photo at {args.photo}")
+        mascot_html = (f'<div id="photo"><img src="{data_uri(args.photo)}" alt="" '
+                       f'style="object-position:{html.escape(args.photo_focus)}" /></div>')
+    elif args.mascot:
         name = args.mascot
         if name == "random":
             choices = sorted(f.stem for f in MASCOTS.glob("*.png"))
@@ -249,7 +268,10 @@ def build_html(args, p):
         "__CHIPY__": round(p["font"] * 0.03),
         "__MASCOTW__": mascot_w,
         "__SHX__": shadow, "__SHY__": round(shadow * 1.2),
-        "__STAGECLASS__": ("stack" if p["stack"] else "") + (" flip" if args.flip else ""),
+        "__STAGECLASS__": ("stack" if p["stack"] else "") + (" flip" if args.flip else "")
+                          + (" hasphoto" if args.photo else ""),
+        "__PHOTOR__": max(10, round(p["font"] * 0.16)),
+        "__PHOTOSH__": max(8, round(min(w, h) / 90)),
         "__DECOR__": decor(rng, w, h, pad),
         "__HEADLINE__": parse_headline(args.headline),
         "__KICKERHTML__": f'<div id="kicker">{html.escape(args.kicker)}</div>' if args.kicker else "",
@@ -280,6 +302,10 @@ def main():
     # the figure; the type auto-fits to whatever is left.
     ap.add_argument("--mascot-scale", type=float, default=1.0,
                     help="multiply the preset's mascot width, e.g. 1.4 for a bigger figure")
+    ap.add_argument("--photo", type=Path,
+                    help="a photo in place of the mascot, framed with the hero's offset shadow")
+    ap.add_argument("--photo-focus", default="50% 50%",
+                    help="CSS object-position for the photo crop, e.g. '50%% 30%%'")
     ap.add_argument("--logo", type=Path,
                     help="event or partner logo (SVG or PNG), shown white above the kicker")
     ap.add_argument("--logo-scale", type=float, default=1.0,

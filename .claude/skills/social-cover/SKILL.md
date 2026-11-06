@@ -33,12 +33,14 @@ compositions, and a headline one word longer can change how it balances.
 
 | Flag | Meaning |
 |---|---|
-| `--size` | `square` 1024×1024 · `wide` 1920×1080 · `banner` 1584×396 (LinkedIn profile) · `card` 1200×627 (link preview / `og:image`) · `story` 1080×1920 (Instagram/LinkedIn story, 9:16) |
+| `--size` | `square` 1024×1024 · `wide` 1920×1080 · `banner` 1584×396 (LinkedIn profile) · `card` 1200×627 (link preview / `og:image`) · `story` 1080×1920 (Instagram/LinkedIn story, 9:16) · `portrait` 1080×1350 (LinkedIn feed post, 4:5) |
 | `--mascot` | Name from `assets/mascots/`, or `--mascot random`. Omit for none. |
 | `--headline` | The line. `{...}` marks a chip. |
 | `--kicker` | Small uppercase line above the headline. Optional. Shrunk to fit one line, so keep it to a short credit — a long one just renders small. |
 | `--flip` | Put the mascot on the left. |
 | `--mascot-scale` | Multiply the preset's mascot width. The headline auto-fits into whatever is left, so watch what the run prints: on a `card`, `1.8` still leaves a 74px headline, while `2.1` drops it to 52px and the kicker to 13px, which is too small to read at feed size. |
+| `--photo` | A photo (e.g. from `public/blog-images/`) in the mascot's slot, with rounded corners, a slight tilt and the yellow offset shadow. Can't be combined with `--mascot`. |
+| `--photo-focus` | CSS `object-position` for the photo crop, e.g. `"100% 50%"` to keep the right edge of a slide. Check the crop: slide text cut mid-word is the usual miss. |
 | `--seed` | Fixes the confetti. Same seed + same text = same image. |
 
 ## Writing the headline
