@@ -122,21 +122,6 @@
     /* .cartoon-shadow from global.css */
     filter: drop-shadow(__SHX__px __SHY__px 0 rgba(252, 204, 21, 0.85));
   }
-
-  /* A photo in the mascot's slot. It stays inside the frame (a photo has no
-     square-cut chest to hide), takes whatever room the copy leaves, and wears
-     the same hard yellow offset shadow as the cartoon. */
-  #photo { display: flex; min-height: 0; min-width: 0; }
-  #stage.stack.hasphoto { justify-content: flex-start; }
-  #stage.stack #photo { flex: 1 1 0; }
-  #stage:not(.stack) #photo { flex: 0 0 50%; align-self: stretch; }
-  #photo img {
-    display: block; width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: __PHOTOR__px;
-    transform: rotate(-1.5deg);
-    box-shadow: __PHOTOSH__px calc(__PHOTOSH__px * 1.2) 0 rgba(252, 204, 21, 0.85);
-  }
 </style>
 <body>
   <div id="decor">__DECOR__</div>
