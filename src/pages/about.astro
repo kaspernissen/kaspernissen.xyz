@@ -7,6 +7,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHeader from '../components/PageHeader.astro';
 import { abs, about, breadcrumbs, PERSON_ID, WEBSITE_ID } from '../lib/person';
 
+// In the presentations bucket under papers/, like the decks: never in the repo.
+const thesisUrl =
+  'https://kasper-nissen-presentations.s3.eu-west-1.amazonaws.com/papers/kubecloud-masters-thesis-2016.pdf';
+
 const elsewhere = [
   { href: '/talks/', label: 'Talks', note: 'slides and recordings' },
   { href: '/writing/', label: 'Writing', note: 'articles, the book and the course' },
@@ -40,6 +44,14 @@ const elsewhere = [
     <p class="text-sm text-stone-400 mt-1">Director of Developer Relations at Dash0 · Denmark</p>
     <div class="mt-6 space-y-4 leading-relaxed text-stone-300">
       {about.map((p) => <p>{p}</p>)}
+      {/* Kept out of `about`, which mirrors the Dash0 author page word for word. */}
+      <p>
+        Kasper wrote his master's thesis in Computer Engineering at Aarhus University with Martin Jensen in 2016:
+        <em>KubeCloud: A Small-Scale Tangible Cloud Computing Environment</em>, a four-node Raspberry Pi Kubernetes
+        cluster for teaching cloud computing hands-on.
+        <a href={thesisUrl} class="underline decoration-orange-400 decoration-2 underline-offset-4 hover:text-stone-50">Read the thesis</a>
+        (PDF, 38 MB).
+      </p>
     </div>
   </article>
 
