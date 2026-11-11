@@ -226,6 +226,12 @@ jsonLd.push(breadcrumbs([['Home', '/'], ['Talks', '/talks'], [title, path]]));
           class="inline-flex items-center gap-1.5 bg-stone-800 text-stone-100 rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-stone-700 transition"
         >Watch on YouTube</a>
       )}
+      {d.demo_url && (
+        <a
+          href={d.demo_url}
+          class="inline-flex items-center gap-1.5 bg-stone-800 text-stone-100 rounded-full px-4 py-1.5 text-sm font-semibold hover:bg-stone-700 transition"
+        >Demo code</a>
+      )}
       {(d.session_url || d.event_url) && (
         <a
           href={d.session_url ?? d.event_url}
