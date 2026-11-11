@@ -44,6 +44,8 @@ const talks = defineCollection({
     // recording. Rendered by `npm run decks:covers`.
     deck_cover: z.string().nullable().default(null),
     notist_url: z.string().url().nullable().default(null),
+    // Where the demo shown in the talk lives, usually a GitHub repo.
+    demo_url: z.string().url().nullable().default(null),
     tags: z.array(z.string()).default([]),
     featured: z.boolean().default(false),
     slug: z.string().optional(),
