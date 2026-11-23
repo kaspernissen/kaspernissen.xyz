@@ -94,6 +94,7 @@ const KNOWN_EVENTS = [
   { from: '2026-09-01', to: '2026-09-05', name: 'ContainerDays Hamburg 2026', location: 'Hamburg, Germany' },
   { from: '2026-09-23', to: '2026-09-25', name: 'SREday London 2026 Q3', location: 'London, UK' },
   { from: '2026-09-30', to: '2026-10-02', name: 'GOTO Copenhagen 2026', location: 'Copenhagen, Denmark' },
+  { from: '2026-11-19', to: '2026-11-20', name: 'Cloud Native Denmark 2026', location: 'Copenhagen, Denmark' },
 ];
 
 function eventFor(date) {
