@@ -41,6 +41,10 @@ compositions, and a headline one word longer can change how it balances.
 | `--mascot-scale` | Multiply the preset's mascot width. The headline auto-fits into whatever is left, so watch what the run prints: on a `card`, `1.8` still leaves a 74px headline, while `2.1` drops it to 52px and the kicker to 13px, which is too small to read at feed size. |
 | `--photo` | A photo (e.g. from `public/blog-images/`) in the mascot's slot, with rounded corners, a slight tilt and the yellow offset shadow. Can't be combined with `--mascot`. |
 | `--photo-focus` | CSS `object-position` for the photo crop, e.g. `"100% 50%"` to keep the right edge of a slide. Check the crop: slide text cut mid-word is the usual miss. |
+| `--bubble` | A one-line speech bubble from the mascot, e.g. `"It feels like a small KubeCon!"`. White, tilted, with the yellow offset shadow and a tail pointing down at the head. Needs `--mascot`. |
+| `--bubble-scale` / `--bubble-top` / `--bubble-side` | Type size multiplier; top edge as % of the mascot box (negative puts it above the head, e.g. `-20`); offset from the mascot's far edge as % of its width. On `wide`, `--bubble-scale 1.2 --bubble-top -20 --bubble-side 15` sits it above the head. |
+| `--bubble-pos` | `mascot` (default, above the head) or `left`: top-left, tail out to the left edge, as if someone off-frame is saying it. The headline moves down to make room. Pairs well with `--logo-pos corner`. |
+| `--wordmark` | The site's wordmark, e.g. `"kasper."`, small in the bottom-left corner (Inter extrabold, tracking-tight, as in NavBar). |
 | `--seed` | Fixes the confetti. Same seed + same text = same image. |
 
 ## Writing the headline
@@ -53,6 +57,8 @@ the colour:
 "{Stop|pink} shipping {dashboards|yellow} nobody reads"
 "I talk {Observability} and {Platform Engineering}"
 ```
+
+A literal `\n` in the headline forces a line break, e.g. `'The work doesn\'t {disappear}.\nIt {moves}.'`.
 
 Colours are `pink` `orange` `cyan` `yellow` `violet`. Leave the colour out and
 chips cycle pink → orange → cyan → yellow, which is the hero's own order. Each

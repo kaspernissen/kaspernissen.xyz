@@ -117,6 +117,51 @@
     align-self: flex-end;
     margin-bottom: -__MASCOTDROP__px;
   }
+  #mascot { position: relative; }
+  /* --bubble: a speech bubble from the mascot, up and to the side of its
+     head, with a tail pointing at the face. Same hard yellow shadow. */
+  #bubble {
+    position: absolute; z-index: 3;
+    top: __BUBTOP__%; right: __BUBRIGHT__%;
+    white-space: nowrap;
+    background: var(--ink); color: var(--bg);
+    font-size: __BUBF__px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.1;
+    padding: 0.5em 0.75em;
+    border-radius: 0.6em;
+    transform: rotate(-3deg);
+    filter: drop-shadow(__SHX__px __SHY__px 0 rgba(252, 204, 21, 0.85));
+  }
+  /* Tail hangs off the bottom edge, pointing down at the head below. */
+  #bubble::after {
+    content: ""; position: absolute;
+    right: 22%; bottom: -0.6em;
+    border-style: solid;
+    border-width: 0.7em 0.35em 0 0.35em;
+    border-color: var(--ink) transparent transparent transparent;
+    transform: skewX(-25deg);
+  }
+  #stage.flip #bubble { right: auto; left: __BUBRIGHT__%; transform: rotate(3deg); }
+  #stage.flip #bubble::after { right: auto; left: 22%; transform: skewX(25deg); }
+  /* --bubble-pos left: the bubble enters from the left edge, as if someone
+     off-frame is saying it. Top-left, tail pointing out to the left. */
+  #bubble.left { top: __PAD__px; left: __PAD__px; right: auto; transform: rotate(-2deg); }
+  #bubble.left::after {
+    right: auto; left: -0.6em; bottom: 0.35em;
+    border-width: 0.35em 0.7em 0.35em 0;
+    border-color: transparent var(--ink) transparent transparent;
+    transform: skewY(20deg);
+  }
+  /* Room under a left bubble so the headline doesn't run into it. */
+  #stage.bubbleleft { padding-top: __BUBPADTOP__px; }
+
+  /* --wordmark: the site's "kasper." wordmark (NavBar.astro: font-extrabold
+     tracking-tight), bottom left. */
+  #wordmark {
+    position: absolute; z-index: 2;
+    left: __PAD__px; bottom: __WMBOTTOM__px;
+    font-size: __WMF__px; font-weight: 800; letter-spacing: -0.025em;
+    color: var(--ink);
+  }
   #mascot img {
     display: block;
     width: __MASCOTW__px;
@@ -172,6 +217,8 @@
   __CORNERLOGO__
   __LOGO2HTML__
   __STAMPHTML__
+  __BUBBLEHTML__
+  __WORDMARKHTML__
   <div id="stage" class="__STAGECLASS__">
     <div id="copy"><div id="copyinner">
       __LOGOHTML__

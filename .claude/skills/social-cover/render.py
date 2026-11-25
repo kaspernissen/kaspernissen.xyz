@@ -84,6 +84,10 @@ DECOR_JS = """(opts) => {
   if (logo) keep.push(logo.getBoundingClientRect());
   const logo2 = document.getElementById('logo2');
   if (logo2) keep.push(logo2.getBoundingClientRect());
+  const bubble = document.getElementById('bubble');
+  if (bubble) keep.push(bubble.getBoundingClientRect());
+  const wm = document.getElementById('wordmark');
+  if (wm) keep.push(wm.getBoundingClientRect());
   const stamp = document.getElementById('stamp');
   if (stamp) keep.push(stamp.getBoundingClientRect());
   // The banner's reserved corner: LinkedIn lays the profile photo over it, so
@@ -179,7 +183,8 @@ def parse_headline(text):
     out.append(html.escape(text[i:]))
     if n == 0:
         print("note: no {chips} in the headline — it will render as plain text", file=sys.stderr)
-    return "".join(out)
+    # A literal \n in the headline forces a line break.
+    return "".join(out).replace("\\n", "<br>")
 
 
 def decor(rng, w, h, pad):
@@ -252,7 +257,8 @@ def build_html(args, p):
             have = ", ".join(sorted(f.stem for f in MASCOTS.glob("*.png")))
             sys.exit(f"no mascot {name!r} in {MASCOTS}\navailable: {have}")
         mascot_w = int(w * p["mascot"] * args.mascot_scale)
-        mascot_html = f'<div id="mascot"><img src="{data_uri(path)}" alt="" /></div>'
+        bubble = f'<div id="bubble">{html.escape(args.bubble)}</div>' if args.bubble and args.bubble_pos == "mascot" else ""
+        mascot_html = f'<div id="mascot">{bubble}<img src="{data_uri(path)}" alt="" /></div>'
 
     # Scaled off the mascot, not the canvas: the hero's offset reads as a hard
     # shadow because it is large relative to the figure, and at banner sizes a
@@ -274,7 +280,8 @@ def build_html(args, p):
         "__MASCOTW__": mascot_w,
         "__SHX__": shadow, "__SHY__": round(shadow * 1.2),
         "__STAGECLASS__": ("stack" if p["stack"] else "") + (" flip" if args.flip else "")
-                          + (" hasphoto" if args.photo else ""),
+                          + (" hasphoto" if args.photo else "")
+                          + (" bubbleleft" if args.bubble and args.bubble_pos == "left" else ""),
         "__PHOTOR__": max(10, round(p["font"] * 0.16)),
         "__PHOTOSH__": max(8, round(min(w, h) / 90)),
         "__DECOR__": decor(rng, w, h, pad),
@@ -296,6 +303,13 @@ def build_html(args, p):
         "__STAMPF__": round(p["kicker"] * 1.5),
         "__LOGOH__": round(p["kicker"] * 2.4 * args.logo_scale),
         "__MASCOTHTML__": mascot_html,
+        "__BUBPADTOP__": pad + round(p["kicker"] * 1.5 * args.bubble_scale * 2.6),
+        "__WORDMARKHTML__": f'<div id="wordmark">{html.escape(args.wordmark)}</div>' if args.wordmark else "",
+        "__WMF__": round(p["kicker"] * 1.4), "__WMBOTTOM__": round(pad * 0.6),
+        "__BUBBLEHTML__": f'<div id="bubble" class="left">{html.escape(args.bubble)}</div>' if args.bubble and args.bubble_pos == "left" else "",
+        # Speech bubble: one line, sized off the kicker, placed relative to the mascot box.
+        "__BUBF__": round(p["kicker"] * 1.5 * args.bubble_scale),
+        "__BUBTOP__": args.bubble_top, "__BUBRIGHT__": args.bubble_side,
     }
     for k, v in subs.items():
         tpl = tpl.replace(k, str(v))
@@ -336,6 +350,13 @@ def main():
                     help="bottom left under the copy, or on the right between the corner logo and the mascot")
     ap.add_argument("--stamp-colour", choices=["yellow", "pink", "cyan", "orange", "violet"], default="yellow",
                     help="colour of the stamp's ink")
+    ap.add_argument("--bubble", help='speech bubble from the mascot, e.g. "it feels like a small KubeCon"')
+    ap.add_argument("--bubble-pos", choices=["mascot", "left"], default="mascot",
+                    help="mascot: above the mascot's head; left: top-left, entering from the left edge")
+    ap.add_argument("--bubble-scale", type=float, default=1.0, help="multiply the bubble's type size")
+    ap.add_argument("--bubble-top", type=float, default=4, help="bubble top, %% of the mascot box height")
+    ap.add_argument("--bubble-side", type=float, default=62, help="bubble offset from the mascot's far edge, %% of its width")
+    ap.add_argument("--wordmark", help='site wordmark bottom left, e.g. "kasper."')
     ap.add_argument("--seed", help="fix the confetti")
     ap.add_argument("--out", required=True, type=Path)
     args = ap.parse_args()
