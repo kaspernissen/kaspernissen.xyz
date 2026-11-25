@@ -4,7 +4,7 @@ date: 2026-11-25
 summary: "How we used Claude, Sessionize, ElevenLabs and a fair bit of software engineering to build the website, the graphics, the decks and our own stage production for Cloud Native Denmark 2026. Including a 10-metre LED wall, a voice of god, and a conference song."
 tags: ["conferences", "community", "ai"]
 hero: "how-to-vibe-code-a-conference-desk-view.jpg"
-draft: true
+draft: false
 ---
 In [my recap of Cloud Native Denmark 2026](/blog/cloud-native-denmark-2026/) last week, I briefly mentioned that we had vibe coded pretty much everything you saw on the big LED wall: the graphics, the animations, the music, the speaker introductions, and the control panel we used to run it all. A few people have asked me since how we actually did it, so here's a bit more about what went into it.
 
@@ -140,7 +140,7 @@ Most attendees probably never saw what the setup looked like from behind, so her
 
 We also learned a few things on day one that we wanted to change for day two. So, naturally, after the afterparty on Thursday evening, I was back on my laptop with Claude Code. The sponsor pitch logos moved closer to the edge of the wall, Per and Helena got their own walk-on for the HackYourFuture donation, and day two got the sing-along as its ending.
 
-One idea we had, on the evening after the setup on Wednesday, was to thank Claude during our closing remarks. I told Claude that I wanted a scene thanking it for helping us build all of this, with a dancing Claude mascot that winks at the audience now and then. By that point, the repository had all the context it needed: the design rules, the components and the show server. I didn't touch the implementation, and the result was pretty much exactly what I had in mind. Those are still the moments where I get quite excited about what's possible with these tools.
+One idea we had after our rehearsal was to thank Claude during our closing remarks. I told Claude that I wanted a scene thanking it for helping us build all of this, with a dancing Claude mascot that winks at the audience now and then. By that point, the repository had all the context it needed: the design rules, the components and the show server. I didn't touch the implementation, and the result was pretty much exactly what I had in mind. Those are still the moments where I get quite excited about what's possible with these tools.
 
 <img src="/blog-images/how-to-vibe-code-a-conference-thanks.jpg" alt="The organisers lined up on stage in white T-shirts under a giant pink pixel mascot and the line Every slide, every cue and every voice on this wall, built together with us">
 ## The November Beat
