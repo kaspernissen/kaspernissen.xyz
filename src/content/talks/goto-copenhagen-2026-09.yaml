@@ -6,13 +6,15 @@ date: 2026-09-30
 end_date: 2026-10-02
 location: Copenhagen, Denmark
 role: speaker
+youtube_id: PGHXYcJJVJw
 deck_file: rethinking-observability-as-a-platform-product-2026-09.pdf
 deck_size_mb: 8.5
 deck_cover: rethinking-observability-as-a-platform-product-2026-09.jpg
 co_speakers: []
 tags: []
 featured: false
-sources: {}
+sources:
+  youtube: PGHXYcJJVJw
 abstract: |-
   Many organizations still treat observability as a tooling decision: select a vendor, deploy agents, and expect insight to follow. Yet teams continue to struggle with fragmented signals, rising complexity, and slow incident response. The real issue is rarely the tool itself - it’s the absence of a shared foundation and a coherent product experience.
 
