@@ -1,0 +1,21 @@
+title: "If You Can't Trace It, You Can't Govern It: Platform Guardrails for AI Agents"
+event: "AAIF Aarhus #1"
+event_url: https://luma.com/46rt0krq
+date: 2026-11-26
+location: Aarhus, Denmark
+role: speaker
+slug: if-you-cant-trace-it-you-cant-govern-it-2026-11-26
+co_speakers: []
+tags: []
+featured: false
+sources: {}
+deck_file: if-you-can-t-trace-it-you-can-t-govern-it-platform-guardrails-for-ai-agents-2026-11.pdf
+deck_size_mb: 6.4
+deck_cover: if-you-can-t-trace-it-you-can-t-govern-it-platform-guardrails-for-ai-agents-2026-11.jpg
+demo_url: https://github.com/kaspernissen/aip-demo
+abstract: |-
+  An autonomous agent will do exactly what its tools let it do, and the set of things its tools allow is almost never the set anyone deliberately chose. Sooner or later someone asks what the agent did, and who allowed it.
+
+  This talk works through that question as a platform problem: decide what an agent may do, trace what it actually did, and prove it afterwards from the trace. Using a live demo of a fictional insurer, it shows how platform teams can put guardrails around agents with workload identity, policy and tool gateways, and use OpenTelemetry to record reasoning, tool calls and policy decisions as evidence an auditor can follow.
+
+  The first AAIF Aarhus meetup, hosted by Eficode. The talk builds on the KubeCon + CloudNativeCon North America 2026 session with William Rizzo.
